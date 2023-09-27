@@ -21,6 +21,9 @@ module.exports = {
         primary: '#688990',
         secondary: '#CE9354'
       },
+      boxShadow: {
+        'shadow': '0 4px 4px 0 rgba(0,0,0,0.25)'
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

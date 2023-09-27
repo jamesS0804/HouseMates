@@ -1,10 +1,11 @@
 import Header from "@/Main Components/Header"
 import { Button } from "@/components/ui/button"
 import housemates from "../assets/images/housemates.png"
+import { Link } from "react-router-dom"
 
 export default function GetStartedPage() {
     return(
-        <div className="h-full border-2 border-red-500">
+        <div className="h-screen flex flex-col">
             <div className="mb-[8rem]" />
             <Header />
             <div className="w-full mt-[12rem] p-4">
@@ -16,7 +17,9 @@ export default function GetStartedPage() {
                     </div>
                 </div>
             </div>
-            <Button className='bg-primary font-black text-lg w-full fixed left-0 bottom-0 rounded-none'>GET STARTED</Button>
+            <Link type="button" to="/entry" className="w-full mt-auto">
+                <Button className='bg-primary text-white text-lg w-full mt-auto border-none rounded-none'>GET STARTED</Button>
+            </Link>
         </div>
     )
 }

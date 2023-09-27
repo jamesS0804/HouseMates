@@ -7,7 +7,7 @@ import HomePage from './Pages/HomePage'
 
 export default function App() {
   return (
-    <div className='bg-background h-screen border-2 border-red-500'>
+    <div className='bg-background h-screen'>
       <Routes>
         <Route index path='/' element={<GetStartedPage />}/>
         <Route path='/entry' element={<EntryPage />}/>
