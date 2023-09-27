@@ -4,6 +4,8 @@ import GetStartedPage from './Pages/GetStartedPage'
 import EntryPage from './Pages/EntryPage'
 import VerificationPage from './Pages/VerificationPage'
 import HomePage from './Pages/HomePage'
+import SignupPage from './Pages/SignupPage'
+import LoginPage from './Pages/LoginPage'
 
 export default function App() {
   return (
@@ -11,6 +13,8 @@ export default function App() {
       <Routes>
         <Route index path='/' element={<GetStartedPage />}/>
         <Route path='/entry' element={<EntryPage />}/>
+        <Route path='/signup' element={<SignupPage />}/>
+        <Route path='/login' element={<LoginPage />}/>
         <Route path='/verification' element={<VerificationPage />}/>
         <Route path='/home' element={<HomePage />}/>
       </Routes>
