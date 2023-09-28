@@ -1,7 +1,18 @@
-export default function VerificationPage() {
+import Header from "@/Main Components/Header"
+import NavigationBar from "@/Main Components/NavigationBar"
+
+interface VerificationPageProps {
+    userType: string
+}
+
+export default function VerificationPage(props:VerificationPageProps) {
+    const { userType } = props
     return(
-        <>
-            <h1>VerificationPage</h1>
-        </>
+        <div className="h-screen flex flex-col">
+            <Header />
+            <div className="mt-auto">
+                <NavigationBar userType={userType} />
+            </div>
+        </div>
     )
 }
