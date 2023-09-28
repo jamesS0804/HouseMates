@@ -63,9 +63,9 @@ export default function SignupPage(props: SignupPageProps) {
             <Header />
             <div className="mt-8 flex flex-col w-full px-7 items-center grow">
                 <h3 className={`font-bold text-xl ${userType === 'Homeowner' ? 'text-primary' : 'text-secondary'}`}>Sign Up as a {userType}</h3>
-                <img className="h-[12rem]" src={userType === 'Homeowner' ? homeowner : housemates} />
+                <img className="h-[10rem]" src={userType === 'Homeowner' ? homeowner : housemates} />
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
                         <CustomFormField userType={userType} form={form} name={"name"} label={"Name"} type={"text"} placeholder={"John Smith"} />
                         <CustomFormField userType={userType} form={form} name={"email"} label={"Email"} type={"email"} placeholder={"johnsmith@gmail.com"} />
                         <CustomFormField userType={userType} form={form} name={"password"} label={"Password"} type={"password"} placeholder={"********"} />
@@ -76,7 +76,7 @@ export default function SignupPage(props: SignupPageProps) {
                              render={() => (
                                  <FormItem>
                                     <div className="flex gap-2 items-center">
-                                        <Checkbox className={`${userType === "Homeowner" ? 'border-primary' : 'border-secondary'} rounded-xl`} {...form.register('privacyCheckbox')} />
+                                        <input type="checkbox" className={`${userType === "Homeowner" ? 'border-primary' : 'border-secondary'} rounded-xl`} {...form.register('privacyCheckbox')} />
                                         <FormLabel className="font-black">I agree with privacy policy</FormLabel>
                                     </div> 
                                     <FormMessage />
@@ -88,7 +88,7 @@ export default function SignupPage(props: SignupPageProps) {
             </div>
             <div className="flex gap-2 items-center p-4">
                 <span className="font-black">Already have an account?</span>
-                <a className={`${userType === "Homeowner" ? 'text-primary' : 'text-secondary'} font-black underline`}>Login</a>
+                <a href="/login" className={`${userType === "Homeowner" ? 'text-primary' : 'text-secondary'} font-black underline`}>Login</a>
             </div>
             <Button
                 className={`page-action-button text-white border-none rounded-none ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}

@@ -1,5 +1,5 @@
 import './App.css'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import GetStartedPage from './Pages/GetStartedPage'
 import EntryPage from './Pages/EntryPage'
@@ -21,7 +21,9 @@ export default function App() {
         <Route path='/signup' element={
           <SignupPage userType={userType} />
         }/>
-        <Route path='/login' element={<LoginPage />}/>
+        <Route path='/login' element={
+          <LoginPage userType={userType} />
+        }/>
         <Route path='/verification' element={<VerificationPage />}/>
         <Route path='/home' element={<HomePage />}/>
       </Routes>
