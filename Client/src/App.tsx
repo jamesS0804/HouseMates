@@ -9,7 +9,7 @@ import SignupPage from './Pages/SignupPage'
 import LoginPage from './Pages/LoginPage'
 
 export default function App() {
-  const [ userType,setUserType ] = useState('Homeowner')
+  const [ userType,setUserType ] = useState(()=> sessionStorage.getItem('userType') ? String(sessionStorage.getItem('userType')) : 'Homeowner')
 
   return (
     <div className='h-screen'>

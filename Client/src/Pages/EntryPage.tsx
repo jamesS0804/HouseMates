@@ -14,6 +14,7 @@ export default function EntryPage(props:EntryPageProps) {
 
     const handleClick = (type: string) => {
         setUserType(type)
+        sessionStorage.setItem('userType', type)
     }
     return(
         <div className="h-screen flex flex-col">

@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/ui/form"
-import { Checkbox } from "@/components/ui/checkbox";
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
     name: z.string().min(3, {
@@ -68,8 +68,8 @@ export default function SignupPage(props: SignupPageProps) {
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
                         <CustomFormField userType={userType} form={form} name={"name"} label={"Name"} type={"text"} placeholder={"John Smith"} />
                         <CustomFormField userType={userType} form={form} name={"email"} label={"Email"} type={"email"} placeholder={"johnsmith@gmail.com"} />
-                        <CustomFormField userType={userType} form={form} name={"password"} label={"Password"} type={"password"} placeholder={"********"} />
-                        <CustomFormField userType={userType} form={form} name={"confirmPassword"} label={"Re-confirm Password"} type={"password"} placeholder={"********"} />
+                        <CustomFormField userType={userType} form={form} name={"password"} label={"Password"} type={"password"} placeholder={"Password"} />
+                        <CustomFormField userType={userType} form={form} name={"confirmPassword"} label={"Re-confirm Password"} type={"password"} placeholder={"Password"} />
                         <FormField 
                              control={form.control}
                              name="privacyCheckbox"
@@ -88,7 +88,10 @@ export default function SignupPage(props: SignupPageProps) {
             </div>
             <div className="flex gap-2 items-center p-4">
                 <span className="font-black">Already have an account?</span>
-                <a href="/login" className={`${userType === "Homeowner" ? 'text-primary' : 'text-secondary'} font-black underline`}>Login</a>
+                <Link to="/login">
+                    <div className={`${userType === "Homeowner" ? 'text-primary' : 'text-secondary'} font-black underline`}>Login</div>
+                </Link>
+                
             </div>
             <Button
                 className={`page-action-button text-white border-none rounded-none ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}
