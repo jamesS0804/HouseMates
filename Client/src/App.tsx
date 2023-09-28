@@ -10,10 +10,6 @@ import LoginPage from './Pages/LoginPage'
 
 export default function App() {
   const [ userType,setUserType ] = useState('Homeowner')
-  
-  useEffect(()=>{
-    console.log(userType)
-  },[userType])
 
   return (
     <div className='h-screen'>
