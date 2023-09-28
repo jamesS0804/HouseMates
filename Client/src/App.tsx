@@ -16,7 +16,7 @@ export default function App() {
   },[userType])
 
   return (
-    <div className='bg-background h-screen'>
+    <div className='h-screen'>
       <Routes>
         <Route index path='/' element={<GetStartedPage />}/>
         <Route path='/entry' element={
