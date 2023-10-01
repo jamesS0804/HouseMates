@@ -11,7 +11,7 @@ interface NavigationBar {
 export default function NavigationBar(props:NavigationBar) {
     const { userType } = props
     return(
-        <div className={`w-screen p-1 px-6 flex justify-between text-white ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
+        <div className={`w-screen fixed bottom-0 left-0 p-1 px-6 flex justify-between text-white ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
             <Link type="button" to={"/home"} className="p-2 flex flex-col justify-center items-center">
                 <img className="w-8 h-8" src={homeIcon} />
                 <p className="text-xs">Home</p>
