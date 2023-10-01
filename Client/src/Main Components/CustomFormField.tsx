@@ -22,7 +22,7 @@ export default function CustomFormField(props: CustomFormFieldProps) {
                 <FormItem>
                     <FormLabel className="font-black">{label}</FormLabel>
                     <FormControl>
-                        <Input type={type} className={`shadow-shadow ${userType === "Homeowner" ? 'border-primary' : 'border-secondary'}`} placeholder={placeholder} {...field} />
+                        <Input type={type} className={`rounded-2xl shadow-shadow ${userType === "Homeowner" ? 'border-primary' : 'border-secondary'}`} placeholder={placeholder} {...field} />
                     </FormControl>
                     <FormMessage />
                 </FormItem>
