@@ -40,7 +40,7 @@ export default function App() {
         }/>
         <Route path='/home' element={<HomePage userType={userType} navigate={navigate} selectedService={selectedService} setSelectedService={setSelectedService} />}/>
         <Route path='/bookings' element={<BookingsPage userType={userType} navigate={navigate} />}/>
-        <Route path='/messages' element={<MessagesPage />}/>
+        <Route path='/messages' element={<MessagesPage userType={userType} navigate={navigate} />}/>
         <Route path='/profile' element={<ProfilePage />}/>
         <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate}/>}/>
       </Routes>

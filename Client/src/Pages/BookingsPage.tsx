@@ -27,7 +27,7 @@ export default function BookingsPage(props: BookingsPageProps) {
         <div className="h-screen flex flex-col items-center">
             <BackButton navigate={navigate} />
             <div className={`flex flex-col items-center w-full ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
-                <h1 className="m-0 mt-5 font-verdana text-[#EBCE9F] font-black">My Bookings</h1>
+                <h1 className="m-0 mt-4 font-verdana text-[#EBCE9F] font-black">My Bookings</h1>
                 <div className={`grid grid-cols-3`}>
                     {
                         bookingTabs.map((tab)=>{
@@ -45,7 +45,7 @@ export default function BookingsPage(props: BookingsPageProps) {
             </div>
             <div className="flex-1 h-full w-screen flex flex-col items-center justify-center">
                 {
-                    bookings.length === 0 ? <h3>You have no {selectedBookingTab} bookings</h3>
+                    bookings.length === 0 ? <h3 className="text-gray-500">You have no {selectedBookingTab} bookings</h3>
                         :
                         bookings.map((booking:object)=>{
                             return(
