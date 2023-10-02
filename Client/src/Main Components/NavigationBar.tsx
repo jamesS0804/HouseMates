@@ -18,7 +18,7 @@ export default function NavigationBar(props:NavigationBar) {
         {title: 'Profile', image: profileIcon, path: "/profile"},
     ]
     return(
-        <div className={`w-screen fixed bottom-0 left-0 p-0 flex gap-0 text-white ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
+        <div className={`w-screen fixed bottom-0 left-0 p-0 grid grid-cols-4 gap-0 text-white ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
             {
                 navigationOptions.map((option)=>{
                     return(
