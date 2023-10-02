@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_02_205229) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_02_211633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,6 +24,31 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_205229) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "housemate_services", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_housemate_services_on_user_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+  end
+
+  create_table "subservices", force: :cascade do |t|
+    t.string "title", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "service_id", null: false
+    t.bigint "housemate_service_id", null: false
+    t.index ["housemate_service_id"], name: "index_subservices_on_housemate_service_id"
+    t.index ["service_id"], name: "index_subservices_on_service_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -43,4 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_205229) do
   end
 
   add_foreign_key "addresses", "users"
+  add_foreign_key "housemate_services", "users"
+  add_foreign_key "subservices", "housemate_services"
+  add_foreign_key "subservices", "services"
 end

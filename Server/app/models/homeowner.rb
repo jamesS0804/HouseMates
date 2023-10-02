@@ -1,0 +1,2 @@
+class Homeowner < User
+end
