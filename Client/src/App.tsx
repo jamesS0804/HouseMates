@@ -1,6 +1,6 @@
 import './App.css'
-import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import GetStartedPage from './Pages/GetStartedPage'
 import EntryPage from './Pages/EntryPage'
 import VerificationPage from './Pages/VerificationPage'
@@ -10,11 +10,23 @@ import LoginPage from './Pages/LoginPage'
 import BookingsPage from './Pages/BookingsPage'
 import MessagesPage from './Pages/MessagesPage'
 import ProfilePage from './Pages/ProfilePage'
-import { useNavigate } from "react-router-dom";
+import ServiceMainPage from './Pages/ServiceMainPage'
 
 export default function App() {
   const [ userType,setUserType ] = useState(()=> sessionStorage.getItem('userType') ? String(sessionStorage.getItem('userType')) : 'Homeowner')
+  const [ selectedService, setSelectedService ] = useState("")
   const navigate = useNavigate()
+  const location = useLocation();
+
+  useEffect(()=>{
+    console.log(selectedService)
+  },[selectedService])
+  
+  useEffect(() => {
+    console.log(location)
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <div className='h-screen'>
       <Routes>
@@ -31,10 +43,11 @@ export default function App() {
         <Route path='/verification' element={
           <VerificationPage userType={userType} navigate={navigate} />
         }/>
-        <Route path='/home' element={<HomePage userType={userType} navigate={navigate} />}/>
+        <Route path='/home' element={<HomePage userType={userType} navigate={navigate} selectedService={selectedService} setSelectedService={setSelectedService} />}/>
         <Route path='/bookings' element={<BookingsPage />}/>
         <Route path='/messages' element={<MessagesPage />}/>
         <Route path='/profile' element={<ProfilePage />}/>
+        <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate}/>}/>
       </Routes>
     </div>
   )

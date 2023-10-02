@@ -16,11 +16,12 @@ interface ServiceSelectionProps {
     userType: string,
     selectionType: 'single' | 'multiple',
     outputData: any,
-    setOutputData: any
+    setOutputData: Function
 }
 
 export default function ServiceSelection(props: ServiceSelectionProps){
     const { userType, selectionType, outputData, setOutputData } = props
+
     const services = [
         { title: "General Cleaning", image: generalCleaning },
         { title: "Beauty & Spa", image: beautyAndSpa },

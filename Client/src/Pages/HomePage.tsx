@@ -3,23 +3,27 @@ import NavigationBar from "@/Main Components/NavigationBar"
 import SearchBar from "@/Main Components/SearchBar"
 import ServiceSelection from "@/Main Components/ServiceSelection"
 import SubHeader from "@/Main Components/SubHeader"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import favoriteHousemate from "../assets/images/favoriteHousemates.png"
 import news from "../assets/images/news.png"
 import discounts from "../assets/images/discount.png"
 
 interface HomePageProps {
     userType: string,
-    navigate: Function
+    navigate: Function,
+    selectedService: string,
+    setSelectedService: Function
 }
 
 export default function HomePage(props: HomePageProps) {
-    const { userType, navigate } = props
-    const [ selectedService, setSelectedService ] = useState("")
+    const { userType, navigate, selectedService, setSelectedService } = props
 
     useEffect(()=>{
-        console.log('selected service is ' + selectedService )
-        // navigate(`/${selectedService}`)
+        setSelectedService(selectedService)
+    },[])
+
+    useEffect(()=>{
+        if(selectedService) navigate("/services")
     },[selectedService])
 
     return(
