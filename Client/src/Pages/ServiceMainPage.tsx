@@ -62,7 +62,7 @@ export default function ServiceMainPage(props: ServiceMainPage) {
                         <img className="h-56 w-screen object-cover" src={service.image}/>
                         <h1 className="absolute w-10 m-0 bottom-1 text-3xl font-bold px-3 text-secondary font-verdana [text-shadow:0px_3px_4px_rgba(235_206_159_/_70%)]">{service.title.toUpperCase()}</h1>
                     </div>
-                    <div className="p-3 flex flex-col gap-2 pb-20">
+                    <div className="p-3 flex flex-col gap-4 pb-28">
                         <div className="border p-3 flex border-primary rounded-xl shadow-shadow gap-2">
                             <div>
                                 <h3 className="text-primary font-black">{service.title}</h3>
