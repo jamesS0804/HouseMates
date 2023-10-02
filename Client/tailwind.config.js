@@ -19,7 +19,9 @@ module.exports = {
       colors: {
         background: '#F7F7F7',
         primary: '#688990',
-        secondary: '#CE9354'
+        secondary: '#CE9354',
+        primarySelected: "#41646B",
+        secondarySelected: "#B77228"
       },
       boxShadow: {
         'shadow': '0 4px 4px 0 rgba(0,0,0,0.25)'

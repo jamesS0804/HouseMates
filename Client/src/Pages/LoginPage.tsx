@@ -7,10 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/ui/form"
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
-import { useNavigate } from "react-router-dom";
 
 interface LoginPageProps {
-    userType: string
+    userType: string,
+    navigate: Function,
 }
 
 const formSchema = z.object({
@@ -20,8 +20,7 @@ const formSchema = z.object({
 })
 
 export default function LoginPage(props:LoginPageProps){
-    const { userType } = props
-    const navigate = useNavigate()
+    const { userType, navigate } = props
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),

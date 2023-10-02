@@ -10,10 +10,11 @@ import LoginPage from './Pages/LoginPage'
 import BookingsPage from './Pages/BookingsPage'
 import MessagesPage from './Pages/MessagesPage'
 import ProfilePage from './Pages/ProfilePage'
+import { useNavigate } from "react-router-dom";
 
 export default function App() {
   const [ userType,setUserType ] = useState(()=> sessionStorage.getItem('userType') ? String(sessionStorage.getItem('userType')) : 'Homeowner')
-
+  const navigate = useNavigate()
   return (
     <div className='h-screen'>
       <Routes>
@@ -25,12 +26,12 @@ export default function App() {
           <SignupPage userType={userType} />
         }/>
         <Route path='/login' element={
-          <LoginPage userType={userType} />
+          <LoginPage userType={userType} navigate={navigate} />
         }/>
         <Route path='/verification' element={
-          <VerificationPage userType={userType} />
+          <VerificationPage userType={userType} navigate={navigate} />
         }/>
-        <Route path='/home' element={<HomePage />}/>
+        <Route path='/home' element={<HomePage userType={userType} navigate={navigate} />}/>
         <Route path='/bookings' element={<BookingsPage />}/>
         <Route path='/messages' element={<MessagesPage />}/>
         <Route path='/profile' element={<ProfilePage />}/>

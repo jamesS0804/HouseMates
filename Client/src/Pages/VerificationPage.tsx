@@ -18,7 +18,8 @@ import progressPart2 from "../assets/images/progress2.png"
 import ServiceSelection from "@/Main Components/ServiceSelection";
 
 interface VerificationPageProps {
-    userType: string
+    userType: string,
+    navigate: Function
 }
 
 const formSchema = z.object({
@@ -35,7 +36,7 @@ const formSchema = z.object({
 })
 
 export default function VerificationPage(props:VerificationPageProps) {
-    const { userType } = props
+    const { userType, navigate } = props
     const provinces = getProvinces()
     const [ selectedProvince, setSelectedProvince ] = useState("")
     const [ selectedCity, setSelectedCity ] = useState("") 
@@ -94,6 +95,9 @@ export default function VerificationPage(props:VerificationPageProps) {
         try {
             if(values) {
                 console.log("verifying in..")
+                if(userType === 'Homeowner'){
+                    navigate("/home")
+                }
                 setVerificationPart(2)
             } else {
                 console.log("invalid values")
@@ -107,6 +111,7 @@ export default function VerificationPage(props:VerificationPageProps) {
         console.log("submitting..")
         console.log(values)
         console.log(preferredServices)
+        navigate("/home")
     }
 
     return(

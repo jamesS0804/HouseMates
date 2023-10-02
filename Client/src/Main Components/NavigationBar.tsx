@@ -5,29 +5,30 @@ import profileIcon from "../assets/icons/profileIcon.png"
 import { Link } from "react-router-dom"
 
 interface NavigationBar {
-    userType: string
+    userType: string,
+    selectedOption?: string
 }
 
 export default function NavigationBar(props:NavigationBar) {
-    const { userType } = props
+    const { userType, selectedOption } = props
+    const navigationOptions = [
+        {title: 'Home', image: homeIcon, path: "/home"},
+        {title: 'Bookings', image: bookingsIcon, path: "/bookings"},
+        {title: 'Messages', image: messagesIcon, path: "/messages"},
+        {title: 'Profile', image: profileIcon, path: "/profile"},
+    ]
     return(
-        <div className={`w-screen fixed bottom-0 left-0 p-1 px-6 flex justify-between text-white ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
-            <Link type="button" to={"/home"} className="p-2 flex flex-col justify-center items-center">
-                <img className="w-8 h-8" src={homeIcon} />
-                <p className="text-xs">Home</p>
-            </Link>
-            <Link type="button" to={"/bookings"} className="p-2 flex flex-col justify-center items-center">
-                <img className="w-8 h-8" src={bookingsIcon} />
-                <p className="text-xs">Bookings</p>
-            </Link>
-            <Link type="button" to={"/messages"} className="p-2 flex flex-col justify-center items-center">
-                <img className="w-8 h-8" src={messagesIcon} />
-                <p className="text-xs">Messages</p>
-            </Link>
-            <Link type="button" to={"/profile"} className="p-2 flex flex-col justify-center items-center">
-                <img className="w-8 h-8" src={profileIcon} />
-                <p className="text-xs">Profile</p>
-            </Link>
+        <div className={`w-screen fixed bottom-0 left-0 p-0 flex gap-0 text-white ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
+            {
+                navigationOptions.map((option)=>{
+                    return(
+                        <Link type="button" to={option.path} className={`grow py-3 px-5 flex flex-col justify-center items-center ${selectedOption === option.title.toLocaleLowerCase() ? 'bg-primarySelected' : ''}`}>
+                            <img className="w-8 h-8" src={option.image} />
+                            <p className="text-xs">{option.title}</p>
+                        </Link>
+                    )
+                })
+            }
         </div>
     )
 }

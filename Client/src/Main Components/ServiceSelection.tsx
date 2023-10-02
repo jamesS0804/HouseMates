@@ -58,7 +58,7 @@ export default function ServiceSelection(props: ServiceSelectionProps){
                             className={`${outputData.includes(service.title) ? userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary' : ''} p-1 h-28 flex flex-col justify-start shadow-shadow ${userType === 'Homeowner' ? 'border-primary' : 'border-secondary'}`}
                             onClick={()=>handleClick(service.title)}    
                         >
-                            <h3 className="text-xs">{service.title}</h3>
+                            <h3 className="text-xs font-bold">{service.title}</h3>
                             <img src={service.image} className="mt-auto h-[4.5rem]"/>
                         </Button>
                     )
