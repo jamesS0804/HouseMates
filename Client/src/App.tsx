@@ -18,12 +18,7 @@ export default function App() {
   const navigate = useNavigate()
   const location = useLocation();
 
-  useEffect(()=>{
-    console.log(selectedService)
-  },[selectedService])
-  
   useEffect(() => {
-    console.log(location)
     window.scrollTo(0, 0);
   }, [location.pathname]);
 

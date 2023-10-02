@@ -7,6 +7,8 @@ import { useEffect } from "react"
 import favoriteHousemate from "../assets/images/favoriteHousemates.png"
 import news from "../assets/images/news.png"
 import discounts from "../assets/images/discount.png"
+import HSHomePage from "./Housemates/HSHomePage"
+
 
 interface HomePageProps {
     userType: string,
@@ -28,10 +30,10 @@ export default function HomePage(props: HomePageProps) {
 
     return(
         <div className="h-screen flex flex-col">
+            <Header />
             {
                 userType === 'Homeowner' ?
                     <div className="h-full flex flex-col">
-                        <Header />
                         <SubHeader customStyle={`mt-[6rem]`} />
                         <div className="p-4 py-0 flex flex-col gap-4">
                             <SearchBar />
@@ -56,7 +58,7 @@ export default function HomePage(props: HomePageProps) {
                         </div>
                     </div>
                     :
-                    <div></div>
+                    <HSHomePage />
             }
             <NavigationBar userType={userType} selectedOption="home" />
         </div>

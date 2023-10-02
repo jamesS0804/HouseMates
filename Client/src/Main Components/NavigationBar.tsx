@@ -22,7 +22,7 @@ export default function NavigationBar(props:NavigationBar) {
             {
                 navigationOptions.map((option)=>{
                     return(
-                        <Link key={option.title} type="button" to={option.path} className={`grow py-3 px-5 flex flex-col justify-center items-center ${selectedOption === option.title.toLocaleLowerCase() ? 'bg-primarySelected' : ''}`}>
+                        <Link key={option.title} type="button" to={option.path} className={`grow py-3 px-5 flex flex-col justify-center items-center ${selectedOption === option.title.toLocaleLowerCase() ? userType === 'Homeowner' ? 'bg-primarySelected' : 'bg-secondarySelected' : ''}`}>
                             <img className="w-8 h-8" src={option.image} />
                             <p className="text-xs">{option.title}</p>
                         </Link>
