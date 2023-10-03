@@ -23,5 +23,22 @@ module Server
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource(
+         '*',
+         headers: :any,
+         expose: ["Authorization"],
+         methods: [:get, :patch, :put, :delete, :post, :options, :show]
+        )
+      end
+    end
+    config.session_store :cookie_store, key: '_interslice_session', expire_after: 30.minutes.to_i
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
   end
 end

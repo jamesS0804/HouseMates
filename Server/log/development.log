@@ -174,3 +174,397 @@ FOREIGN KEY ("housemate_service_id")
   [1m[36mActiveRecord::InternalMetadata Load (0.7ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
   [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
   [1m[36mActiveRecord::SchemaMigration Pluck (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/signup" for ::1 at 2023-10-03 08:20:12 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}}}
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 399ms (ActiveRecord: 10.8ms | Allocations: 17653)
+
+
+  
+NoMethodError (undefined method `jti=' for #<User id: nil, email: "yeyekip892@fesgrid.com", name: "", created_at: "2023-10-03 00:20:13.197848000 +0000", updated_at: "2023-10-03 00:20:13.197848000 +0000", phone_number: nil>):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:24:07 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"name"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"name"}}}
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 464ms (ActiveRecord: 12.3ms | Allocations: 6438)
+
+
+  
+NoMethodError (undefined method `jti=' for #<User id: nil, email: "yeyekip892@fesgrid.com", name: "name", created_at: "2023-10-03 00:24:08.566215000 +0000", updated_at: "2023-10-03 00:24:08.566215000 +0000", phone_number: nil>):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:27:00 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"name"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"name"}}}
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 320ms (ActiveRecord: 1.8ms | Allocations: 2555)
+
+
+  
+NoMethodError (undefined method `jti=' for #<User id: nil, email: "yeyekip892@fesgrid.com", name: "name", created_at: "2023-10-03 00:27:00.440340000 +0000", updated_at: "2023-10-03 00:27:00.440340000 +0000", phone_number: nil>):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:28:52 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}}
+[31mUnpermitted parameter: :phone_number. Context: { controller: Users::RegistrationsController, action: create, request: #<ActionDispatch::Request:0x00007f6b24480008>, params: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "controller"=>"users/registrations", "action"=>"create", "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}} }[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 314ms (ActiveRecord: 1.4ms | Allocations: 2654)
+
+
+  
+NoMethodError (undefined method `jti=' for #<User id: nil, email: "yeyekip892@fesgrid.com", name: "test_name", created_at: "2023-10-03 00:28:52.410983000 +0000", updated_at: "2023-10-03 00:28:52.410983000 +0000", phone_number: nil>):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddJtiToUsers (20231003003103)
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.0ms)[0m  [1m[35mALTER TABLE "users" ADD "jti" character varying NOT NULL[0m
+  [1m[35m (10.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_jti" ON "users" ("jti")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231003003103"]]
+  [1m[36mTRANSACTION (5.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/signup" for ::1 at 2023-10-03 08:31:25 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}}
+[31mUnpermitted parameter: :phone_number. Context: { controller: Users::RegistrationsController, action: create, request: #<ActionDispatch::Request:0x00007f5abefd60e0>, params: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "controller"=>"users/registrations", "action"=>"create", "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}} }[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Create (1.6ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "name", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "phone_number", "jti") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "yeyekip892@fesgrid.com"], ["encrypted_password", "[FILTERED]"], ["name", "test_name"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-03 00:31:25.980787"], ["unconfirmed_email", nil], ["created_at", "2023-10-03 00:31:25.980574"], ["updated_at", "2023-10-03 00:31:25.980574"], ["phone_number", nil], ["jti", "9c5ae831-0a47-4bf4-9539-623a3ea336f0"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 400ms (ActiveRecord: 13.0ms | Allocations: 16642)
+
+
+  
+ActiveRecord::NotNullViolation (PG::NotNullViolation: ERROR:  null value in column "phone_number" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (1, yeyekip892@fesgrid.com, $2a$12$7xtKPyC5UDLa1ZSe5NotmOQ0fXRcqMzvO1HpqRDDY3LH6n0MP7pVS, test_name, null, X9RafVRzsbDbN8gLtHDc, null, 2023-10-03 00:31:25.980787, null, 2023-10-03 00:31:25.980574, 2023-10-03 00:31:25.980574, null, 9c5ae831-0a47-4bf4-9539-623a3ea336f0).
+):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:32:21 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}}
+[31mUnpermitted parameter: :phone_number. Context: { controller: Users::RegistrationsController, action: create, request: #<ActionDispatch::Request:0x00007f5abce98220>, params: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "controller"=>"users/registrations", "action"=>"create", "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}} }[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Create (4.9ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "name", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "phone_number", "jti") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "yeyekip892@fesgrid.com"], ["encrypted_password", "[FILTERED]"], ["name", "test_name"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-03 00:32:21.550612"], ["unconfirmed_email", nil], ["created_at", "2023-10-03 00:32:21.550492"], ["updated_at", "2023-10-03 00:32:21.550492"], ["phone_number", nil], ["jti", "ef5917d1-c0b8-4502-822f-05d509b81635"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 301ms (ActiveRecord: 6.5ms | Allocations: 3430)
+
+
+  
+ActiveRecord::NotNullViolation (PG::NotNullViolation: ERROR:  null value in column "phone_number" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (2, yeyekip892@fesgrid.com, $2a$12$ww34AoVSS4APdG4QJ3OoiOgWV4mbY.MA76nbQUDAMh/LNXCJoOm/2, test_name, null, 88XEh7eTBRqxmGBnbyCd, null, 2023-10-03 00:32:21.550612, null, 2023-10-03 00:32:21.550492, 2023-10-03 00:32:21.550492, null, ef5917d1-c0b8-4502-822f-05d509b81635).
+):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:32:26 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}}
+[31mUnpermitted parameter: :phone_number. Context: { controller: Users::RegistrationsController, action: create, request: #<ActionDispatch::Request:0x00007f5abd08cef0>, params: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}, "controller"=>"users/registrations", "action"=>"create", "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"09123456789"}}} }[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Create (1.0ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "name", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "phone_number", "jti") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "yeyekip892@fesgrid.com"], ["encrypted_password", "[FILTERED]"], ["name", "test_name"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-03 00:32:26.990075"], ["unconfirmed_email", nil], ["created_at", "2023-10-03 00:32:26.989958"], ["updated_at", "2023-10-03 00:32:26.989958"], ["phone_number", nil], ["jti", "3dae23cc-1111-419c-be79-a68bc28b0b7d"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 282ms (ActiveRecord: 3.7ms | Allocations: 3424)
+
+
+  
+ActiveRecord::NotNullViolation (PG::NotNullViolation: ERROR:  null value in column "phone_number" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (3, yeyekip892@fesgrid.com, $2a$12$PVw3hTcXf/FsgPeG57DxRe7Ta1afFq7hy.aC22H/PJhrJGO3I0OzC, test_name, null, g7qkpGa2mheqPBi2fS7y, null, 2023-10-03 00:32:26.990075, null, 2023-10-03 00:32:26.989958, 2023-10-03 00:32:26.989958, null, 3dae23cc-1111-419c-be79-a68bc28b0b7d).
+):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:33:02 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"aaa"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"aaa"}}}
+[31mUnpermitted parameter: :phone_number. Context: { controller: Users::RegistrationsController, action: create, request: #<ActionDispatch::Request:0x00007f5abefc2950>, params: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"aaa"}, "controller"=>"users/registrations", "action"=>"create", "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "name"=>"test_name", "phone_number"=>"aaa"}}} }[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Create (1.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "name", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "phone_number", "jti") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "yeyekip892@fesgrid.com"], ["encrypted_password", "[FILTERED]"], ["name", "test_name"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-03 00:33:03.082760"], ["unconfirmed_email", nil], ["created_at", "2023-10-03 00:33:03.082625"], ["updated_at", "2023-10-03 00:33:03.082625"], ["phone_number", nil], ["jti", "4fbecca1-a38a-4441-ba23-a03ea659fe38"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 285ms (ActiveRecord: 2.7ms | Allocations: 3424)
+
+
+  
+ActiveRecord::NotNullViolation (PG::NotNullViolation: ERROR:  null value in column "phone_number" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (4, yeyekip892@fesgrid.com, $2a$12$896BiVVqiug/8nOR24x.eu85ukg2hGz3rUICXaSLijP78VHFtKRhW, test_name, null, z3a1UFbyTDTr-V1pxbyV, null, 2023-10-03 00:33:03.08276, null, 2023-10-03 00:33:03.082625, 2023-10-03 00:33:03.082625, null, 4fbecca1-a38a-4441-ba23-a03ea659fe38).
+):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:33:42 +0800
+Error occurred while parsing request parameters.
+Contents:
+
+{
+  "user": {
+    "email": "yeyekip892@fesgrid.com",
+    "password": "password",
+    "phone_number": "09123456789",
+    "name": "test_name",
+  }
+}
+Processing by Users::RegistrationsController#create as */*
+Completed 400 Bad Request in 1ms (ActiveRecord: 0.0ms | Allocations: 146)
+
+
+  
+ActionDispatch::Http::Parameters::ParseError (Error occurred while parsing request parameters):
+  
+app/controllers/users/registrations_controller.rb:26:in `sign_up_params'
+app/controllers/users/registrations_controller.rb:6:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:33:49 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "phone_number"=>"09123456789", "name"=>"test_name"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "phone_number"=>"09123456789", "name"=>"test_name"}}}
+[31mUnpermitted parameter: :phone_number. Context: { controller: Users::RegistrationsController, action: create, request: #<ActionDispatch::Request:0x00007f5abcd23d40>, params: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "phone_number"=>"09123456789", "name"=>"test_name"}, "controller"=>"users/registrations", "action"=>"create", "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "phone_number"=>"09123456789", "name"=>"test_name"}}} }[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Create (1.0ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "name", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "phone_number", "jti") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "yeyekip892@fesgrid.com"], ["encrypted_password", "[FILTERED]"], ["name", "test_name"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-03 00:33:49.361113"], ["unconfirmed_email", nil], ["created_at", "2023-10-03 00:33:49.360992"], ["updated_at", "2023-10-03 00:33:49.360992"], ["phone_number", nil], ["jti", "86170b7d-beb5-42c7-a19f-8d74dba6bd5c"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 281ms (ActiveRecord: 2.6ms | Allocations: 3423)
+
+
+  
+ActiveRecord::NotNullViolation (PG::NotNullViolation: ERROR:  null value in column "phone_number" of relation "users" violates not-null constraint
+DETAIL:  Failing row contains (5, yeyekip892@fesgrid.com, $2a$12$XYItUn3hv4JVPiipSiTqF.CEqAIwE9zb5BR99mXKOaEvXklCikJ.a, test_name, null, BGz88XfWpwAKTa7fTmgF, null, 2023-10-03 00:33:49.361113, null, 2023-10-03 00:33:49.360992, 2023-10-03 00:33:49.360992, null, 86170b7d-beb5-42c7-a19f-8d74dba6bd5c).
+):
+  
+app/controllers/users/registrations_controller.rb:8:in `create'
+Started POST "/signup" for ::1 at 2023-10-03 08:35:49 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "phone_number"=>"09123456789", "name"=>"test_name"}, "registration"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]", "phone_number"=>"09123456789", "name"=>"test_name"}}}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Create (2.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "name", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "phone_number", "jti") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "yeyekip892@fesgrid.com"], ["encrypted_password", "[FILTERED]"], ["name", "test_name"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-03 00:35:49.625296"], ["unconfirmed_email", nil], ["created_at", "2023-10-03 00:35:49.625076"], ["updated_at", "2023-10-03 00:35:49.625076"], ["phone_number", "09123456789"], ["jti", "363092c8-4a4a-4378-9897-0a2289c1f903"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (5.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  Rendering devise/mailer/confirmation_instructions.html.erb
+  Rendered devise/mailer/confirmation_instructions.html.erb (Duration: 5.4ms | Allocations: 1194)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 86.6ms
+Delivered mail 651b61e5cfbf3_276072a08-4e6@DESKTOP-MORCCU3.mail (4233.8ms)
+Date: Tue, 03 Oct 2023 08:35:49 +0800
+From: housematesapp.co@example.com
+Reply-To: housematesapp.co@example.com
+To: yeyekip892@fesgrid.com
+Message-ID: <651b61e5cfbf3_276072a08-4e6@DESKTOP-MORCCU3.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome yeyekip892@fesgrid.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/confirmation?confirmation_token=AWAQtMPfstPHVt1oT9rP">Confirm my account</a></p>
+
+Completed 200 OK in 4750ms (Views: 0.3ms | ActiveRecord: 13.4ms | Allocations: 43717)
+
+
+Started GET "/confirmation?confirmation_token=[FILTERED]" for ::1 at 2023-10-03 08:36:34 +0800
+Processing by Users::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"[FILTERED]"}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_token" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["confirmation_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (1.0ms)[0m  [1m[33mUPDATE "users" SET "confirmed_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["confirmed_at", "2023-10-03 00:36:34.496091"], ["updated_at", "2023-10-03 00:36:34.496516"], ["id", 6]]
+  [1m[36mTRANSACTION (16.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 65ms (Views: 0.3ms | ActiveRecord: 20.1ms | Allocations: 5342)
+
+
+Started GET "/favicon.ico" for ::1 at 2023-10-03 08:36:35 +0800
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/login" for 127.0.0.1 at 2023-10-03 08:37:17 +0800
+Error occurred while parsing request parameters.
+Contents:
+
+{
+  "user": {
+    "email": "yeyekip892@fesgrid.com",
+    "password": "password",
+  }
+}
+Processing by Users::SessionsController#create as */*
+Error occurred while parsing request parameters.
+Contents:
+
+{
+  "user": {
+    "email": "yeyekip892@fesgrid.com",
+    "password": "password",
+  }
+}
+Completed 400 Bad Request in 4ms (ActiveRecord: 0.0ms | Allocations: 529)
+
+
+  
+ActionDispatch::Http::Parameters::ParseError (Error occurred while parsing request parameters):
+  
+actionpack (7.0.8) lib/action_dispatch/http/parameters.rb:96:in `rescue in parse_formatted_parameters'
+actionpack (7.0.8) lib/action_dispatch/http/parameters.rb:92:in `parse_formatted_parameters'
+actionpack (7.0.8) lib/action_dispatch/http/request.rb:389:in `block in POST'
+rack (2.2.8) lib/rack/request.rb:69:in `fetch'
+rack (2.2.8) lib/rack/request.rb:69:in `fetch_header'
+actionpack (7.0.8) lib/action_dispatch/http/request.rb:388:in `POST'
+actionpack (7.0.8) lib/action_dispatch/http/parameters.rb:55:in `parameters'
+warden (1.2.9) lib/warden/mixins/common.rb:33:in `params'
+devise (4.9.2) lib/devise/strategies/authenticatable.rb:94:in `params_auth_hash'
+devise (4.9.2) lib/devise/strategies/authenticatable.rb:110:in `valid_params?'
+devise (4.9.2) lib/devise/strategies/authenticatable.rb:79:in `valid_for_params_auth?'
+devise (4.9.2) lib/devise/strategies/authenticatable.rb:18:in `valid?'
+warden (1.2.9) lib/warden/proxy.rb:367:in `block in _run_strategies_for'
+warden (1.2.9) lib/warden/proxy.rb:365:in `each'
+warden (1.2.9) lib/warden/proxy.rb:365:in `_run_strategies_for'
+warden (1.2.9) lib/warden/proxy.rb:335:in `_perform_authentication'
+warden (1.2.9) lib/warden/proxy.rb:133:in `authenticate!'
+devise (4.9.2) app/controllers/devise/sessions_controller.rb:19:in `create'
+actionpack (7.0.8) lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'
+actionpack (7.0.8) lib/abstract_controller/base.rb:215:in `process_action'
+actionpack (7.0.8) lib/action_controller/metal/rendering.rb:165:in `process_action'
+actionpack (7.0.8) lib/abstract_controller/callbacks.rb:234:in `block in process_action'
+activesupport (7.0.8) lib/active_support/callbacks.rb:107:in `run_callbacks'
+actionpack (7.0.8) lib/abstract_controller/callbacks.rb:233:in `process_action'
+actionpack (7.0.8) lib/action_controller/metal/rescue.rb:23:in `process_action'
+actionpack (7.0.8) lib/action_controller/metal/instrumentation.rb:67:in `block in process_action'
+activesupport (7.0.8) lib/active_support/notifications.rb:206:in `block in instrument'
+activesupport (7.0.8) lib/active_support/notifications/instrumenter.rb:24:in `instrument'
+activesupport (7.0.8) lib/active_support/notifications.rb:206:in `instrument'
+actionpack (7.0.8) lib/action_controller/metal/instrumentation.rb:66:in `process_action'
+actionpack (7.0.8) lib/action_controller/metal/params_wrapper.rb:259:in `process_action'
+activerecord (7.0.8) lib/active_record/railties/controller_runtime.rb:27:in `process_action'
+actionpack (7.0.8) lib/abstract_controller/base.rb:151:in `process'
+actionpack (7.0.8) lib/action_controller/metal.rb:188:in `dispatch'
+actionpack (7.0.8) lib/action_controller/metal.rb:251:in `dispatch'
+actionpack (7.0.8) lib/action_dispatch/routing/route_set.rb:49:in `dispatch'
+actionpack (7.0.8) lib/action_dispatch/routing/route_set.rb:32:in `serve'
+actionpack (7.0.8) lib/action_dispatch/routing/mapper.rb:18:in `block in <class:Constraints>'
+actionpack (7.0.8) lib/action_dispatch/routing/mapper.rb:48:in `serve'
+actionpack (7.0.8) lib/action_dispatch/journey/router.rb:50:in `block in serve'
+actionpack (7.0.8) lib/action_dispatch/journey/router.rb:32:in `each'
+actionpack (7.0.8) lib/action_dispatch/journey/router.rb:32:in `serve'
+actionpack (7.0.8) lib/action_dispatch/routing/route_set.rb:852:in `call'
+warden-jwt_auth (0.8.0) lib/warden/jwt_auth/middleware/token_dispatcher.rb:20:in `call'
+warden-jwt_auth (0.8.0) lib/warden/jwt_auth/middleware/revocation_manager.rb:21:in `call'
+rack (2.2.8) lib/rack/builder.rb:244:in `call'
+warden-jwt_auth (0.8.0) lib/warden/jwt_auth/middleware.rb:22:in `call'
+rack (2.2.8) lib/rack/session/abstract/id.rb:266:in `context'
+rack (2.2.8) lib/rack/session/abstract/id.rb:260:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/cookies.rb:704:in `call'
+warden (1.2.9) lib/warden/manager.rb:36:in `block in call'
+warden (1.2.9) lib/warden/manager.rb:34:in `catch'
+warden (1.2.9) lib/warden/manager.rb:34:in `call'
+rack (2.2.8) lib/rack/etag.rb:27:in `call'
+rack (2.2.8) lib/rack/conditional_get.rb:40:in `call'
+rack (2.2.8) lib/rack/head.rb:12:in `call'
+activerecord (7.0.8) lib/active_record/migration.rb:638:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.8) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.8) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.8) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.8) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.8) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.8) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.8) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.8) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.8) lib/rack/runtime.rb:22:in `call'
+activesupport (7.0.8) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.0.8) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.0.8) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.8) lib/rack/sendfile.rb:110:in `call'
+actionpack (7.0.8) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+rack-cors (2.0.1) lib/rack/cors.rb:102:in `call'
+rack-cors (2.0.1) lib/rack/cors.rb:102:in `call'
+railties (7.0.8) lib/rails/engine.rb:530:in `call'
+puma (5.6.7) lib/puma/configuration.rb:252:in `call'
+puma (5.6.7) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.7) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.7) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.7) lib/puma/server.rb:443:in `process_client'
+puma (5.6.7) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started POST "/login" for 127.0.0.1 at 2023-10-03 08:37:26 +0800
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (5.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "yeyekip892@fesgrid.com"], ["LIMIT", 1]]
+Completed 200 OK in 307ms (Views: 0.2ms | ActiveRecord: 5.2ms | Allocations: 2196)
+
+
+Started DELETE "/logout" for 127.0.0.1 at 2023-10-03 08:37:41 +0800
+Processing by Users::SessionsController#destroy as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 17ms (ActiveRecord: 0.4ms | Allocations: 2323)
+
+
+  
+NoMethodError (undefined method `split' for nil:NilClass):
+  
+app/controllers/users/sessions_controller.rb:17:in `respond_to_on_destroy'
+Started POST "/login" for 127.0.0.1 at 2023-10-03 08:37:54 +0800
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"yeyekip892@fesgrid.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 200 OK in 7ms (Views: 0.3ms | ActiveRecord: 1.0ms | Allocations: 1744)
+
+
