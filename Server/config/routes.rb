@@ -9,4 +9,9 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     confirmations: 'users/confirmations'
   }
+  namespace :api do
+    namespace :v1 do
+      
+    end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_03_003103) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_03_010333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,7 +54,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_003103) do
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "name", default: "", null: false
+    t.string "name", default: ""
     t.datetime "remember_created_at"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
@@ -62,8 +62,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_003103) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "phone_number", null: false
+    t.string "phone_number"
     t.string "jti", null: false
+    t.boolean "isVerified", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
