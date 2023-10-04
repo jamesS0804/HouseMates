@@ -16,10 +16,25 @@ import CustomSelectField from "@/Main Components/CustomSelectField";
 import progressPart1 from "../assets/images/progress1.png"
 import progressPart2 from "../assets/images/progress2.png"
 import ServiceSelection from "@/Main Components/ServiceSelection";
+import authenticated_api from "@/utils/authenticated_api";
 
 interface VerificationPageProps {
     userType: string,
-    navigate: Function
+    navigate: Function,
+    currentUser: {
+        name: string,
+        email: string,
+        phoneNumber: string,
+        addressAttributes: {
+            addressLine1: string,
+            barangay: string,
+            city: string,
+            province: string,
+            zipCode: string
+        }
+    },
+    setCurrentUser: Function,
+    setIsVerified: Function
 }
 
 const formSchema = z.object({
@@ -36,7 +51,7 @@ const formSchema = z.object({
 })
 
 export default function VerificationPage(props:VerificationPageProps) {
-    const { userType, navigate } = props
+    const { userType, navigate, currentUser, setCurrentUser, setIsVerified } = props
     const provinces = getProvinces()
     const [ selectedProvince, setSelectedProvince ] = useState("")
     const [ selectedCity, setSelectedCity ] = useState("") 
@@ -89,18 +104,58 @@ export default function VerificationPage(props:VerificationPageProps) {
         setCities(()=>getCities(provinceInput))
     };
 
+    const updateIsVerified = async (userEmail:string) => {
+        try {
+            const res = await authenticated_api.post("", {
+                email: userEmail
+            })
+            if ( res.status === 200 ) {
+                sessionStorage.setItem("isVerified", JSON.stringify(true))
+                setIsVerified(true)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const basicInfoSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log("submitting..")
         console.log(values)
         try {
-            if(values) {
-                console.log("verifying in..")
+            const res = await authenticated_api.post("api/v1/profile", {
+                profile: {
+                    name: values.name,
+                    email: currentUser.email,
+                    phone_number: values.phoneNumber,
+                    addressAttributes: {
+                        addressLine1: values.address,
+                        barangay: values.barangay,
+                        city: values.city,
+                        province: values.province,
+                        zipCode: values.zipcode
+                    }
+                }
+            })
+            if( res.status === 200 ) {
+                const jsonResponse = res.data.data
+                setCurrentUser({ ...currentUser, 
+                    name: jsonResponse.name,
+                    phoneNumber: jsonResponse.phone_number,
+                    addressAttributes: {
+                        addressLine1: jsonResponse.address_line_1,
+                        barangay: jsonResponse.barangay,
+                        city: jsonResponse.city,
+                        province: jsonResponse.province,
+                        zipCode: jsonResponse.zip_code
+                    }
+                })
                 if(userType === 'Homeowner'){
+                    updateIsVerified(currentUser.email)
                     navigate("/home")
                 }
                 setVerificationPart(2)
             } else {
-                console.log("invalid values")
+                console.log(res.status)
             }
         } catch (error) {
             console.log(error)
@@ -111,7 +166,19 @@ export default function VerificationPage(props:VerificationPageProps) {
         console.log("submitting..")
         console.log(values)
         console.log(preferredServices)
-        navigate("/home")
+        try {
+            const res = await authenticated_api.post("api/v1/housemate", {
+                preferred_services: preferredServices
+            })
+            if ( res.status === 200 ) {
+                updateIsVerified(currentUser.email)
+                navigate("/home")
+            } else {
+                console.log(res.status)
+            }
+        } catch (error) {
+            console.log(error)
+        }   
     }
 
     return(

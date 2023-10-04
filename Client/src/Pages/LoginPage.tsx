@@ -7,10 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/ui/form"
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
+import { AxiosInstance } from "axios";
 
 interface LoginPageProps {
     userType: string,
     navigate: Function,
+    api: AxiosInstance,
+    setCurrentUser: Function,
+    setAuthKey: Function,
+    setIsVerified: Function
 }
 
 const formSchema = z.object({
@@ -20,7 +25,7 @@ const formSchema = z.object({
 })
 
 export default function LoginPage(props:LoginPageProps){
-    const { userType, navigate } = props
+    const { userType, navigate, api, setCurrentUser, setAuthKey, setIsVerified } = props
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -30,15 +35,35 @@ export default function LoginPage(props:LoginPageProps){
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log("submitting..")
+    const onSubmit = async(values: z.infer<typeof formSchema>) => {
         console.log(values)
         try {
-            if(values) {
-                console.log("logging in..")
-                navigate("/verification")
+            const res = await api.post("login", {
+                user: {
+                    email: values.email,
+                    password: values.password
+                }
+            })
+            if( res.status === 200) {
+                const jsonResponse = res.data.data
+                setCurrentUser({ 
+                    name: jsonResponse.name,
+                    email: jsonResponse.email,
+                    phoneNumber: jsonResponse.phone_number,
+                    addressAttributes: {
+                        addressLine1: jsonResponse.address_line_1,
+                        barangay: jsonResponse.barangay,
+                        city: jsonResponse.city,
+                        province: jsonResponse.province,
+                        zipCode: jsonResponse.zip_code
+                    }
+                })
+                setAuthKey(res.headers['authorization'])
+                sessionStorage.setItem('authToken', res.headers['authorization'].split(' ')[1])
+                setIsVerified(jsonResponse.isVerified)
+                jsonResponse.isVerified ? navigate("/home") : navigate("/verification")
             } else {
-                console.log("invalid values")
+                console.log(res.status)
             }
         } catch (error) {
             console.log(error)

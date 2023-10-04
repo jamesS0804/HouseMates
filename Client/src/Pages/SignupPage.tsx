@@ -8,6 +8,13 @@ import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
 import { Link } from "react-router-dom";
+import { AxiosInstance } from "axios";
+
+interface SignupPageProps {
+    userType: string,
+    api: AxiosInstance,
+    navigate: Function
+}
 
 const formSchema = z.object({
     name: z.string().min(3, {
@@ -35,12 +42,8 @@ const formSchema = z.object({
     path: ["privacyCheckbox"]
 });
 
-interface SignupPageProps {
-    userType: string;
-}
-
 export default function SignupPage(props: SignupPageProps) {
-    const { userType } = props
+    const { userType, navigate, api } = props
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -53,9 +56,24 @@ export default function SignupPage(props: SignupPageProps) {
         }
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("submitting..")
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values)
+        try {
+            const res = await api.post("signup", {
+                user: {
+                    email: values.email,
+                    password: values.password
+                }
+            })
+            if ( res.status === 200 ) {
+                console.log("signup success")
+                navigate("/login")
+            } else {
+                console.log(res.status)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
