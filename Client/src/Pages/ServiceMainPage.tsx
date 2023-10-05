@@ -11,34 +11,38 @@ import airconServicesBG from "../assets/images/airconServicesBG.png"
 import plumbingBG from "../assets/images/plumbingBG.png"
 import { Button } from "@/components/ui/button"
 import BackButton from "@/Main Components/BackButton"
+import { Link } from "react-router-dom"
+import { useEffect } from "react"
 
 interface ServiceMainPage {
-    selectedService: string,
-    setSelectedService: Function,
+    selectedService: string
+    setSelectedService: Function
     navigate: Function
+    serviceDetails: object
+    setServiceDetails: Function
 }
 
 type ServiceDescriptionItem = {
-    title: string;
-    icon: any;
-    description: string;
+    title: string
+    icon: any
+    description: string
 };
 
 type BasicServiceDescriptions = ServiceDescriptionItem[];
 
 type ServiceDescription = {
-    title: string;
-    image: string;
-    price: string;
-    descriptions: BasicServiceDescriptions;
+    title: string
+    image: string
+    price: number
+    descriptions: BasicServiceDescriptions
 };
 
 type Services = {
-    [serviceName: string]: ServiceDescription;
+    [serviceName: string]: ServiceDescription
 };
 
 export default function ServiceMainPage(props: ServiceMainPage) {
-    const { selectedService, setSelectedService, navigate } = props
+    const { selectedService, setSelectedService, navigate, serviceDetails, setServiceDetails } = props
 
     const basicServiceDescriptions: BasicServiceDescriptions = [
         { title: 'Service Details', icon: excellentPerson, description: "HouseMates cleaners clean your unit including bedrooms, bathrooms, and common areas. Our cleaners all work directly with Housemates and are loved by our users." },
@@ -47,11 +51,31 @@ export default function ServiceMainPage(props: ServiceMainPage) {
         { title: 'Safety', icon: checkedShield, description: "Our cleaners wear proper uniform throughout the service and can present Covid- 19 vaccination certificates upon request." }
     ]
     const services: Services = {
-        'General Cleaning': { title: 'Cleaning Services', image: generalCleaningBG, price: '399', descriptions: basicServiceDescriptions },
-        'Aircon Services': { title: 'Aircon Services', image: airconServicesBG, price: '699', descriptions: basicServiceDescriptions },
-        'Plumbing': { title: 'Plumbing Services', image: plumbingBG, price: '599', descriptions: basicServiceDescriptions },
+        'General Cleaning': { 
+            title: 'Cleaning Services', 
+            image: generalCleaningBG, 
+            price: 399, 
+            descriptions: basicServiceDescriptions 
+        },
+        'Aircon Services': { 
+            title: 'Aircon Services', 
+            image: airconServicesBG, 
+            price: 699, 
+            descriptions: basicServiceDescriptions 
+        },
+        'Plumbing': { 
+            title: 'Plumbing Services', 
+            image: plumbingBG, 
+            price: 599, 
+            descriptions: basicServiceDescriptions 
+        },
     }
     const service = services[selectedService]
+
+    useEffect(()=>{
+        setServiceDetails({ ...serviceDetails, service: service })
+    },[])
+
     return (
         <div className="h-screen flex flex-col relative">
             <BackButton setSelectedService={setSelectedService} navigate={navigate}/>
@@ -106,7 +130,9 @@ export default function ServiceMainPage(props: ServiceMainPage) {
                     </div>
                     <div className="mt-auto fixed bottom-0">
                         <div className="bg-white border font-semibold border-primary text-primary text-xs text-center p-2 rounded-t-lg">Next: Customize your {service.title}</div>
-                        <Button className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Next</Button>
+                        <Link to="/services/variations">
+                            <Button className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Next</Button>
+                        </Link>
                     </div>
                 </>
             }

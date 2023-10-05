@@ -12,6 +12,7 @@ import MessagesPage from './Pages/MessagesPage'
 import ProfilePage from './Pages/ProfilePage'
 import ServiceMainPage from './Pages/ServiceMainPage'
 import axios from 'axios'
+import ServiceVariationsPage from './Pages/ServiceVariationsPage'
 
 type User = {
   name: string,
@@ -50,11 +51,17 @@ export default function App() {
     const storedValue = sessionStorage.getItem('isVerified')
     return storedValue ? JSON.parse(storedValue) : false
   })
+  const [ serviceDetails, setServiceDetails ] = useState({service: {}, data: {}, totalCost: 0})
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setServiceDetails(serviceDetails)
   }, [location.pathname]);
   useEffect(()=> {
+    if(!authKey) {
+      navigate("/")
+      return
+    }
     authKey && isVerified ? navigate("/home") : navigate("/verification")
   }, [isVerified])
 
@@ -78,7 +85,8 @@ export default function App() {
         <Route path='/bookings' element={<BookingsPage userType={userType} navigate={navigate} />} />
         <Route path='/messages' element={<MessagesPage userType={userType} navigate={navigate} />} />
         <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} />} />
+        <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
+        <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
       </Routes>
     </div>
   )
