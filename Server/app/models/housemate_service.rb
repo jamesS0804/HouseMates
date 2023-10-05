@@ -1,2 +1,0 @@
-class HousemateService < ApplicationRecord
-end
