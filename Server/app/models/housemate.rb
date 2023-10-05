@@ -1,0 +1,2 @@
+class Housemate < User
+end
