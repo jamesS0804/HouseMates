@@ -62,7 +62,8 @@ export default function SignupPage(props: SignupPageProps) {
             const res = await api.post("signup", {
                 user: {
                     email: values.email,
-                    password: values.password
+                    password: values.password,
+                    type: userType
                 }
             })
             if ( res.status === 200 ) {
