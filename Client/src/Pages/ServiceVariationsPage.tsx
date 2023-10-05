@@ -5,6 +5,7 @@ import airconServicesBG from "../assets/images/airconServicesBG.png"
 import plumbingBG from "../assets/images/plumbingBG.png"
 import GeneralCleaning from "@/Main Components/Service Variations/GeneralCleaning"
 import { useLayoutEffect } from "react"
+import GetTotalCost from "@/utils/GetTotalCost"
 
 interface ServiceVariationsPageProps {
     selectedService: string
@@ -51,17 +52,14 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
     
     useLayoutEffect(()=>{
         if(Object.keys(serviceDetails.data).length !== 0) {
-            const totalPrice =
-                serviceDetails.data.homeType.price +
-                serviceDetails.data.numberOfBedroom.price +
-                serviceDetails.data.numberOfBathroom.price +
-                serviceDetails.data.extraServices.reduce((acc:number, service:{type: string, quantity: number, price: number}) => acc + (service.price * service.quantity), 0);
+            const totalPrice = GetTotalCost(serviceDetails)
             setServiceDetails({ ...serviceDetails, totalCost: totalPrice }) 
         }
     },[serviceDetails.data])
 
     const handleSubmit = () => {
         console.log(serviceDetails)
+        navigate("/bookingDetails")
     }
     return(
         <div className="h-screen flex flex-col relative">

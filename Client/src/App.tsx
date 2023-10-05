@@ -13,6 +13,7 @@ import ProfilePage from './Pages/ProfilePage'
 import ServiceMainPage from './Pages/ServiceMainPage'
 import axios from 'axios'
 import ServiceVariationsPage from './Pages/ServiceVariationsPage'
+import BookingDetailsPage from './Pages/BookingDetailsPage'
 
 type User = {
   name: string,
@@ -87,6 +88,7 @@ export default function App() {
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
         <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
+        <Route path='/bookingDetails' element={<BookingDetailsPage navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
       </Routes>
     </div>
   )
