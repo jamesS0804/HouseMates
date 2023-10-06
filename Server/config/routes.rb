@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :homeowners
       resources :housemates
       resources :profiles
+      resources :services
     end
   end
 end

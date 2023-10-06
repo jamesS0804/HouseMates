@@ -3486,3 +3486,122 @@ Processing by Api::V1::ProfilesController#create as */*
 Completed 201 Created in 126ms (Views: 0.4ms | ActiveRecord: 41.4ms | Allocations: 24007)
 
 
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddIsActiveColumnToHomeowner (20231006104722)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.8ms)[0m  [1m[35mALTER TABLE "homeowner" ADD "is_active" boolean DEFAULT FALSE[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddIsActiveColumnToHomeowner (20231006104722)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.5ms)[0m  [1m[35mALTER TABLE "homeowners" ADD "is_active" boolean DEFAULT FALSE[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006104722"]]
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.9ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services"[0m
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:36:58 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActionController::RoutingError (uninitialized constant Api::V1::ServicesController):
+  
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:37:22 +0800
+  
+SyntaxError (/home/jsucaldito84/Avion/Rails/HouseMates App/Server/app/controllers/api/v1/services_controller.rb:9: syntax error, unexpected label, expecting `end' or dummy end
+...           render json: status: :unprocessable_entity
+...                        ^~~~~~~
+):
+  
+app/controllers/api/v1/services_controller.rb:9: syntax error, unexpected label, expecting `end' or dummy end
+app/controllers/api/v1/services_controller.rb:9: syntax error, unexpected label, expecting `end' or dummy end
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:38:01 +0800
+Processing by Api::V1::ServicesController#create as */*
+  Parameters: {"service"=>{"title"=>"Cleaning Services", "price"=>399}}
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 0.0ms | Allocations: 4667)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 1)):
+  
+app/controllers/api/v1/services_controller.rb:16:in `service_params'
+app/controllers/api/v1/services_controller.rb:5:in `create'
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:39:23 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::ServicesController#create as */*
+  Parameters: {"service"=>{"title"=>"Cleaning Services", "price"=>399}}
+Completed 500 Internal Server Error in 5ms (ActiveRecord: 0.0ms | Allocations: 2853)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 1)):
+  
+app/controllers/api/v1/services_controller.rb:16:in `service_params'
+app/controllers/api/v1/services_controller.rb:5:in `create'
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:39:48 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::ServicesController#create as */*
+  Parameters: {"service"=>{"title"=>"Cleaning Services", "price"=>399}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `create'
+  [1m[36mService Create (2.0ms)[0m  [1m[32mINSERT INTO "services" ("title", "created_at", "updated_at", "price") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Cleaning Services"], ["created_at", "2023-10-06 11:39:48.466309"], ["updated_at", "2023-10-06 11:39:48.466309"], ["price", "399.0"]]
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (3.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `create'
+Completed 200 OK in 24ms (Views: 0.5ms | ActiveRecord: 7.8ms | Allocations: 9774)
+
+
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:40:23 +0800
+Processing by Api::V1::ServicesController#create as */*
+  Parameters: {"service"=>{"title"=>"Aircon Services", "price"=>699}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `create'
+  [1m[36mService Create (0.4ms)[0m  [1m[32mINSERT INTO "services" ("title", "created_at", "updated_at", "price") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Aircon Services"], ["created_at", "2023-10-06 11:40:23.908592"], ["updated_at", "2023-10-06 11:40:23.908592"], ["price", "699.0"]]
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (3.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `create'
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 3.9ms | Allocations: 2135)
+
+
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:41:10 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::ServicesController#create as */*
+  Parameters: {"service"=>{"title"=>"Aircon Services", "price"=>699}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/services_controller.rb:8:in `create'
+  [1m[36mService Create (0.4ms)[0m  [1m[32mINSERT INTO "services" ("title", "created_at", "updated_at", "price") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["title", "Aircon Services"], ["created_at", "2023-10-06 11:41:10.901983"], ["updated_at", "2023-10-06 11:41:10.901983"], ["price", "699.0"]]
+  ↳ app/controllers/api/v1/services_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/services_controller.rb:8:in `create'
+Completed 200 OK in 20ms (Views: 0.5ms | ActiveRecord: 6.3ms | Allocations: 9773)
+
+
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:44:26 +0800
+  
+SyntaxError (/home/jsucaldito84/Avion/Rails/HouseMates App/Server/app/models/service.rb:4: syntax error, unexpected ','
+                    ,  uniqueness: { message: "Tit...
+                    ^
+/home/jsucaldito84/Avion/Rails/HouseMates App/Server/app/models/service.rb:6: syntax error, unexpected ','
+                    , numericality: { message: "Pr...
+                    ^
+):
+  
+app/models/service.rb:4: syntax error, unexpected ','
+app/models/service.rb:6: syntax error, unexpected ','
+app/models/service.rb:4: syntax error, unexpected ','
+app/models/service.rb:6: syntax error, unexpected ','
+Started POST "/api/v1/services" for ::1 at 2023-10-06 19:45:25 +0800
+Processing by Api::V1::ServicesController#create as */*
+  Parameters: {"service"=>{"title"=>"Aircon Services", "price"=>699}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/services_controller.rb:8:in `create'
+  [1m[36mService Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "services" WHERE "services"."title" = $1 LIMIT $2[0m  [["title", "Aircon Services"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/services_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/services_controller.rb:8:in `create'
+Completed 200 OK in 19ms (Views: 10.9ms | ActiveRecord: 2.4ms | Allocations: 8154)
+
+
