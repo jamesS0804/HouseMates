@@ -1,5 +1,6 @@
-export default function GetTotalCost(serviceDetails:any){
+export default function getTotalCost(serviceDetails:any){
     const totalPrice =
+        serviceDetails.service.price +
         serviceDetails.data.homeType.price +
         serviceDetails.data.numberOfBedroom.price +
         serviceDetails.data.numberOfBathroom.price +

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import backButton from "../assets/icons/backButton.png"
 
 interface BackButtonProps {
-    setSelectedService?: Function,
+    setSelectedService?: Function
     navigate: Function
 }
 

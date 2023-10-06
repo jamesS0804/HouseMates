@@ -5,11 +5,11 @@ import airconServicesBG from "../assets/images/airconServicesBG.png"
 import plumbingBG from "../assets/images/plumbingBG.png"
 import GeneralCleaning from "@/Main Components/Service Variations/GeneralCleaning"
 import { useLayoutEffect } from "react"
-import GetTotalCost from "@/utils/GetTotalCost"
+import getTotalCost from "@/utils/getTotalCost"
 
 interface ServiceVariationsPageProps {
     selectedService: string
-    setSelectedService: Function
+    setSelectedService?: Function
     navigate: Function
     serviceDetails: ServiceDetails
     setServiceDetails: Function
@@ -31,7 +31,7 @@ type Services = {
 };
 
 export default function ServiceVariationsPage(props: ServiceVariationsPageProps) {
-    const { selectedService, setSelectedService, navigate, serviceDetails, setServiceDetails } = props
+    const { selectedService, navigate, serviceDetails, setServiceDetails } = props
 
     const services: Services = {
         'General Cleaning': { 
@@ -52,7 +52,7 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
     
     useLayoutEffect(()=>{
         if(Object.keys(serviceDetails.data).length !== 0) {
-            const totalPrice = GetTotalCost(serviceDetails)
+            const totalPrice = getTotalCost(serviceDetails)
             setServiceDetails({ ...serviceDetails, totalCost: totalPrice }) 
         }
     },[serviceDetails.data])
@@ -63,7 +63,7 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
     }
     return(
         <div className="h-screen flex flex-col relative">
-            <BackButton setSelectedService={setSelectedService} navigate={navigate}/>
+            <BackButton navigate={navigate}/>
             {
                 selectedService === "" ? <></> :
                 <>
@@ -73,7 +73,13 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
                     </div>
                     { service.element }
                     <div className="mt-auto fixed bottom-0">
-                        <div className="bg-white border font-semibold border-primary text-primary text-xs text-center p-2 rounded-t-lg">Total cost: {serviceDetails.totalCost}</div>
+                        <div className="bg-white border border-primary flex text-primary text-xs text-center p-2 rounded-t-lg">
+                            <h3 className="text-xl font-black flex items-center">Total cost:</h3>
+                            <div className="flex flex-col ml-auto">
+                                <p className="text-2xl font-black">₱{serviceDetails.totalCost}</p>
+                                <p className="text-xs">includes materials</p>
+                            </div>
+                        </div>
                         <Button onClick={handleSubmit} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Next</Button>
                     </div>
                 </>

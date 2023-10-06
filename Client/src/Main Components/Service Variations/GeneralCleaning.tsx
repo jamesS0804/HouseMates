@@ -19,9 +19,9 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
     const { serviceDetails, setServiceDetails } = props
     
     const [inputData, setInputData] = useState({
-        homeType: { type: 'condo', price: 100 },
-        numberOfBedroom: { type: 'studio', price: 99 },
-        numberOfBathroom: { type: '1 Bathroom', price: 50 },
+        homeType: { type: 'condo', title: 'Condo (20 -60 sqm)', price: 100 },
+        numberOfBedroom: { type: 'studio', title: 'Studio Type', price: 99 },
+        numberOfBathroom: { type: 'none', title: 'None', price: 0 },
         extraServices: []
     })
 
@@ -31,16 +31,19 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
     
 
     const options = {
-        homeType: [{ type: 'condo', title: "Condo (20 - 60 sqm)", image: condo, price: 100 }, { type: 'house', title: "House (>60sqm)", image: house, price: 200 }],
+        homeType: [
+            { type: 'condo', title: "Condo (20 - 60 sqm)", image: condo, price: 100 },
+            { type: 'house', title: "House (>60sqm)", image: house, price: 200 }
+        ],
         numberOfBedroom: [
-            { type: "Studio", price: 99 },
-            { type: "1 Bedroom", price: 199 },
-            { type: "2 Bedroom", price: 299 }
+            { type: "studio", title: "Studio Type", price: 99 },
+            { type: "oneBedroom", title: "1 Bedroom", price: 199 },
+            { type: "twoBedroom", title: "2 Bedroom", price: 299 }
         ],
         numberOfBathroom: [
-            { type: "1 Bathroom", price: 50 },
-            { type: "2 Bathroom", price: 100 },
-            { type: "3 Bathroom", price: 200 }
+            { type: "none", title: "None", price: 0 },
+            { type: "oneBathroom", title: "1 Bathroom", price: 50 },
+            { type: "twoBathroom", title: "2 Bathroom", price: 100 }
         ],
         extraServices: [
             {
@@ -68,11 +71,11 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
 
 
     const handleClick = (home: any) => {
-        setInputData({ ...inputData, homeType: { type: home.type, price: home.price } })
+        setInputData({ ...inputData, homeType: { type: home.type, title: home.title, price: home.price } })
     }
 
     return (
-        <div className="flex flex-col gap-3 p-2 pb-20">
+        <div className="flex flex-col gap-3 p-2 pb-28">
             <div>
                 <div className="font-black">Select the details of your cleaning!</div>
                 <div className="text-sm">we save your selection for future bookings.</div>

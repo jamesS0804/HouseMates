@@ -56,8 +56,10 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(location.pathname)
     setServiceDetails(serviceDetails)
   }, [location.pathname]);
+
   useEffect(()=> {
     if(!authKey) {
       navigate("/")
@@ -87,7 +89,7 @@ export default function App() {
         <Route path='/messages' element={<MessagesPage userType={userType} navigate={navigate} />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
-        <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
+        <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
         <Route path='/bookingDetails' element={<BookingDetailsPage navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
       </Routes>
     </div>

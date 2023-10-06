@@ -34,15 +34,15 @@ function Calendar({
         head_cell:
           "text-slate-500 rounded-md w-9 font-normal text-[0.8rem] dark:text-slate-400 flex-1",
         row: "flex w-full mt-2",
-        cell: "text-center w-full text-sm p-0 relative [&:has([aria-selected])]:bg-slate-100 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20 dark:[&:has([aria-selected])]:bg-slate-800",
+        cell: "text-center w-full text-sm p-0 relative ",
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
+          "h-9 w-9 p-0 font-normal aria-selected:opacity-100 bg-transparent"
         ),
         day_selected:
           "bg-primarySelected w-full text-slate-50 hover:bg-primarySelected hover:text-slate-50 focus:bg-primarySelected focus:text-slate-50 dark:bg-slate-50 dark:text-primarySelected dark:hover:bg-slate-50 dark:hover:text-primarySelected dark:focus:bg-slate-50 dark:focus:text-primarySelected",
-        day_today: "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-50",
-        day_outside: "text-slate-500 opacity-50 dark:text-slate-400",
+        day_today: "border-2 border-primarySelected rounded-3xl text-primarySelected font-black dark:bg-slate-800 dark:text-slate-50",
+        day_outside: "text-slate-500 opacity-50 dark:text-slate-400 text-white",
         day_disabled: "text-slate-500 opacity-50 dark:text-slate-400",
         day_range_middle:
           "aria-selected:bg-slate-100 aria-selected:text-slate-900 dark:aria-selected:bg-slate-800 dark:aria-selected:text-slate-50",

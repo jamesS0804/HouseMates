@@ -26,14 +26,14 @@ export default function Counter(props: CounterProps){
                 const updatedData = inputData[valueType].map((item:any)=> item.type === value.type ? { ...item, quantity: inputValue } : item )
                 setInputData({ ...rootData, data : { ...inputData, [valueType] : updatedData } })
             } else {
-                setInputData({ ...rootData, data : { ...inputData, [valueType] : [ ...valueType, {type: value.type, quantity: inputValue, price: value.price} ] } })
+                setInputData({ ...rootData, data : { ...inputData, [valueType] : [ ...valueType, {type: value.type, unit: value.unit, quantity: inputValue, price: value.price} ] } })
             }
         } else {
             if(found) {
                 const updatedData = inputData[valueType].map((item:any)=> item.type === value.type ? { ...item, quantity: inputValue } : item )
                 setInputData({ ...inputData, [valueType]: updatedData })
             } else {
-                setInputData({ ...inputData, [valueType]: [ ...inputData[valueType], { type: value.type, quantity: inputValue, price: value.price } ] })
+                setInputData({ ...inputData, [valueType]: [ ...inputData[valueType], { type: value.type, unit: value.unit, quantity: inputValue, price: value.price } ] })
             }
         }
     },[inputValue])

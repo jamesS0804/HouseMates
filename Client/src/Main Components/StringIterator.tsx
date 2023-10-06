@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface StringIteratorProps {
     valueType: string
@@ -13,7 +13,7 @@ export default function StringIterator(props: StringIteratorProps){
     const [ index, setIndex ] = useState(0)
 
     useEffect(()=>{
-        setInputData({...inputData, [valueType]: { type: values[index].type, price: values[index].price } })
+        setInputData({...inputData, [valueType]: { type: values[index].type, title: values[index].title, price: values[index].price } })
     },[index])
 
     const changeIndex = (type:string) => {
@@ -26,10 +26,10 @@ export default function StringIterator(props: StringIteratorProps){
         }
     }
     return(
-        <div className="h-min w-full flex justify-center items-center">
-            <Button onClick={()=> changeIndex("previous")} className="bg-primary border-primary text-white p-0 h-6 w-6">{'<'}</Button>
-            <input readOnly className="font-black h-5 w-full text-sm text-center bg-transparent p-3 border border-primary" type="text" value={values[index].type} />
-            <Button onClick={()=> changeIndex("next")} className="bg-primary border-primary text-white p-0 h-6 w-6">{'>'}</Button>
+        <div className="h-full w-full flex justify-center items-center">
+            <Button onClick={()=> changeIndex("previous")} className="bg-primary border-primary text-white p-0 w-6 rounded-r-none h-[1.65rem]">{'<'}</Button>
+            <input readOnly className="font-black h-6 w-full text-sm text-center bg-transparent p-3 border border-primary" type="text" value={values[index].title} />
+            <Button onClick={()=> changeIndex("next")} className="bg-primary border-primary text-white p-0 h-[1.60rem] rounded-l-none w-6">{'>'}</Button>
         </div>
     )
 }
