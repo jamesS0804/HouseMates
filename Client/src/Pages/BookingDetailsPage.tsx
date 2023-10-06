@@ -104,9 +104,9 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                             :
                                             serviceDetails.data.extraServices.map((extraService:any)=>{
                                                 return(
-                                                    <>
+                                                    <div key={extraService.type} className="flex flex-col gap-1">
                                                         <hr className="border-1 border-black"/>
-                                                        <div key={extraService.type} className="flex gap-2">
+                                                        <div  className="flex gap-2">
                                                             <img />
                                                             <div>
                                                                 <p className="font-black">{extraService.type}</p>
@@ -114,7 +114,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                                             </div>
                                                             <p className="ml-auto font-black text-secondary">₱{extraService.price}<span className="text-xs"> / {extraService.unit}</span></p>
                                                         </div>
-                                                    </>
+                                                    </div>
                                                 )
                                             })
                                     }

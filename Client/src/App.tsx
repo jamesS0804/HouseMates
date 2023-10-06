@@ -61,10 +61,10 @@ export default function App() {
   }, [location.pathname]);
 
   useEffect(()=> {
-    if(!authKey) {
-      navigate("/")
-      return
-    }
+    // if(!authKey) {
+    //   navigate("/")
+    //   return
+    // }
     authKey && isVerified ? navigate("/home") : navigate("/verification")
   }, [isVerified])
 
