@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :profiles
       resources :services
       resources :subservices , param: :service_title
+      resources :housemate_services
     end
   end
 end

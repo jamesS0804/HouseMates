@@ -10,8 +10,6 @@ module Api
                 end
             end
 
-            
-
             private
         
             def housemate_params

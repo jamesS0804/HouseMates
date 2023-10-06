@@ -4421,3 +4421,463 @@ Processing by Api::V1::SubservicesController#show as */*
 Completed 200 OK in 17ms (Views: 4.0ms | ActiveRecord: 4.6ms | Allocations: 7698)
 
 
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddEmailColumnForReferenceToHousemateService (20231006135343)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.7ms)[0m  [1m[35mALTER TABLE "housemate_services" ADD "email" character varying NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006135343"]]
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddServiceTitleColumnToHousemateServices (20231006135600)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "housemate_services" ADD "service_title" character varying NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (1.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006135600"]]
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mHousemate Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "jti", "isVerified", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "test@test.com"], ["encrypted_password", "[FILTERED]"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-06 14:06:40.216542"], ["unconfirmed_email", nil], ["created_at", "2023-10-06 14:06:40.216427"], ["updated_at", "2023-10-06 14:06:40.216427"], ["jti", "5c4dabff-1270-460a-894c-5a21cb878b73"], ["isVerified", false], ["type", "Housemate"]]
+  [1m[36mTRANSACTION (6.3ms)[0m  [1m[35mCOMMIT[0m
+  Rendering devise/mailer/confirmation_instructions.html.erb
+  Rendered devise/mailer/confirmation_instructions.html.erb (Duration: 2.4ms | Allocations: 1246)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 33.0ms
+Delivered mail 652014704e638_445afb54-48c@DESKTOP-MORCCU3.mail (1583.5ms)
+Date: Fri, 06 Oct 2023 22:06:40 +0800
+From: housematesapp.co@example.com
+Reply-To: housematesapp.co@example.com
+To: test@test.com
+Message-ID: <652014704e638_445afb54-48c@DESKTOP-MORCCU3.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome test@test.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/confirmation?confirmation_token=32AEkWBNDN-ja1xxMWRT">Confirm my account</a></p>
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:07:08 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+Completed 400 Bad Request in 1ms (ActiveRecord: 0.0ms | Allocations: 421)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: housemate_services):
+  
+app/controllers/api/v1/housemate_services_controller.rb:22:in `housemate_services_params'
+app/controllers/api/v1/housemate_services_controller.rb:18:in `find_housemate'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:07:30 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 372)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 1)):
+  
+app/controllers/api/v1/housemate_services_controller.rb:22:in `housemate_services_params'
+app/controllers/api/v1/housemate_services_controller.rb:18:in `find_housemate'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:08:13 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+Completed 500 Internal Server Error in 5ms (ActiveRecord: 0.0ms | Allocations: 2478)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 1)):
+  
+app/controllers/api/v1/housemate_services_controller.rb:18:in `housemate_services_params'
+app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:09:12 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms | Allocations: 401)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 1)):
+  
+app/controllers/api/v1/housemate_services_controller.rb:18:in `housemate_services_params'
+app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:09:25 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+[31mUnpermitted parameter: :housemate_service. Context: { controller: Api::V1::HousemateServicesController, action: create, request: #<ActionDispatch::Request:0x00007ff857ee4600>, params: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}, "controller"=>"api/v1/housemate_services", "action"=>"create"} }[0m
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms | Allocations: 523)
+
+
+  
+ArgumentError (wrong number of arguments (given 2, expected 1)):
+  
+app/controllers/api/v1/housemate_services_controller.rb:18:in `housemate_services_params'
+app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:09:53 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+  [1m[36mHousemate Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+Completed 500 Internal Server Error in 17ms (ActiveRecord: 3.4ms | Allocations: 13120)
+
+
+  
+NoMethodError (undefined method `housemate_services' for #<Housemate id: 1, email: "test@test.com", created_at: "2023-10-06 14:06:40.216427000 +0000", updated_at: "2023-10-06 14:06:40.216427000 +0000", jti: "5c4dabff-1270-460a-894c-5a21cb878b73", isVerified: false>):
+  
+app/controllers/api/v1/housemate_services_controller.rb:7:in `create'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:10:47 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+Completed 500 Internal Server Error in 21ms (ActiveRecord: 3.7ms | Allocations: 13298)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'housemate_id' for HousemateService.):
+  
+app/controllers/api/v1/housemate_services_controller.rb:7:in `create'
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RemoveUserIdColumnFromHousemateService (20231006141433)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "housemate_services" DROP COLUMN "user_id"[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006141433"]]
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:15:06 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+Completed 500 Internal Server Error in 37ms (ActiveRecord: 5.2ms | Allocations: 20636)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'housemate_id' for HousemateService.):
+  
+app/controllers/api/v1/housemate_services_controller.rb:7:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddHousemateServiceReferenceToHousemateForLookup (20231006142022)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "housemate_services" ADD "housemate_id" bigint NOT NULL[0m
+  [1m[35m (9.0ms)[0m  [1m[35mCREATE INDEX "index_housemate_services_on_housemate_id" ON "housemate_services" ("housemate_id")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "housemate_services" ADD CONSTRAINT "fk_rails_5dc43b34dc"
+FOREIGN KEY ("housemate_id")
+  REFERENCES "housemates" ("id")
+[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006142022"]]
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.2ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 1]]
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:23:45 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+  [1m[36mHousemate Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:8:in `create'
+  [1m[36mHousemateService Create (1.4ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:23:45.708361"], ["updated_at", "2023-10-06 14:23:45.708361"], ["email", "test@test.com"], ["service_title", "Cleaning Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:8:in `create'
+Completed 500 Internal Server Error in 44ms (ActiveRecord: 6.8ms | Allocations: 24140)
+
+
+  
+ActiveRecord::InvalidForeignKey (PG::ForeignKeyViolation: ERROR:  insert or update on table "housemate_services" violates foreign key constraint "fk_rails_5dc43b34dc"
+DETAIL:  Key (housemate_id)=(1) is not present in table "housemates".
+):
+  
+app/controllers/api/v1/housemate_services_controller.rb:8:in `create'
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddHousemateServiceReferenceToHousemateForLookup (20231006142022)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "housemate_services" DROP CONSTRAINT "fk_rails_5dc43b34dc"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "housemate_services" DROP COLUMN "housemate_id"[0m
+  [1m[36mActiveRecord::SchemaMigration Delete All (0.4ms)[0m  [1m[31mDELETE FROM "schema_migrations" WHERE "schema_migrations"."version" = $1[0m  [["version", "20231006142022"]]
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddHousemateServiceReferenceToHousemateForLookup (20231006142022)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "housemate_services" ADD "housemate_id" bigint NOT NULL[0m
+  [1m[35m (7.5ms)[0m  [1m[35mCREATE INDEX "index_housemate_services_on_housemate_id" ON "housemate_services" ("housemate_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mALTER TABLE "housemate_services" ADD CONSTRAINT "fk_rails_5dc43b34dc"
+FOREIGN KEY ("housemate_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006142022"]]
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:27:09 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "service_title"=>"Cleaning Services"}}
+  [1m[36mHousemate Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:8:in `create'
+  [1m[36mHousemateService Create (0.8ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:27:09.478235"], ["updated_at", "2023-10-06 14:27:09.478235"], ["email", "test@test.com"], ["service_title", "Cleaning Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (5.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:8:in `create'
+Completed 200 OK in 50ms (Views: 0.4ms | ActiveRecord: 12.0ms | Allocations: 24284)
+
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:37:04 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["a", "b", "c", "d"]}}
+[31mUnpermitted parameter: :services. Context: { controller: Api::V1::HousemateServicesController, action: create, request: #<ActionDispatch::Request:0x00007fa53af9f6f0>, params: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["a", "b", "c", "d"]}, "controller"=>"api/v1/housemate_services", "action"=>"create"} }[0m
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+[31mUnpermitted parameter: :services. Context: { controller: Api::V1::HousemateServicesController, action: create, request: #<ActionDispatch::Request:0x00007fa53af9f6f0>, params: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["a", "b", "c", "d"]}, "controller"=>"api/v1/housemate_services", "action"=>"create"} }[0m
+Completed 204 No Content in 19ms (ActiveRecord: 4.2ms | Allocations: 10620)
+
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:38:28 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["a", "b", "c", "d"]}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+Completed 204 No Content in 11ms (ActiveRecord: 3.0ms | Allocations: 8094)
+
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:41:44 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+Completed 500 Internal Server Error in 13ms (ActiveRecord: 4.0ms | Allocations: 10209)
+
+
+  
+ArgumentError (When assigning attributes, you must pass a hash as an argument, String passed.):
+  
+app/controllers/api/v1/housemate_services_controller.rb:20:in `block in create'
+app/controllers/api/v1/housemate_services_controller.rb:19:in `each'
+app/controllers/api/v1/housemate_services_controller.rb:19:in `create'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:42:52 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:23:in `create'
+Completed 200 OK in 17ms (Views: 1.5ms | ActiveRecord: 3.9ms | Allocations: 12345)
+
+
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 1]]
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:44:19 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+Completed 204 No Content in 31ms (ActiveRecord: 3.0ms | Allocations: 16210)
+
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:49:20 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:24:in `block (2 levels) in create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:22:in `create'
+Completed 200 OK in 24ms (Views: 0.2ms | ActiveRecord: 4.3ms | Allocations: 16614)
+
+
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RemoveEmailColumnNotNullContstraintFromHousemateServices (20231006145119)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RemoveEmailColumnNotNullContstraintFromHousemateServices (20231006145119)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RemoveEmailColumnFromHousemateServices (20231006145119)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "housemate_services" ALTER COLUMN "email" TYPE character varying, ALTER COLUMN "email" DROP NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006145119"]]
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:53:42 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:24:in `block (2 levels) in create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:22:in `create'
+Completed 200 OK in 46ms (Views: 0.3ms | ActiveRecord: 5.4ms | Allocations: 24759)
+
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:53:45 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.3ms | Allocations: 1498)
+
+
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 1]]
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services"[0m
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:55:02 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:24:in `block (2 levels) in create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:22:in `create'
+Completed 200 OK in 42ms (Views: 0.3ms | ActiveRecord: 5.1ms | Allocations: 24759)
+
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:56:12 +0800
+  
+ArgumentError (You need to supply at least one validation):
+  
+app/models/housemate_service.rb:5:in `<class:HousemateService>'
+app/models/housemate_service.rb:1:in `<main>'
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:56:24 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:24:in `block (2 levels) in create'
+  [1m[36mHousemateService Create (0.5ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:56:24.390683"], ["updated_at", "2023-10-06 14:56:24.390683"], ["email", nil], ["service_title", "Cleaning Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:26:in `each'
+  [1m[36mHousemateService Create (0.2ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:56:24.392403"], ["updated_at", "2023-10-06 14:56:24.392403"], ["email", nil], ["service_title", "Aircon Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:26:in `each'
+  [1m[36mHousemateService Create (0.2ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:56:24.393434"], ["updated_at", "2023-10-06 14:56:24.393434"], ["email", nil], ["service_title", "Plumbing Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:26:in `each'
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:22:in `create'
+  [1m[36mHousemateService Load (0.4ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:28:in `create'
+Completed 200 OK in 27ms (Views: 2.2ms | ActiveRecord: 8.6ms | Allocations: 15920)
+
+
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 22:57:20 +0800
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:24:in `block (2 levels) in create'
+  [1m[36mHousemateService Create (0.3ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:57:20.824033"], ["updated_at", "2023-10-06 14:57:20.824033"], ["email", "test@test.com"], ["service_title", "Cleaning Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:26:in `each'
+  [1m[36mHousemateService Create (0.2ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:57:20.825278"], ["updated_at", "2023-10-06 14:57:20.825278"], ["email", "test@test.com"], ["service_title", "Aircon Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:26:in `each'
+  [1m[36mHousemateService Create (0.2ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 14:57:20.826239"], ["updated_at", "2023-10-06 14:57:20.826239"], ["email", "test@test.com"], ["service_title", "Plumbing Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:26:in `each'
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:22:in `create'
+  [1m[36mHousemateService Load (0.2ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:28:in `create'
+Completed 200 OK in 25ms (Views: 1.7ms | ActiveRecord: 8.5ms | Allocations: 15739)
+
+
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RemoveEmailColumnFromHousemateServices (20231006145119)
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemateService Destroy (0.5ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 2]]
+  [1m[36mTRANSACTION (3.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemateService Destroy (0.3ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 3]]
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemateService Destroy (0.2ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 4]]
+  [1m[36mTRANSACTION (3.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemateService Destroy (0.4ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 5]]
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemateService Destroy (0.3ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 6]]
+  [1m[36mTRANSACTION (3.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemateService Destroy (0.3ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 7]]
+  [1m[36mTRANSACTION (2.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemateService Destroy (0.2ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 8]]
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to Correct (20231006145853)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "housemate_services" ALTER COLUMN "email" TYPE character varying, ALTER COLUMN "email" SET NOT NULL[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231006145853"]]
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/v1/housemate_services/" for ::1 at 2023-10-06 23:00:22 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousemateServicesController#create as */*
+  Parameters: {"housemate_service"=>{"email"=>"test@test.com", "services"=>["Cleaning Services", "Aircon Services", "Plumbing Services"]}}
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."email" = $2 LIMIT $3[0m  [["type", "Housemate"], ["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:14:in `block (2 levels) in create'
+  [1m[36mHousemateService Create (0.8ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 15:00:22.998916"], ["updated_at", "2023-10-06 15:00:22.998916"], ["email", "test@test.com"], ["service_title", "Cleaning Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `each'
+  [1m[36mHousemateService Create (0.4ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 15:00:23.002309"], ["updated_at", "2023-10-06 15:00:23.002309"], ["email", "test@test.com"], ["service_title", "Aircon Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `each'
+  [1m[36mHousemateService Create (0.4ms)[0m  [1m[32mINSERT INTO "housemate_services" ("created_at", "updated_at", "email", "service_title", "housemate_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["created_at", "2023-10-06 15:00:23.004106"], ["updated_at", "2023-10-06 15:00:23.004106"], ["email", "test@test.com"], ["service_title", "Plumbing Services"], ["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:16:in `each'
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:12:in `create'
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 1]]
+  ↳ app/controllers/api/v1/housemate_services_controller.rb:18:in `create'
+Completed 200 OK in 57ms (Views: 2.0ms | ActiveRecord: 10.5ms | Allocations: 27173)
+
+
