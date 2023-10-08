@@ -6,7 +6,7 @@ module Api
             def create
                 service = Service.new(service_params)
                 if service.save
-                    render json: { data: service, status: :created }
+                    render json: { data: ServiceSerializer.new(service).serializable_hash[:data][:attributes], status: :created }
                 else
                     render json: { errors: service.errors, status: :unprocessable_entity }
                 end

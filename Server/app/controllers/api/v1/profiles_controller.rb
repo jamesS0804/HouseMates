@@ -1,6 +1,6 @@
 class Api::V1::ProfilesController < ApplicationController
     def create
-        user = User.find_by(email: profile_params[:email])
+        user = User.find(profile_params[:id])
         if user
             profile = user.build_profile(profile_params.merge(user_id: user.id))
             address = profile.build_address(profile_params[:address_attributes])
@@ -22,6 +22,6 @@ class Api::V1::ProfilesController < ApplicationController
     private
 
     def profile_params
-        params.require(:profile).permit(:name, :email, :phone_number, address_attributes: [:address_line_1, :barangay, :city, :province, :zip_code])
+        params.require(:profile).permit(:id, :name, :phone_number, :email, address_attributes: [:address_line_1, :barangay, :city, :province, :zip_code])
     end
 end

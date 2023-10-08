@@ -3,19 +3,23 @@ module Api
         class HousemateServicesController < ApplicationController
 
             def create
-                housemate = Housemate.find_by(email: housemate_services_params[:email])
-                housemate_services = housemate_services_params[:services]
-
-                created_housemate_services = []
+                housemate = Housemate.find(housemate_services_params[:id])
 
                 begin
-                    housemate.housemate_services.transaction do
-                      housemate_services.each do |service|
-                        created_housemate_services << housemate.housemate_services.new(email: housemate.email,service_title: service)
-                      end
-                      created_housemate_services.each(&:save!)
+                    housemate_services = []
+                    housemate_services_params[:services].each do |housemate_service|
+                      housemate_services << housemate.housemate_services.new(
+                        email: housemate.email,
+                        service_id: housemate_service[:id],
+                        service_title: housemate_service[:title])
                     end
-                    render json: { data: housemate.housemate_services.all, status: :created }
+                    HousemateService.transaction do
+                      housemate_services.each(&:save!)
+                    end 
+                    housemate_services_data = housemate.housemate_services.all.each do |house_service|
+                      HousemateServiceSerializer.new(house_service).serializable_hash[:data][:attributes]
+                    end
+                    render json: { data: housemate_services_data, status: :created }
                   rescue ActiveRecord::RecordInvalid => e
                     render json: { error: e.message, status: :unprocessable_entity }
                   rescue StandardError => e
@@ -26,7 +30,7 @@ module Api
             private 
 
             def housemate_services_params
-                params.require(:housemate_service).permit(:email, :services=> [])
+                params.require(:housemate_service).permit(:id, :email, services: [ :id, :title ])
             end
         end
     end

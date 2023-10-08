@@ -4,10 +4,10 @@ module Api
             respond_to :json
             
             def create
-                service = Service.find_by(title: subservice_params[:service_title])
+                service = Service.find(subservice_params[:service_id])
                 subservice = service.subservices.new(subservice_params)
                 if subservice.save
-                    render json: { data: subservice, status: :created }
+                    render json: { data: SubserviceSerializer.new(subservice).serializable_hash[:data][:attributes], status: :created }
                 else
                     render json: { errors: subservice.errors, status: :unprocessable_entity }
                 end
@@ -22,7 +22,7 @@ module Api
             private
         
             def subservice_params
-                params.require(:subservice).permit(:service_title, :title, :price)
+                params.require(:subservice).permit(:service_id, :service_title, :title, :price)
             end
         end
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_08_011311) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_08_095641) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,7 +69,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_08_011311) do
     t.string "email", null: false
     t.string "service_title", null: false
     t.bigint "housemate_id", null: false
+    t.bigint "service_id", null: false
     t.index ["housemate_id"], name: "index_housemate_services_on_housemate_id"
+    t.index ["service_id"], name: "index_housemate_services_on_service_id"
   end
 
   create_table "housemates", force: :cascade do |t|
@@ -101,9 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_08_011311) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "service_id", null: false
-    t.bigint "housemate_service_id"
     t.string "service_title", null: false
-    t.index ["housemate_service_id"], name: "index_subservices_on_housemate_service_id"
     t.index ["service_id"], name: "index_subservices_on_service_id"
   end
 
@@ -132,8 +132,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_08_011311) do
   add_foreign_key "booking_services", "services"
   add_foreign_key "booking_services", "subservices"
   add_foreign_key "bookings", "housemates"
+  add_foreign_key "housemate_services", "services"
   add_foreign_key "housemate_services", "users", column: "housemate_id"
   add_foreign_key "profiles", "users"
-  add_foreign_key "subservices", "housemate_services"
   add_foreign_key "subservices", "services"
 end

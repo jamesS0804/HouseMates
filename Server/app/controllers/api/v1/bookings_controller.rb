@@ -48,6 +48,8 @@ class Api::V1::BookingsController < ApplicationController
         
             combined_data = booking_data.merge(address: address_data).merge(service_details: booking_services_data)
 
+            find_housemate(combined_data)
+
             render json: { data: combined_data, status: :created }
         else
             render json: { errors: booking.errors, status: :unprocessable_entity }
@@ -55,6 +57,19 @@ class Api::V1::BookingsController < ApplicationController
     end
 
     private
+
+    def find_housemate(booking_data)
+        puts booking_data.inspect
+
+        scheduled_at = booking_data[:scheduled_at]
+        address = booking_data[:address]
+        city = address[:city]
+        province = address[:province]
+
+        puts city
+        puts province
+
+    end
 
     def booking_params
         params.require(:booking).permit(
