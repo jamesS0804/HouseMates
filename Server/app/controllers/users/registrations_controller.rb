@@ -1,6 +1,12 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   include JsonRender
   respond_to :json
+  before_filter :update_sanitized_params, if: :devise_controller?
+
+  def update_sanitized_params
+    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:is_verified, :is_active, :email, :password, :password_confirmation)}
+    devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:is_verified, :is_active, :email, :password, :password_confirmation, :current_password)}
+  end
 
   def create
     build_resource(sign_up_params)

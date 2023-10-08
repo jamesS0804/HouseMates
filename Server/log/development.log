@@ -13883,3 +13883,605 @@ Processing by Api::V1::BookingsController#create as */*
 Completed 200 OK in 86ms (Views: 5.2ms | ActiveRecord: 24.2ms | Allocations: 47324)
 
 
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RemoveIsActiveColumnFromHomeowners (20231008003711)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "homeowners" DROP COLUMN "is_active"[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231008003711"]]
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddIsActiveColumnToHousemate (20231008003750)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "housemates" ADD "is_active" boolean DEFAULT FALSE[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231008003750"]]
+  [1m[36mTRANSACTION (30.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/login" for 127.0.0.1 at 2023-10-08 08:41:43 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 208ms (ActiveRecord: 3.9ms | Allocations: 19637)
+
+
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1[0m  [["type", "Housemate"]]
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 4], ["LIMIT", 1]]
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1[0m  [["type", "Housemate"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProfile Load (0.2ms)[0m  [1m[34mSELECT "profiles".* FROM "profiles" WHERE "profiles"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.2ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 4]]
+  [1m[36mHousemateService Destroy (0.7ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 1]]
+  [1m[36mHousemateService Destroy (0.2ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 2]]
+  [1m[36mHousemateService Destroy (0.2ms)[0m  [1m[31mDELETE FROM "housemate_services" WHERE "housemate_services"."id" = $1[0m  [["id", 3]]
+  [1m[36mHousemate Destroy (0.3ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 4]]
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/login" for 127.0.0.1 at 2023-10-08 08:42:45 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+Completed 401 Unauthorized in 17ms (ActiveRecord: 4.1ms | Allocations: 6552)
+
+
+Started POST "/signup" for ::1 at 2023-10-08 08:42:48 +0800
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]", "type"=>"Housemate"}, "registration"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]", "type"=>"Housemate"}}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mHousemate Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "jti", "isVerified", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "housemate@test.com"], ["encrypted_password", "[FILTERED]"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-08 00:42:48.479015"], ["unconfirmed_email", nil], ["created_at", "2023-10-08 00:42:48.478885"], ["updated_at", "2023-10-08 00:42:48.478885"], ["jti", "dce4b93f-7024-4922-a034-ac12c29bab9c"], ["isVerified", false], ["type", "Housemate"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (3.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  Rendering devise/mailer/confirmation_instructions.html.erb
+  Rendered devise/mailer/confirmation_instructions.html.erb (Duration: 2.1ms | Allocations: 931)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 10.7ms
+Delivered mail 6521fb087d22f_2c7eb2a1c-43e@DESKTOP-MORCCU3.mail (1943.8ms)
+Date: Sun, 08 Oct 2023 08:42:48 +0800
+From: housematesapp.co@example.com
+Reply-To: housematesapp.co@example.com
+To: housemate@test.com
+Message-ID: <6521fb087d22f_2c7eb2a1c-43e@DESKTOP-MORCCU3.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome housemate@test.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/confirmation?confirmation_token=9NgHw6zwvssxgEEWnTza">Confirm my account</a></p>
+
+Completed 200 OK in 2171ms (Views: 0.3ms | ActiveRecord: 4.2ms | Allocations: 33379)
+
+
+Started GET "/confirmation?confirmation_token=[FILTERED]" for ::1 at 2023-10-08 08:42:55 +0800
+Processing by Users::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"[FILTERED]"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_token" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["confirmation_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemate Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "confirmed_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["confirmed_at", "2023-10-08 00:42:55.202242"], ["updated_at", "2023-10-08 00:42:55.202545"], ["id", 5]]
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 12ms (Views: 0.1ms | ActiveRecord: 4.9ms | Allocations: 5022)
+
+
+Started POST "/login" for 127.0.0.1 at 2023-10-08 08:43:00 +0800
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+Completed 200 OK in 185ms (Views: 0.1ms | ActiveRecord: 0.2ms | Allocations: 2174)
+
+
+Started POST "/login" for 127.0.0.1 at 2023-10-08 08:43:38 +0800
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+Completed 200 OK in 13ms (Views: 0.2ms | ActiveRecord: 2.1ms | Allocations: 9958)
+
+
+Started POST "/login" for 127.0.0.1 at 2023-10-08 08:43:50 +0800
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+Completed 200 OK in 12ms (Views: 0.2ms | ActiveRecord: 2.1ms | Allocations: 9986)
+
+
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RenameIsVerifiedColumnInUser (20231008004417)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "users" RENAME COLUMN "isVerified" TO "is_verified"[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231008004417"]]
+  [1m[36mTRANSACTION (4.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/login" for 127.0.0.1 at 2023-10-08 08:45:03 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+Completed 200 OK in 30ms (Views: 0.3ms | ActiveRecord: 3.3ms | Allocations: 18765)
+
+
+Started POST "/api/v1/housemate" for ::1 at 2023-10-08 08:49:47 +0800
+  
+ActionController::RoutingError (No route matches [POST] "/api/v1/housemate"):
+  
+Started POST "/api/v1/housemates" for ::1 at 2023-10-08 08:49:54 +0800
+Processing by Api::V1::HousematesController#create as */*
+  Parameters: {"housemate"=>{"email"=>"test@test.com", "password"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "test@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+Completed 422 Unprocessable Entity in 190ms (Views: 1.7ms | ActiveRecord: 2.8ms | Allocations: 11900)
+
+
+Started PATCH "/api/v1/housemates/5" for ::1 at 2023-10-08 08:50:46 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>false}, "id"=>"5"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.2ms | Allocations: 1023)
+
+
+  
+NameError (undefined local variable or method `resource' for #<Api::V1::HousematesController:0x00000000015540>):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Started PATCH "/api/v1/housemates/5" for ::1 at 2023-10-08 08:50:57 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>false}, "id"=>"5"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 8ms (ActiveRecord: 2.1ms | Allocations: 7654)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'is_active' for Housemate.):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Started PATCH "/api/v1/housemates/5" for ::1 at 2023-10-08 08:51:29 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"5"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.2ms | Allocations: 785)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'is_active' for Housemate.):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Started PATCH "/api/v1/housemates/5" for ::1 at 2023-10-08 08:51:30 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"5"}
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.3ms | Allocations: 798)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'is_active' for Housemate.):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Started PATCH "/api/v1/housemates/5" for ::1 at 2023-10-08 08:51:31 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"5"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.2ms | Allocations: 785)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'is_active' for Housemate.):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 5], ["LIMIT", 1]]
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1[0m  [["type", "Housemate"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProfile Load (0.2ms)[0m  [1m[34mSELECT "profiles".* FROM "profiles" WHERE "profiles"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.2ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 5]]
+  [1m[36mHousemate Destroy (0.4ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 5]]
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/signup" for ::1 at 2023-10-08 08:52:32 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Users::RegistrationsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]", "type"=>"Housemate"}, "registration"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]", "type"=>"Housemate"}}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mHousemate Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "jti", "is_verified", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "housemate@test.com"], ["encrypted_password", "[FILTERED]"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-08 00:52:33.133649"], ["unconfirmed_email", nil], ["created_at", "2023-10-08 00:52:33.133521"], ["updated_at", "2023-10-08 00:52:33.133521"], ["jti", "fb09ebe1-e3cf-4f53-b3dd-72f21e69b51e"], ["is_verified", false], ["type", "Housemate"]]
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users/registrations_controller.rb:8:in `create'
+  Rendering devise/mailer/confirmation_instructions.html.erb
+  Rendered devise/mailer/confirmation_instructions.html.erb (Duration: 1.5ms | Allocations: 932)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 11.5ms
+Delivered mail 6521fd5128f66_2d5662a08987fe@DESKTOP-MORCCU3.mail (1920.6ms)
+Date: Sun, 08 Oct 2023 08:52:33 +0800
+From: housematesapp.co@example.com
+Reply-To: housematesapp.co@example.com
+To: housemate@test.com
+Message-ID: <6521fd5128f66_2d5662a08987fe@DESKTOP-MORCCU3.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome housemate@test.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/confirmation?confirmation_token=jya3hWy_EHkqYrtiejdY">Confirm my account</a></p>
+
+Completed 200 OK in 2159ms (Views: 0.3ms | ActiveRecord: 7.5ms | Allocations: 38844)
+
+
+Started GET "/confirmation?confirmation_token=[FILTERED]" for ::1 at 2023-10-08 08:52:46 +0800
+Processing by Users::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"[FILTERED]"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_token" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["confirmation_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemate Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "confirmed_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["confirmed_at", "2023-10-08 00:52:46.393010"], ["updated_at", "2023-10-08 00:52:46.393457"], ["id", 6]]
+  [1m[36mTRANSACTION (3.9ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 27ms (Views: 0.1ms | ActiveRecord: 5.3ms | Allocations: 5407)
+
+
+Started POST "/login" for 127.0.0.1 at 2023-10-08 08:52:54 +0800
+Processing by Users::SessionsController#create as */*
+  Parameters: {"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}, "session"=>{"user"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+Completed 200 OK in 181ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 3745)
+
+
+Started PATCH "/api/v1/housemates/5" for ::1 at 2023-10-08 08:53:08 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"5"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 404 Not Found in 2ms (ActiveRecord: 0.2ms | Allocations: 997)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Housemate with 'id'=5):
+  
+app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Started PATCH "/api/v1/housemates/6" for ::1 at 2023-10-08 08:53:13 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"6"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.2ms | Allocations: 876)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'is_active' for Housemate.):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1[0m  [["type", "Housemate"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProfile Load (0.3ms)[0m  [1m[34mSELECT "profiles".* FROM "profiles" WHERE "profiles"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 6]]
+  [1m[36mHousemate Destroy (0.4ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 6]]
+  [1m[36mTRANSACTION (3.1ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/v1/housemates" for ::1 at 2023-10-08 08:55:02 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousematesController#create as */*
+  Parameters: {"housemate"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mHousemate Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "jti", "is_verified", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "housemate@test.com"], ["encrypted_password", "[FILTERED]"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-08 00:55:02.380031"], ["unconfirmed_email", nil], ["created_at", "2023-10-08 00:55:02.379865"], ["updated_at", "2023-10-08 00:55:02.379865"], ["jti", "de4e61d4-add5-4e60-b63c-5cc7b05d5911"], ["is_verified", false], ["type", "Housemate"]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  Rendering devise/mailer/confirmation_instructions.html.erb
+  Rendered devise/mailer/confirmation_instructions.html.erb (Duration: 1.6ms | Allocations: 938)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 12.0ms
+Delivered mail 6521fde6659f9_2d87d2a085101a@DESKTOP-MORCCU3.mail (1811.0ms)
+Date: Sun, 08 Oct 2023 08:55:02 +0800
+From: housematesapp.co@example.com
+Reply-To: housematesapp.co@example.com
+To: housemate@test.com
+Message-ID: <6521fde6659f9_2d87d2a085101a@DESKTOP-MORCCU3.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome housemate@test.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/confirmation?confirmation_token=FCFy9UKsET8DMtSU2AV-">Confirm my account</a></p>
+
+Completed 200 OK in 2051ms (Views: 0.6ms | ActiveRecord: 7.5ms | Allocations: 37471)
+
+
+Started GET "/confirmation?confirmation_token=[FILTERED]" for ::1 at 2023-10-08 08:55:31 +0800
+Processing by Users::ConfirmationsController#show as HTML
+  Parameters: {"confirmation_token"=>"[FILTERED]"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."confirmation_token" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["confirmation_token", "[FILTERED]"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mHousemate Update (0.4ms)[0m  [1m[33mUPDATE "users" SET "confirmed_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["confirmed_at", "2023-10-08 00:55:31.951833"], ["updated_at", "2023-10-08 00:55:31.952099"], ["id", 7]]
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 14ms (Views: 0.1ms | ActiveRecord: 4.8ms | Allocations: 5435)
+
+
+Started PATCH "/api/v1/housemates/6" for ::1 at 2023-10-08 08:55:38 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"6"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 404 Not Found in 2ms (ActiveRecord: 0.2ms | Allocations: 960)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Housemate with 'id'=6):
+  
+app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Started PATCH "/api/v1/housemates/7" for ::1 at 2023-10-08 08:55:42 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"7"}
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.3ms | Allocations: 877)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'is_active' for Housemate.):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 7], ["LIMIT", 1]]
+Started POST "/api/v1/housemates" for ::1 at 2023-10-08 08:58:22 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+NoMethodError (undefined method `attr_accessible' for Housemate:Class):
+  
+app/models/housemate.rb:5:in `<class:Housemate>'
+app/models/housemate.rb:1:in `<main>'
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 7], ["LIMIT", 1]]
+Started POST "/api/v1/housemates" for ::1 at 2023-10-08 09:05:09 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousematesController#create as */*
+  Parameters: {"housemate"=>{"email"=>"housemate3@test.com", "password"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "housemate3@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mHousemate Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "jti", "is_verified", "type") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING "id"[0m  [["email", "housemate3@test.com"], ["encrypted_password", "[FILTERED]"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-08 01:05:09.382637"], ["unconfirmed_email", nil], ["created_at", "2023-10-08 01:05:09.382519"], ["updated_at", "2023-10-08 01:05:09.382519"], ["jti", "2f7424db-fbda-4e9c-9380-5d41a4a75a68"], ["is_verified", false], ["type", "Housemate"]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (3.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  Rendering devise/mailer/confirmation_instructions.html.erb
+  Rendered devise/mailer/confirmation_instructions.html.erb (Duration: 1.7ms | Allocations: 932)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 11.4ms
+Delivered mail 6522004565a87_2e6d72a08-4ce@DESKTOP-MORCCU3.mail (1781.9ms)
+Date: Sun, 08 Oct 2023 09:05:09 +0800
+From: housematesapp.co@example.com
+Reply-To: housematesapp.co@example.com
+To: housemate3@test.com
+Message-ID: <6522004565a87_2e6d72a08-4ce@DESKTOP-MORCCU3.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome housemate3@test.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/confirmation?confirmation_token=DAj9eLqTyECMXQiJsNCX">Confirm my account</a></p>
+
+Completed 200 OK in 2016ms (Views: 0.7ms | ActiveRecord: 7.5ms | Allocations: 37314)
+
+
+Started PATCH "/api/v1/housemates/8" for ::1 at 2023-10-08 09:05:21 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"8"}
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 8], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.4ms | Allocations: 1408)
+
+
+  
+ActiveModel::UnknownAttributeError (unknown attribute 'is_active' for Housemate.):
+  
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 8], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 8], ["LIMIT", 1]]
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1[0m  [["type", "Housemate"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProfile Load (0.3ms)[0m  [1m[34mSELECT "profiles".* FROM "profiles" WHERE "profiles"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.3ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 7]]
+  [1m[36mHousemate Destroy (0.5ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 7]]
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProfile Load (0.2ms)[0m  [1m[34mSELECT "profiles".* FROM "profiles" WHERE "profiles"."email" = $1 LIMIT $2[0m  [["email", "housemate3@test.com"], ["LIMIT", 1]]
+  [1m[36mHousemateService Load (0.2ms)[0m  [1m[34mSELECT "housemate_services".* FROM "housemate_services" WHERE "housemate_services"."housemate_id" = $1[0m  [["housemate_id", 8]]
+  [1m[36mHousemate Destroy (0.3ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 8]]
+  [1m[36mTRANSACTION (3.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddIsActiveColumnToUser (20231008011212)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "is_active" boolean DEFAULT FALSE[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231008011212"]]
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to RemoveIsActiveColumnToHousemate (20231008011311)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "housemates" DROP COLUMN "is_active"[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20231008011311"]]
+  [1m[36mTRANSACTION (3.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/v1/housemates" for ::1 at 2023-10-08 09:14:31 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousematesController#create as */*
+  Parameters: {"housemate"=>{"email"=>"housemate@test.com", "password"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "housemate@test.com"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mHousemate Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("email", "encrypted_password", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "jti", "is_verified", "type", "is_active") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["email", "housemate@test.com"], ["encrypted_password", "[FILTERED]"], ["remember_created_at", nil], ["confirmation_token", "[FILTERED]"], ["confirmed_at", nil], ["confirmation_sent_at", "2023-10-08 01:14:31.921295"], ["unconfirmed_email", nil], ["created_at", "2023-10-08 01:14:31.921176"], ["updated_at", "2023-10-08 01:14:31.921176"], ["jti", "1cdbafab-64a5-4ce9-84ef-5972542fd4ed"], ["is_verified", false], ["type", "Housemate"], ["is_active", false]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (3.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:6:in `create'
+  Rendering devise/mailer/confirmation_instructions.html.erb
+  Rendered devise/mailer/confirmation_instructions.html.erb (Duration: 1.5ms | Allocations: 932)
+Devise::Mailer#confirmation_instructions: processed outbound mail in 10.9ms
+Delivered mail 65220277e8db7_2f3f52a0871756@DESKTOP-MORCCU3.mail (3318.9ms)
+Date: Sun, 08 Oct 2023 09:14:31 +0800
+From: housematesapp.co@example.com
+Reply-To: housematesapp.co@example.com
+To: housemate@test.com
+Message-ID: <65220277e8db7_2f3f52a0871756@DESKTOP-MORCCU3.mail>
+Subject: Confirmation instructions
+Mime-Version: 1.0
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Welcome housemate@test.com!</p>
+
+<p>You can confirm your account email through the link below:</p>
+
+<p><a href="http://localhost:3000/confirmation?confirmation_token=sXmtRpgfxAq7isGy4PSs">Confirm my account</a></p>
+
+Completed 200 OK in 3557ms (Views: 0.6ms | ActiveRecord: 6.9ms | Allocations: 38047)
+
+
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:14:47 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>"false"}, "id"=>"9"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 200 OK in 3ms (Views: 0.2ms | ActiveRecord: 0.4ms | Allocations: 1729)
+
+
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:15:00 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>true}, "id"=>"9"}
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mHousemate Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "is_active" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-10-08 01:15:00.399322"], ["is_active", true], ["id", 9]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Completed 200 OK in 8ms (Views: 0.3ms | ActiveRecord: 4.1ms | Allocations: 2991)
+
+
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:16:46 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_active"=>true}, "id"=>"9"}
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 200 OK in 25ms (Views: 0.3ms | ActiveRecord: 3.2ms | Allocations: 17661)
+
+
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:18:44 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_verified"=>true}, "id"=>"9"}
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 23ms (ActiveRecord: 3.6ms | Allocations: 15979)
+
+
+  
+NameError (undefined local variable or method `is_verified' for #<Api::V1::HousematesController:0x0000000000d7a0>):
+  
+app/controllers/api/v1/housemates_controller.rb:26:in `housemate_params'
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:19:01 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"user"=>{"is_verified"=>true}, "id"=>"9", "housemate"=>{}}
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 400 Bad Request in 2ms (ActiveRecord: 0.3ms | Allocations: 690)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: housemate):
+  
+app/controllers/api/v1/housemates_controller.rb:26:in `housemate_params'
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:19:26 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"user"=>{"is_verified"=>true}, "id"=>"9", "housemate"=>{}}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 400 Bad Request in 8ms (ActiveRecord: 2.1ms | Allocations: 6989)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: housemate):
+  
+app/controllers/api/v1/housemates_controller.rb:26:in `housemate_params'
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mHousemate Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:20:46 +0800
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"homeowner"=>{"is_verified"=>true}, "id"=>"9", "housemate"=>{}}
+  [1m[36mHousemate Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+Completed 400 Bad Request in 19ms (ActiveRecord: 3.6ms | Allocations: 14858)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: housemate):
+  
+app/controllers/api/v1/housemates_controller.rb:26:in `housemate_params'
+app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Started PATCH "/api/v1/housemates/9" for ::1 at 2023-10-08 09:20:54 +0800
+Processing by Api::V1::HousematesController#update as */*
+  Parameters: {"housemate"=>{"is_verified"=>true}, "id"=>"9"}
+  [1m[36mHousemate Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Housemate"], ["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:14:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mHousemate Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "is_verified" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-10-08 01:20:54.670306"], ["is_verified", true], ["id", 9]]
+  ↳ app/controllers/api/v1/housemates_controller.rb:16:in `update'
+  [1m[36mTRANSACTION (3.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/housemates_controller.rb:16:in `update'
+Completed 200 OK in 10ms (Views: 0.7ms | ActiveRecord: 4.1ms | Allocations: 4396)
+
+

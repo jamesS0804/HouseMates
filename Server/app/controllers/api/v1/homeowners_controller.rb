@@ -10,10 +10,20 @@ module Api
                 end
             end
 
+            def update
+                homeowner = Homeowner.find(params[:id])
+
+                if homeowner.update(homeowner)
+                    render json: { data: HomeownerSerializer.new(homeowner).serializable_hash[:data][:attributes], status: :ok }
+                  else
+                    render json: { errors: homeowner.errors }, status: :unprocessable_entity
+                  end
+            end
+
             private
         
             def homeowner_params
-                params.require(:homeowner).permit(:name, :email, :password, :phone_number)
+                params.require(:homeowner).permit(:id, :email, :password, :is_verified)
             end
         end
     end
