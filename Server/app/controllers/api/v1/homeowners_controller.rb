@@ -4,7 +4,7 @@ module Api
             def create
                 homeowner = Homeowner.new(homeowner_params)
                 if homeowner.save
-                  render json: { data: homeowner, status: :created }
+                  render json: { data: HomeownerSerializer.new(homeowner).serializable_hash[:data][:attributes] , status: :created }
                 else
                   render json: homeowner.errors, status: :unprocessable_entity
                 end
@@ -13,7 +13,7 @@ module Api
             private
         
             def homeowner_params
-                params.require(:user).permit(:name, :email, :phone_number)
+                params.require(:homeowner).permit(:name, :email, :password, :phone_number)
             end
         end
     end

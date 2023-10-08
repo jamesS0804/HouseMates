@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_06_145853) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_07_235713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,8 +22,39 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_06_145853) do
     t.string "zip_code", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "profile_id", null: false
+    t.bigint "profile_id"
+    t.bigint "booking_id"
+    t.index ["booking_id"], name: "index_addresses_on_booking_id"
     t.index ["profile_id"], name: "index_addresses_on_profile_id"
+  end
+
+  create_table "booking_services", force: :cascade do |t|
+    t.integer "quantity", default: 1, null: false
+    t.decimal "price_per_quantity", precision: 10, scale: 2, null: false
+    t.decimal "total", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "service_id", null: false
+    t.bigint "subservice_id", null: false
+    t.bigint "booking_id"
+    t.string "title", null: false
+    t.index ["booking_id"], name: "index_booking_services_on_booking_id"
+    t.index ["service_id"], name: "index_booking_services_on_service_id"
+    t.index ["subservice_id"], name: "index_booking_services_on_subservice_id"
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.datetime "scheduled_at", null: false
+    t.integer "status", default: 0, null: false
+    t.decimal "total_cost", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "housemate_id"
+    t.string "payment_method", null: false
+    t.bigint "homeowner_id", null: false
+    t.string "service_title", null: false
+    t.index ["homeowner_id"], name: "index_bookings_on_homeowner_id"
+    t.index ["housemate_id"], name: "index_bookings_on_housemate_id"
   end
 
   create_table "homeowners", force: :cascade do |t|
@@ -95,7 +126,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_06_145853) do
     t.index ["jti"], name: "index_users_on_jti", unique: true
   end
 
+  add_foreign_key "addresses", "bookings"
   add_foreign_key "addresses", "profiles"
+  add_foreign_key "booking_services", "bookings"
+  add_foreign_key "booking_services", "services"
+  add_foreign_key "booking_services", "subservices"
+  add_foreign_key "bookings", "housemates"
   add_foreign_key "housemate_services", "users", column: "housemate_id"
   add_foreign_key "profiles", "users"
   add_foreign_key "subservices", "housemate_services"

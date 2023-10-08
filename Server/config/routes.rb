@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :services
       resources :subservices , param: :service_title
       resources :housemate_services
+      resources :bookings
     end
   end
 end
