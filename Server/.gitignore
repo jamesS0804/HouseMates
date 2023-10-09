@@ -16,7 +16,7 @@ Gemfile.lock
 # Ignore environment-specific configuration files
 /config/application.yml
 /config/secrets.yml
-
+/config/credentials.yml.enc
 # Ignore local development files and directories
 /.env
 /.env.*
