@@ -32,7 +32,7 @@ module Server
         resource(
          '*',
          headers: :any,
-         expose: ["Authorization"],
+         expose: ["Authorization","expiry"],
          methods: [:get, :patch, :put, :delete, :post, :options, :show]
         )
       end
