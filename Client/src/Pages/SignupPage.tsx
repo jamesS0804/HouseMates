@@ -17,9 +17,6 @@ interface SignupPageProps {
 }
 
 const formSchema = z.object({
-    name: z.string().min(3, {
-        message: "Name must be at least 3 characters."
-    }),
     email: z.string().email({
         message: "Not a valid email."
     }),
@@ -48,7 +45,6 @@ export default function SignupPage(props: SignupPageProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -85,7 +81,6 @@ export default function SignupPage(props: SignupPageProps) {
                 <img className="h-[10rem]" src={userType === 'Homeowner' ? homeowner : housemates} />
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
-                        <CustomFormField userType={userType} form={form} name={"name"} label={"Name"} type={"text"} placeholder={"John Smith"} />
                         <CustomFormField userType={userType} form={form} name={"email"} label={"Email"} type={"email"} placeholder={"johnsmith@gmail.com"} />
                         <CustomFormField userType={userType} form={form} name={"password"} label={"Password"} type={"password"} placeholder={"Password"} />
                         <CustomFormField userType={userType} form={form} name={"confirmPassword"} label={"Re-confirm Password"} type={"password"} placeholder={"Password"} />

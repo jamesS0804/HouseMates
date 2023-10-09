@@ -16,8 +16,11 @@ import ServiceVariationsPage from './Pages/ServiceVariationsPage'
 import BookingDetailsPage from './Pages/BookingDetailsPage'
 
 type User = {
-  name: string,
+  id: number,
   email: string,
+  isVerified: string,
+  userType: string,
+  name: string,
   phoneNumber: string,
   addressAttributes: {
       addressLine1: string,
@@ -34,11 +37,14 @@ export default function App() {
   const navigate = useNavigate()
   const location = useLocation();
   const api = axios.create({
-    baseURL: 'http://127.0.0.1:3000/'
+    baseURL: 'https://housemates-backend.onrender.com/'
   })
-  const [ currentUser, setCurrentUser ] = useState<User>({ 
-    name: "",
+  const [ currentUser, setCurrentUser ] = useState<User>({
+    id: 0, 
     email: "",
+    isVerified: "",
+    userType: "",
+    name: "",
     phoneNumber: "",
     addressAttributes: {
         addressLine1: "",
@@ -54,6 +60,10 @@ export default function App() {
   })
   const [ serviceDetails, setServiceDetails ] = useState({service: {}, data: {}, totalCost: 0})
 
+  useEffect(()=>{
+    console.log(currentUser)
+  },[currentUser])
+
   useEffect(() => {
     window.scrollTo(0, 0);
     console.log(location.pathname)
@@ -61,10 +71,10 @@ export default function App() {
   }, [location.pathname]);
 
   useEffect(()=> {
-    // if(!authKey) {
-    //   navigate("/")
-    //   return
-    // }
+    if(!authKey) {
+      navigate("/")
+      return
+    }
     authKey && isVerified ? navigate("/home") : navigate("/verification")
   }, [isVerified])
 

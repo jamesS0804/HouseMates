@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const authenticated_api = axios.create({
-  baseURL: 'http://127.0.0.1:3000/',
+  baseURL: 'https://housemates-backend.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'

@@ -36,7 +36,6 @@ export default function LoginPage(props:LoginPageProps){
     })
 
     const onSubmit = async(values: z.infer<typeof formSchema>) => {
-        console.log(values)
         try {
             const res = await api.post("login", {
                 user: {
@@ -45,25 +44,20 @@ export default function LoginPage(props:LoginPageProps){
                 }
             })
             if( res.status === 200) {
-                const jsonResponse = res.data.data
-                setCurrentUser({ 
-                    name: jsonResponse.name,
+                console.log(res)
+                const jsonResponse = res.data.data.user
+                setCurrentUser({
+                    id: jsonResponse.id, 
                     email: jsonResponse.email,
-                    phoneNumber: jsonResponse.phone_number,
-                    addressAttributes: {
-                        addressLine1: jsonResponse.address_line_1,
-                        barangay: jsonResponse.barangay,
-                        city: jsonResponse.city,
-                        province: jsonResponse.province,
-                        zipCode: jsonResponse.zip_code
-                    }
+                    isVerified: jsonResponse.is_verified,
+                    userType: jsonResponse.type
                 })
                 setAuthKey(res.headers['authorization'])
                 sessionStorage.setItem('authToken', res.headers['authorization'].split(' ')[1])
                 setIsVerified(jsonResponse.isVerified)
                 jsonResponse.isVerified ? navigate("/home") : navigate("/verification")
             } else {
-                console.log(res.status)
+                console.log(res)
             }
         } catch (error) {
             console.log(error)

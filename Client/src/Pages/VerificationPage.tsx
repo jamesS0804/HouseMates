@@ -22,6 +22,7 @@ interface VerificationPageProps {
     userType: string,
     navigate: Function,
     currentUser: {
+        id: number,
         name: string,
         email: string,
         phoneNumber: string,
@@ -65,7 +66,7 @@ export default function VerificationPage(props:VerificationPageProps) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            email: "",
+            email: currentUser.email,
             phoneNumber: "",
             address: "",
             barangay: "",
@@ -104,14 +105,18 @@ export default function VerificationPage(props:VerificationPageProps) {
         setCities(()=>getCities(provinceInput))
     };
 
-    const updateIsVerified = async (userEmail:string) => {
+    const updateIsVerified = async (userID:number, userUrl:string) => {
+        console.log("updating verified")
         try {
-            const res = await authenticated_api.post("", {
-                email: userEmail
+            const res = await authenticated_api.post(`api/v1/${userUrl}/${userID}`, {
+                [userType.toLowerCase()]: {
+                    is_verified: true
+                } 
             })
             if ( res.status === 200 ) {
                 sessionStorage.setItem("isVerified", JSON.stringify(true))
                 setIsVerified(true)
+                setCurrentUser({...currentUser, isVerified: true})
             }
         } catch (error) {
             console.log(error)
@@ -122,23 +127,24 @@ export default function VerificationPage(props:VerificationPageProps) {
         console.log("submitting..")
         console.log(values)
         try {
-            const res = await authenticated_api.post("api/v1/profile", {
+            const res = await authenticated_api.post("api/v1/profiles", {
                 profile: {
+                    id: currentUser.id,
                     name: values.name,
                     email: currentUser.email,
                     phone_number: values.phoneNumber,
-                    addressAttributes: {
-                        addressLine1: values.address,
+                    address_attributes: {
+                        address_line_1: values.address,
                         barangay: values.barangay,
                         city: values.city,
                         province: values.province,
-                        zipCode: values.zipcode
+                        zip_code: values.zipcode
                     }
                 }
             })
-            if( res.status === 200 ) {
+            if( res.status === 201 ) {
                 const jsonResponse = res.data.data
-                setCurrentUser({ ...currentUser, 
+                setCurrentUser({ ...currentUser,
                     name: jsonResponse.name,
                     phoneNumber: jsonResponse.phone_number,
                     addressAttributes: {
@@ -150,12 +156,12 @@ export default function VerificationPage(props:VerificationPageProps) {
                     }
                 })
                 if(userType === 'Homeowner'){
-                    updateIsVerified(currentUser.email)
+                    await updateIsVerified(currentUser.id, 'homeowners')
                     navigate("/home")
                 }
                 setVerificationPart(2)
             } else {
-                console.log(res.status)
+                console.log(res)
             }
         } catch (error) {
             console.log(error)
@@ -171,7 +177,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                 preferred_services: preferredServices
             })
             if ( res.status === 200 ) {
-                updateIsVerified(currentUser.email)
+                await updateIsVerified(currentUser.id, 'housemates')
                 navigate("/home")
             } else {
                 console.log(res.status)
@@ -190,18 +196,22 @@ export default function VerificationPage(props:VerificationPageProps) {
                 <p className={`tracking-widest font-bold ${userType === 'Homeowner' ? 'text-primary' : 'text-secondary'}`}>Let's get you verified!</p>
                 <p className="font-bold text-xs">Tell us more about yourself</p>
                 <div className="p-4 px-0">
-                    <div className="w-100 flex justify-center">
-                        {
-                            verificationPart === 1 ? <img src={progressPart1}/> : <img src={progressPart2}/>
-                        }
-                    </div>
+                    {
+                        userType === "Homeowner" ? <></>
+                            :
+                            <div className="w-100 flex justify-center">
+                                {
+                                    verificationPart === 1 ? <img src={progressPart1}/> : <img src={progressPart2}/>
+                                }
+                            </div>
+                    }
                     <div>
                         {
                             verificationPart === 1 ?
                                 <Form {...form}>
                                     <form onSubmit={form.handleSubmit(basicInfoSubmit)} className="space-y-4 w-full">
-                                        <CustomFormField userType={userType} form={form} name={"name"} label={"Name"} type={"name"} placeholder={"John Smith"} />
-                                        <CustomFormField userType={userType} form={form} name={"email"} label={"Email"} type={"email"} placeholder={"johnsmith@gmail.com"} />
+                                        <CustomFormField userType={userType} form={form} name={"name"} label={"Name"} type={"name"} placeholder={"John Smith"} /    >
+                                        <CustomFormField userType={userType} form={form} name={"email"} label={"Email"} type={"email"} placeholder={"johnsmith@gmail.com"} readOnly={true} />
                                         <CustomFormField userType={userType} form={form} name={"phoneNumber"} label={"Phone Number"} type={"phoneNumber"} placeholder={"09123456789"} />
                                         <CustomFormField userType={userType} form={form} name={"address"} label={"Address"} type={"address"} placeholder={"Address line"} />
                                         <div className="flex gap-4 grow">
