@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_08_095641) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_08_154014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_08_095641) do
     t.string "payment_method", null: false
     t.bigint "homeowner_id", null: false
     t.string "service_title", null: false
+    t.integer "service_id"
     t.index ["homeowner_id"], name: "index_bookings_on_homeowner_id"
     t.index ["housemate_id"], name: "index_bookings_on_housemate_id"
   end
@@ -87,6 +88,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_08_095641) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.string "email"
+    t.decimal "balance", precision: 10, scale: 2
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -131,7 +133,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_08_095641) do
   add_foreign_key "booking_services", "bookings"
   add_foreign_key "booking_services", "services"
   add_foreign_key "booking_services", "subservices"
-  add_foreign_key "bookings", "housemates"
   add_foreign_key "housemate_services", "services"
   add_foreign_key "housemate_services", "users", column: "housemate_id"
   add_foreign_key "profiles", "users"
