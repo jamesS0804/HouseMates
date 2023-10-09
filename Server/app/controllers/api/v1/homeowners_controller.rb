@@ -13,7 +13,7 @@ module Api
             def update
                 homeowner = Homeowner.find(params[:id])
 
-                if homeowner.update(homeowner)
+                if homeowner.update(homeowner_params)
                     render json: { data: HomeownerSerializer.new(homeowner).serializable_hash[:data][:attributes], status: :ok }
                   else
                     render json: { errors: homeowner.errors }, status: :unprocessable_entity

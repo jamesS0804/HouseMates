@@ -31073,3 +31073,72 @@ Completed 500 Internal Server Error in 35ms (ActiveRecord: 6.6ms | Allocations: 
 NoMethodError (undefined method `-' for nil:NilClass):
   
 app/controllers/api/v1/bookings_controller.rb:105:in `update'
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+Started PATCH "/api/v1/homeowners/27" for ::1 at 2023-10-10 05:34:19 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HomeownersController#update as */*
+  Parameters: {"homeowner"=>{"is_verified"=>true}, "id"=>"27"}
+  [1m[36mHomeowner Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Homeowner"], ["id", 27], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/homeowners_controller.rb:14:in `update'
+Completed 404 Not Found in 22ms (ActiveRecord: 4.0ms | Allocations: 9563)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Homeowner with 'id'=27):
+  
+app/controllers/api/v1/homeowners_controller.rb:14:in `update'
+Started PATCH "/api/v1/homeowners/1" for ::1 at 2023-10-10 05:34:34 +0800
+Processing by Api::V1::HomeownersController#update as */*
+  Parameters: {"homeowner"=>{"is_verified"=>true}, "id"=>"1"}
+  [1m[36mHomeowner Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Homeowner"], ["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/homeowners_controller.rb:14:in `update'
+Completed 404 Not Found in 2ms (ActiveRecord: 0.3ms | Allocations: 540)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Homeowner with 'id'=1):
+  
+app/controllers/api/v1/homeowners_controller.rb:14:in `update'
+Started PATCH "/api/v1/homeowners/2" for ::1 at 2023-10-10 05:34:37 +0800
+Processing by Api::V1::HomeownersController#update as */*
+  Parameters: {"homeowner"=>{"is_verified"=>true}, "id"=>"2"}
+  [1m[36mHomeowner Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Homeowner"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/homeowners_controller.rb:14:in `update'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/homeowners_controller.rb:16:in `update'
+  [1m[36mHomeowner Update (1.2ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "is_verified" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-10-09 21:34:37.701153"], ["is_verified", true], ["id", 2]]
+  ↳ app/controllers/api/v1/homeowners_controller.rb:16:in `update'
+  [1m[36mTRANSACTION (5.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/homeowners_controller.rb:16:in `update'
+Completed 500 Internal Server Error in 51ms (ActiveRecord: 7.4ms | Allocations: 27114)
+
+
+  
+NoMethodError (undefined method `isVerified' for #<Homeowner is_verified: true, email: "homeowner@test.com", id: 2, created_at: "2023-10-08 11:46:50.840223000 +0000", updated_at: "2023-10-09 21:34:37.701153000 +0000", jti: "518a49c4-45a8-4cb3-a255-cf76912e8f91", is_active: false>):
+  
+app/controllers/api/v1/homeowners_controller.rb:17:in `update'
+Started PATCH "/api/v1/homeowners/2" for ::1 at 2023-10-10 05:35:20 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::HomeownersController#update as */*
+  Parameters: {"homeowner"=>{"is_verified"=>true}, "id"=>"2"}
+  [1m[36mHomeowner Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Homeowner"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/homeowners_controller.rb:14:in `update'
+Completed 500 Internal Server Error in 68ms (ActiveRecord: 4.0ms | Allocations: 30592)
+
+
+  
+SyntaxError (/home/jsucaldito84/Avion/Rails/HouseMates App/Server/app/serializers/homeowner_serializer.rb:3: syntax error, unexpected local variable or method, expecting `end' or dummy end
+...utes :id, :email, :is_v erified, :created_at, :updated_at
+...                        ^~~~~~~
+):
+  
+app/serializers/homeowner_serializer.rb:3: syntax error, unexpected local variable or method, expecting `end' or dummy end
+app/controllers/api/v1/homeowners_controller.rb:17:in `update'
+Started PATCH "/api/v1/homeowners/2" for ::1 at 2023-10-10 05:35:26 +0800
+Processing by Api::V1::HomeownersController#update as */*
+  Parameters: {"homeowner"=>{"is_verified"=>true}, "id"=>"2"}
+  [1m[36mHomeowner Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."type" = $1 AND "users"."id" = $2 LIMIT $3[0m  [["type", "Homeowner"], ["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/homeowners_controller.rb:14:in `update'
+Completed 200 OK in 13ms (Views: 0.5ms | ActiveRecord: 2.3ms | Allocations: 12658)
+
+
