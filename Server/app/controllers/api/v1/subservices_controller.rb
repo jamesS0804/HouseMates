@@ -20,7 +20,7 @@ module Api
             end
 
             def update
-                subservice = subservice.find(params[:id])
+                subservice = Subservice.find(params[:id])
                 if subservice.update(subservice_params)
                     render_subservice_json(subservice, :ok)
                 else
