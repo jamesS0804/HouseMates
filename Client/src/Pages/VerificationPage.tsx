@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
-import NavigationBar from "@/Main Components/NavigationBar";
 import { Form, FormField, FormMessage, FormLabel, FormItem, FormControl } from "@/components/ui/form"
 import { getBarangays, getCities, getProvinces } from "@/utils/geographic_data";
 import { useEffect, useState } from "react";
@@ -17,6 +16,7 @@ import progressPart1 from "../assets/images/progress1.png"
 import progressPart2 from "../assets/images/progress2.png"
 import ServiceSelection from "@/Main Components/ServiceSelection";
 import authenticated_api from "@/utils/authenticated_api";
+import { AxiosInstance } from "axios";
 
 interface VerificationPageProps {
     userType: string,
@@ -35,7 +35,8 @@ interface VerificationPageProps {
         }
     },
     setCurrentUser: Function,
-    setIsVerified: Function
+    setIsVerified: Function,
+    api: AxiosInstance
 }
 
 const formSchema = z.object({
@@ -52,7 +53,7 @@ const formSchema = z.object({
 })
 
 export default function VerificationPage(props:VerificationPageProps) {
-    const { userType, navigate, currentUser, setCurrentUser, setIsVerified } = props
+    const { userType, navigate, currentUser, setCurrentUser, setIsVerified, api } = props
     const provinces = getProvinces()
     const [ selectedProvince, setSelectedProvince ] = useState("")
     const [ selectedCity, setSelectedCity ] = useState("") 
@@ -60,7 +61,7 @@ export default function VerificationPage(props:VerificationPageProps) {
     const [ cities, setCities ] = useState<Array<string>>([])
     const [ zipcode, setZipcode ] = useState("")
     const [ verificationPart, setVerificationPart ] = useState(1)
-    const [ preferredServices, setPreferredServices ] = useState<Array<string>>([]) 
+    const [ preferredServices, setPreferredServices ] = useState<Array<object>>([]) 
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -240,7 +241,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                                 :
                                 <div className="mt-4 flex flex-col gap-2">
                                     <h3>Please select your preferred service below:</h3>
-                                    <ServiceSelection userType={userType} selectionType="multiple" outputData={preferredServices} setOutputData={setPreferredServices} />
+                                    <ServiceSelection userType={userType} selectionType="multiple" outputData={preferredServices} setOutputData={setPreferredServices} api={api}/>
                                 </div>
                         }
                     </div>
@@ -251,7 +252,6 @@ export default function VerificationPage(props:VerificationPageProps) {
                     onClick={ verificationPart === 1 ? form.handleSubmit(basicInfoSubmit) : form.handleSubmit(basicInfoAndServicesSubmit)}
                 >{ verificationPart === 1 ? "Next" : "Submit" }</Button>
             </div>
-            // <NavigationBar userType={userType} />
         </div>
     )
 }

@@ -31,9 +31,25 @@ type User = {
   }
 }
 
+type SelectedService = {
+  id: number
+  title: string
+  price: number
+  serviceName: string
+  icon: string
+  background: string
+}
+
 export default function App() {
   const [ userType, setUserType ] = useState(() => sessionStorage.getItem('userType') ? String(sessionStorage.getItem('userType')) : 'Homeowner')
-  const [ selectedService, setSelectedService ] = useState("")
+  const [ selectedService, setSelectedService ] = useState<SelectedService>({
+    id: 0,
+    title: "",
+    price: 0,
+    serviceName: "",
+    icon: "",
+    background: ""
+  })
   const navigate = useNavigate()
   const location = useLocation();
   const api = axios.create({
@@ -92,14 +108,14 @@ export default function App() {
           <LoginPage userType={userType} navigate={navigate} api={api} setCurrentUser={setCurrentUser} setAuthKey={setAuthKey} setIsVerified={setIsVerified} />
         } />
         <Route path='/verification' element={
-          <VerificationPage userType={userType} navigate={navigate} currentUser={currentUser} setCurrentUser={setCurrentUser} setIsVerified={setIsVerified} />
+          <VerificationPage userType={userType} navigate={navigate} currentUser={currentUser} setCurrentUser={setCurrentUser} setIsVerified={setIsVerified} api={api} />
         } />
-        <Route path='/home' element={<HomePage userType={userType} navigate={navigate} selectedService={selectedService} setSelectedService={setSelectedService} />} />
+        <Route path='/home' element={<HomePage userType={userType} navigate={navigate} selectedService={selectedService} setSelectedService={setSelectedService} api={api}/>} />
         <Route path='/bookings' element={<BookingsPage userType={userType} navigate={navigate} />} />
         <Route path='/messages' element={<MessagesPage userType={userType} navigate={navigate} />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
-        <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
+        <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} api={api} />} />
         <Route path='/bookingDetails' element={<BookingDetailsPage navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
       </Routes>
     </div>

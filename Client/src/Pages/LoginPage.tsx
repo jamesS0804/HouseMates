@@ -55,8 +55,9 @@ export default function LoginPage(props:LoginPageProps){
                 sessionStorage.setItem('email', jsonResponse.email)
                 setAuthKey(res.headers['authorization'])
                 sessionStorage.setItem('authToken', res.headers['authorization'].split(' ')[1])
-                setIsVerified(jsonResponse.isVerified)
-                jsonResponse.isVerified ? navigate("/home") : navigate("/verification")
+                setIsVerified(jsonResponse.is_verified)
+                sessionStorage.setItem('isVerified', jsonResponse.is_verified)
+                jsonResponse.is_verified ? navigate("/home") : navigate("/verification")
             } else {
                 console.log(res)
             }

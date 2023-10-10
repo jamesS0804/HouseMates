@@ -9,14 +9,21 @@ import washingMachine from "../../assets/images/Service Variations/General Clean
 import Counter from "../Counter";
 import StringIterator from "../StringIterator";
 import { useEffect, useState } from "react";
+import { AxiosInstance } from "axios";
 
 interface GeneralCleaningProps {
     serviceDetails: Record<string, any>
     setServiceDetails: Function
+    api: AxiosInstance
+    selectedService: SelectedService
+}
+
+type SelectedService = {
+    id: number
 }
 
 export default function GeneralCleaning(props: GeneralCleaningProps) {
-    const { serviceDetails, setServiceDetails } = props
+    const { serviceDetails, setServiceDetails, api, selectedService } = props
     
     const [inputData, setInputData] = useState({
         homeType: { type: 'condo', title: 'Condo (20 -60 sqm)', price: 100 },
@@ -26,9 +33,18 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
     })
 
     useEffect(() => {
+        getSubserviceData()
         setServiceDetails({ ...serviceDetails, data: inputData})
     }, [inputData])
     
+    const getSubserviceData = async () => {
+        try {
+            const res = await api.get(`api/v1/subservices/${selectedService.id}`)
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const options = {
         homeType: [

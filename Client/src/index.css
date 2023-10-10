@@ -18,6 +18,23 @@
     input:focus {
         scroll-behavior: smooth;
     }
+
+    .header-1 {
+        color: rgb(235,206,159);
+        text-shadow:
+         -1px -1px 0 rgb(235,206,159, 0.7),  
+          1px -1px 0 rgb(235,206,159, 0.7),
+          -1px 1px 0 rgb(235,206,159, 0.7),
+           1px 1px 0 rgb(235,206,159, 0.7);
+    }
+    .header-2 {
+        color: #CE9354;
+        text-shadow:
+         -1px -1px 0 #CE9354,  
+          1px -1px 0 #CE9354,
+          -1px 1px 0 #CE9354,
+           1px 1px 0 #CE9354;
+    }
       
 }
 

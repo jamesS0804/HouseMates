@@ -14,7 +14,7 @@ export default function MessagesPage(props: MessagesPageProps) {
         <div className="h-screen flex flex-col items-center">
             <BackButton navigate={navigate} />
             <div className={`flex flex-col items-center w-full ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
-                <h1 className="my-4 font-verdana text-[#EBCE9F] font-black">My Messages</h1>
+                <h1 className="my-4 font-verdana text-[#EBCE9F] font-black header-2">My Messages</h1>
             </div>
             <div className="flex-1 h-full w-screen flex flex-col items-center justify-center">
                 {

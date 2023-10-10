@@ -8,24 +8,35 @@ import favoriteHousemate from "../assets/images/favoriteHousemates.png"
 import news from "../assets/images/news.png"
 import discounts from "../assets/images/discount.png"
 import HSHomePage from "./Housemates/HSHomePage"
-
+import { AxiosInstance } from "axios"
 
 interface HomePageProps {
     userType: string,
     navigate: Function,
-    selectedService: string,
-    setSelectedService: Function
+    selectedService: Service,
+    setSelectedService: Function,
+    api: AxiosInstance
+}
+
+type Service = {
+    id: number,
+    title: string,
+    serviceName: string,
+    price: number,
+    icon: string
 }
 
 export default function HomePage(props: HomePageProps) {
-    const { userType, navigate, selectedService, setSelectedService } = props
+    const { userType, navigate, selectedService, setSelectedService, api } = props
 
     useEffect(()=>{
+        console.log(selectedService)
         setSelectedService(selectedService)
     },[])
 
     useEffect(()=>{
-        if(selectedService) navigate("/services")
+        console.log(selectedService)
+        if(selectedService.title) navigate("/services")
     },[selectedService])
 
     return(
@@ -54,7 +65,7 @@ export default function HomePage(props: HomePageProps) {
                         </div>
                         <div className="p-4 flex flex-col gap-2 pb-20">
                             <h3 className="font-bold text-xl">Categories</h3>
-                            <ServiceSelection userType={userType} selectionType="single" outputData={selectedService} setOutputData={setSelectedService} />
+                            <ServiceSelection userType={userType} selectionType="single" outputData={selectedService} setOutputData={setSelectedService} api={api} />
                         </div>
                     </div>
                     :

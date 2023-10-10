@@ -1,18 +1,17 @@
 import BackButton from "@/Main Components/BackButton"
 import { Button } from "@/components/ui/button"
-import generalCleaningBG from "../assets/images/generalCleaningBG.png"
-import airconServicesBG from "../assets/images/airconServicesBG.png"
-import plumbingBG from "../assets/images/plumbingBG.png"
 import GeneralCleaning from "@/Main Components/Service Variations/GeneralCleaning"
-import { useLayoutEffect } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import getTotalCost from "@/utils/getTotalCost"
+import { AxiosInstance } from "axios"
 
 interface ServiceVariationsPageProps {
-    selectedService: string
+    selectedService: SelectedService
     setSelectedService?: Function
     navigate: Function
     serviceDetails: ServiceDetails
     setServiceDetails: Function
+    api: AxiosInstance
 }
 
 type ServiceDetails = {
@@ -23,33 +22,30 @@ type ServiceDetails = {
 
 type Services = {
     [serviceName: string] : {
-        title: string,
-        image: any,
-        price: string,
         element?: any
     };
 };
 
+type SelectedService = {
+    id: number,
+    serviceName: string,
+    background: string,
+    title: string
+}
+
 export default function ServiceVariationsPage(props: ServiceVariationsPageProps) {
-    const { selectedService, navigate, serviceDetails, setServiceDetails } = props
+    const { selectedService, navigate, serviceDetails, setServiceDetails, api } = props
 
     const services: Services = {
         'General Cleaning': { 
-            title: 'Cleaning Services', 
-            image: generalCleaningBG, 
-            price: '399', 
-            element: <GeneralCleaning serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />},
-        'Aircon Services': { 
-            title: 'Aircon Services', 
-            image: airconServicesBG, 
-            price: '699'},
-        'Plumbing': { 
-            title: 'Plumbing Services', 
-            image: plumbingBG, 
-            price: '599'},
+            element: <GeneralCleaning serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} api={api} selectedService={selectedService}/>},
     }
-    const service = services['General Cleaning']    
+    const service = services[selectedService.serviceName]    
     
+    useEffect(()=>{
+        console.log(selectedService)
+    },[])
+
     useLayoutEffect(()=>{
         if(Object.keys(serviceDetails.data).length !== 0) {
             const totalPrice = getTotalCost(serviceDetails)
@@ -65,13 +61,13 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
         <div className="h-screen flex flex-col relative">
             <BackButton navigate={navigate}/>
             {
-                selectedService === "" ? <></> :
+                selectedService.serviceName === "" ? <></> :
                 <>
                     <div className="h-36 relative">
-                        <img className="h-36 w-screen object-none -scale-x-1" src={service.image}/>
-                        <h1 className="absolute w-10 m-0 bottom-1 text-3xl font-bold px-3 text-secondary font-verdana [text-shadow:0px_3px_4px_rgba(235_206_159_/_70%)]">{service.title.toUpperCase()}</h1>
+                        <img className="h-36 w-screen object-none -scale-x-1" src={selectedService.background}/>
+                        <h1 className="absolute w-10 m-0 bottom-1 text-3xl font-bold px-3 header-1 text-secondary font-verdana">{selectedService.title.toUpperCase()}</h1>
                     </div>
-                    { service.element }
+                    { service.element? service.element : <></> }
                     <div className="mt-auto fixed bottom-0">
                         <div className="bg-white border border-primary flex text-primary text-xs text-center p-2 rounded-t-lg">
                             <h3 className="text-xl font-black flex items-center">Total cost:</h3>
