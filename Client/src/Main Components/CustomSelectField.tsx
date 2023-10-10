@@ -32,7 +32,7 @@ export default function CustomSelectField(props:CustomSelectFieldProps){
                                 <SelectValue placeholder={label} />
                             </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="h-40 w-[70%]">
+                        <SelectContent className={ name === "province" ? `h-40 w-[20rem]` : `h-40 w-[12rem]`}>
                             {
                                 data.map((name:string)=>{
                                     return(

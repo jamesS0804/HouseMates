@@ -14,6 +14,11 @@
 
     html { height: 100%; overflow:auto; }
     body { height: 100%; }
+
+    input:focus {
+        scroll-behavior: smooth;
+    }
+      
 }
 
 @layer components {

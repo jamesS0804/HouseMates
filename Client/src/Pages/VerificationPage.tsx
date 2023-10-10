@@ -108,7 +108,7 @@ export default function VerificationPage(props:VerificationPageProps) {
     const updateIsVerified = async (userID:number, userUrl:string) => {
         console.log("updating verified")
         try {
-            const res = await authenticated_api.post(`api/v1/${userUrl}/${userID}`, {
+            const res = await authenticated_api.patch(`api/v1/${userUrl}/${userID}`, {
                 [userType.toLowerCase()]: {
                     is_verified: true
                 } 
@@ -251,7 +251,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                     onClick={ verificationPart === 1 ? form.handleSubmit(basicInfoSubmit) : form.handleSubmit(basicInfoAndServicesSubmit)}
                 >{ verificationPart === 1 ? "Next" : "Submit" }</Button>
             </div>
-            <NavigationBar userType={userType} />
+            // <NavigationBar userType={userType} />
         </div>
     )
 }

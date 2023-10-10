@@ -52,6 +52,7 @@ export default function LoginPage(props:LoginPageProps){
                     isVerified: jsonResponse.is_verified,
                     userType: jsonResponse.type
                 })
+                sessionStorage.setItem('email', jsonResponse.email)
                 setAuthKey(res.headers['authorization'])
                 sessionStorage.setItem('authToken', res.headers['authorization'].split(' ')[1])
                 setIsVerified(jsonResponse.isVerified)

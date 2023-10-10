@@ -41,7 +41,7 @@ export default function App() {
   })
   const [ currentUser, setCurrentUser ] = useState<User>({
     id: 0, 
-    email: "",
+    email: sessionStorage.getItem('email') || "",
     isVerified: "",
     userType: "",
     name: "",

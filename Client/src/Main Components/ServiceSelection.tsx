@@ -11,6 +11,7 @@ import dogWalker from "../assets/images/dogWalker.png"
 import familyCare from "../assets/images/familyCare.png"
 import gardening from "../assets/images/gardening.png"
 import dogSitting from "../assets/images/dogSitting.png"
+import { useEffect } from "react"
 
 interface ServiceSelectionProps {
     userType: string,
@@ -21,6 +22,14 @@ interface ServiceSelectionProps {
 
 export default function ServiceSelection(props: ServiceSelectionProps){
     const { userType, selectionType, outputData, setOutputData } = props
+
+    useEffect(()=>{
+        getServicesData()
+    },[])
+
+    const getServicesData = async () => {
+
+    }
 
     const services = [
         { title: "General Cleaning", image: generalCleaning },
