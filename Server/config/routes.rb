@@ -15,7 +15,11 @@ Rails.application.routes.draw do
       resources :housemates
       resources :profiles
       resources :services
-      resources :subservices
+      resources :subservices do
+        collection do
+          post 'update_all'
+        end
+      end
       resources :housemate_services
       resources :bookings
     end

@@ -2,7 +2,12 @@ module Api
     module V1
         class SubservicesController < ApplicationController
             respond_to :json
-            
+
+            def update_all
+                Subservice.where(category: nil).update_all(category: "Category Name")
+                render_subservice_json(Subservice.all, :ok)
+            end
+
             def create
                 service = Service.find(subservice_params[:service_id])
                 subservice = service.subservices.new(subservice_params)
@@ -31,7 +36,7 @@ module Api
             private
         
             def serialize_subservices(subservices)
-                ServiceSerializer.new(subservices).serializable_hash[:data].map { |data| data[:attributes] }
+                SubserviceSerializer.new(subservices).serializable_hash[:data].map { |data| data[:attributes] }
             end
 
             def render_subservice_json(subservices, status)
@@ -40,7 +45,7 @@ module Api
             end
 
             def subservice_params
-                params.require(:subservice).permit(:service_id, :service_title, :title, :price)
+                params.require(:subservice).permit(:service_id, :service_title, :title, :category, :price)
             end
         end
     end

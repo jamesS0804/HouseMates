@@ -31287,3 +31287,261 @@ Processing by Api::V1::SubservicesController#show as */*
 Completed 200 OK in 28ms (Views: 0.3ms | ActiveRecord: 5.9ms | Allocations: 16257)
 
 
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+Migrating to AddCategoryColumnInSubservice (20231010215748)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.8ms)[0m  [1m[35mALTER TABLE "subservices" ADD "category" character varying[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20231010215748') RETURNING "version"[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+Started GET "/api/v1/subservices/1" for ::1 at 2023-10-11 05:59:19 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mService Load (0.9ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:17:in `show'
+  [1m[36mSubservice Load (1.1ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:34:in `serialize_subservices'
+Completed 200 OK in 84ms (Views: 0.9ms | ActiveRecord: 7.4ms | Allocations: 33285)
+
+
+Started PATCH "/api/v1/subservices/3" for ::1 at 2023-10-11 06:00:16 +0800
+Processing by Api::V1::SubservicesController#update as */*
+  Parameters: {"subservice"=>{"service_id"=>1, "service_title"=>"Cleaning Services", "title"=>"Laundry", "category"=>"Home Type", "price"=>18}, "id"=>"3"}
+  [1m[36mSubservice Load (0.2ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:23:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mService Load (0.1ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mSubservice Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "subservices" WHERE "subservices"."title" = $1 AND "subservices"."id" != $2 LIMIT $3[0m  [["title", "Laundry"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mSubservice Update (1.5ms)[0m  [1m[33mUPDATE "subservices" SET "title" = $1, "price" = $2, "updated_at" = $3, "category" = $4 WHERE "subservices"."id" = $5[0m  [["title", "Laundry"], ["price", "18.0"], ["updated_at", "2023-10-10 22:00:16.095527"], ["category", "Home Type"], ["id", 3]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+Completed 500 Internal Server Error in 16ms (ActiveRecord: 5.8ms | Allocations: 5387)
+
+
+  
+TypeError (no implicit conversion of Symbol into Integer):
+  
+app/controllers/api/v1/subservices_controller.rb:34:in `block in serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:34:in `each'
+app/controllers/api/v1/subservices_controller.rb:34:in `map'
+app/controllers/api/v1/subservices_controller.rb:34:in `serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:38:in `render_subservice_json'
+app/controllers/api/v1/subservices_controller.rb:25:in `update'
+Started PATCH "/api/v1/subservices/3" for ::1 at 2023-10-11 06:01:02 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::SubservicesController#update as */*
+  Parameters: {"subservice"=>{"service_id"=>1, "service_title"=>"Cleaning Services", "title"=>"Laundry", "category"=>"Home Type", "price"=>18}, "id"=>"3"}
+  [1m[36mSubservice Load (0.4ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:23:in `update'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mSubservice Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "subservices" WHERE "subservices"."title" = $1 AND "subservices"."id" != $2 LIMIT $3[0m  [["title", "Laundry"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+Completed 500 Internal Server Error in 58ms (ActiveRecord: 9.4ms | Allocations: 26156)
+
+
+  
+TypeError (no implicit conversion of Symbol into Integer):
+  
+app/controllers/api/v1/subservices_controller.rb:34:in `block in serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:34:in `each'
+app/controllers/api/v1/subservices_controller.rb:34:in `map'
+app/controllers/api/v1/subservices_controller.rb:34:in `serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:38:in `render_subservice_json'
+app/controllers/api/v1/subservices_controller.rb:25:in `update'
+Started PUT "/api/v1/subservices/3" for ::1 at 2023-10-11 06:01:26 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::SubservicesController#update as */*
+  Parameters: {"subservice"=>{"service_id"=>1, "service_title"=>"Cleaning Services", "title"=>"Laundry", "category"=>"Home Type", "price"=>18}, "id"=>"3"}
+  [1m[36mSubservice Load (0.3ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:23:in `update'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mSubservice Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "subservices" WHERE "subservices"."title" = $1 AND "subservices"."id" != $2 LIMIT $3[0m  [["title", "Laundry"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+Completed 500 Internal Server Error in 57ms (ActiveRecord: 8.9ms | Allocations: 26156)
+
+
+  
+TypeError (no implicit conversion of Symbol into Integer):
+  
+app/controllers/api/v1/subservices_controller.rb:34:in `block in serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:34:in `each'
+app/controllers/api/v1/subservices_controller.rb:34:in `map'
+app/controllers/api/v1/subservices_controller.rb:34:in `serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:38:in `render_subservice_json'
+app/controllers/api/v1/subservices_controller.rb:25:in `update'
+Started GET "/api/v1/subservices/3" for ::1 at 2023-10-11 06:02:58 +0800
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"3"}
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:17:in `show'
+  [1m[36mSubservice Load (0.2ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 3]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:34:in `serialize_subservices'
+Completed 200 OK in 13ms (Views: 0.1ms | ActiveRecord: 4.0ms | Allocations: 6544)
+
+
+Started GET "/api/v1/subservices/1" for ::1 at 2023-10-11 06:03:02 +0800
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:17:in `show'
+  [1m[36mSubservice Load (0.2ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:34:in `serialize_subservices'
+Completed 200 OK in 6ms (Views: 0.5ms | ActiveRecord: 0.5ms | Allocations: 4736)
+
+
+Started PATCH "/api/v1/subservices/3" for ::1 at 2023-10-11 06:03:35 +0800
+Processing by Api::V1::SubservicesController#update as */*
+  Parameters: {"subservice"=>{"service_id"=>1, "service_title"=>"Cleaning Services", "title"=>"Laundry", "category"=>"Home Type", "price"=>18}, "id"=>"3"}
+  [1m[36mSubservice Load (0.3ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:23:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mService Load (0.1ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mSubservice Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "subservices" WHERE "subservices"."title" = $1 AND "subservices"."id" != $2 LIMIT $3[0m  [["title", "Laundry"], ["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:24:in `update'
+Completed 500 Internal Server Error in 6ms (ActiveRecord: 0.8ms | Allocations: 3280)
+
+
+  
+TypeError (no implicit conversion of Symbol into Integer):
+  
+app/controllers/api/v1/subservices_controller.rb:34:in `block in serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:34:in `each'
+app/controllers/api/v1/subservices_controller.rb:34:in `map'
+app/controllers/api/v1/subservices_controller.rb:34:in `serialize_subservices'
+app/controllers/api/v1/subservices_controller.rb:38:in `render_subservice_json'
+app/controllers/api/v1/subservices_controller.rb:25:in `update'
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+Migrating to UpdateExistingDataWithCategoryColumn (20231010220715)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mSubservice Update All (0.3ms)[0m  [1m[33mUPDATE "subservices" SET "category" = $1 WHERE "subservices"."category" IS NULL[0m  [["category", "Home Type"]]
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20231010220715') RETURNING "version"[0m
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+  [1m[36mSubservice Load (0.4ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" /* loading for pp */ LIMIT $1[0m  [["LIMIT", 11]]
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+Started POST "/api/v1/subservices/update_all" for ::1 at 2023-10-11 06:11:40 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+SyntaxError (/home/jsucaldito84/Avion/Rails/HouseMates App/Server/app/controllers/api/v1/subservices_controller.rb:8: syntax error, unexpected label, expecting `end' or dummy end
+...           render json: status: :ok
+...                        ^~~~~~~
+):
+  
+app/controllers/api/v1/subservices_controller.rb:8: syntax error, unexpected label, expecting `end' or dummy end
+Started POST "/api/v1/subservices/update_all" for ::1 at 2023-10-11 06:11:48 +0800
+Processing by Api::V1::SubservicesController#update_all as */*
+  [1m[36mSubservice Update All (0.3ms)[0m  [1m[33mUPDATE "subservices" SET "category" = $1 WHERE "subservices"."category" IS NULL[0m  [["category", "Category Name"]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:7:in `update_all'
+Completed 200 OK in 16ms (Views: 0.2ms | ActiveRecord: 3.6ms | Allocations: 6763)
+
+
+Started GET "/api/v1/subservices/1" for ::1 at 2023-10-11 06:11:56 +0800
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:22:in `show'
+  [1m[36mSubservice Load (0.2ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:39:in `serialize_subservices'
+Completed 200 OK in 34ms (Views: 0.4ms | ActiveRecord: 2.1ms | Allocations: 19282)
+
+
+Started POST "/api/v1/subservices/update_all" for ::1 at 2023-10-11 06:12:38 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+SyntaxError (/home/jsucaldito84/Avion/Rails/HouseMates App/Server/app/controllers/api/v1/subservices_controller.rb:8: syntax error, unexpected ',', expecting =>
+...json: { data = Subservice.all , status: :ok }
+...                              ^
+):
+  
+app/controllers/api/v1/subservices_controller.rb:8: syntax error, unexpected ',', expecting =>
+Started POST "/api/v1/subservices/update_all" for ::1 at 2023-10-11 06:12:46 +0800
+Processing by Api::V1::SubservicesController#update_all as */*
+  [1m[36mSubservice Update All (0.3ms)[0m  [1m[33mUPDATE "subservices" SET "category" = $1 WHERE "subservices"."category" IS NULL[0m  [["category", "Category Name"]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:7:in `update_all'
+  [1m[36mSubservice Load (0.1ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices"[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:8:in `update_all'
+Completed 200 OK in 38ms (Views: 21.1ms | ActiveRecord: 3.7ms | Allocations: 19305)
+
+
+Started GET "/api/v1/subservices/1" for ::1 at 2023-10-11 06:13:11 +0800
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mService Load (0.1ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:22:in `show'
+  [1m[36mSubservice Load (0.3ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:39:in `serialize_subservices'
+Completed 200 OK in 19ms (Views: 0.3ms | ActiveRecord: 4.3ms | Allocations: 10116)
+
+
+Started GET "/api/v1/subservices/1" for ::1 at 2023-10-11 06:13:45 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:22:in `show'
+  [1m[36mSubservice Load (0.2ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:39:in `serialize_subservices'
+Completed 200 OK in 48ms (Views: 0.6ms | ActiveRecord: 5.4ms | Allocations: 25541)
+
+
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+Started GET "/api/v1/subservices/1" for ::1 at 2023-10-11 06:14:09 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:22:in `show'
+  [1m[36mSubservice Load (0.3ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:39:in `serialize_subservices'
+Completed 200 OK in 49ms (Views: 0.6ms | ActiveRecord: 5.3ms | Allocations: 25471)
+
+
+Started POST "/api/v1/subservices/update_all" for ::1 at 2023-10-11 06:15:02 +0800
+Processing by Api::V1::SubservicesController#update_all as */*
+  [1m[36mSubservice Update All (0.3ms)[0m  [1m[33mUPDATE "subservices" SET "category" = $1 WHERE "subservices"."category" IS NULL[0m  [["category", "Category Name"]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:7:in `update_all'
+  [1m[36mSubservice Load (0.2ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices"[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:39:in `serialize_subservices'
+Completed 200 OK in 24ms (Views: 0.4ms | ActiveRecord: 2.7ms | Allocations: 6318)
+
+
+Started POST "/api/v1/subservices/update_all" for ::1 at 2023-10-11 06:15:15 +0800
+Processing by Api::V1::SubservicesController#update_all as */*
+  [1m[36mSubservice Update All (0.2ms)[0m  [1m[33mUPDATE "subservices" SET "category" = $1 WHERE "subservices"."category" IS NULL[0m  [["category", "Category Name"]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:7:in `update_all'
+  [1m[36mSubservice Load (0.2ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices"[0m
+  ↳ app/controllers/api/v1/subservices_controller.rb:39:in `serialize_subservices'
+Completed 200 OK in 10ms (Views: 0.4ms | ActiveRecord: 2.6ms | Allocations: 6303)
+
+
