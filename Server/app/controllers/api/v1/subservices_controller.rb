@@ -7,20 +7,29 @@ module Api
                 service = Service.find(subservice_params[:service_id])
                 subservice = service.subservices.new(subservice_params)
                 if subservice.save
-                    render json: { data: SubserviceSerializer.new(subservice).serializable_hash[:data][:attributes], status: :created }
+                    render_subservice_json(subservice, :created)
                 else
                     render json: { errors: subservice.errors, status: :unprocessable_entity }
                 end
             end
         
             def show
-                service = Service.find_by(title: params[:service_title])
+                service = Service.find(params[:id])
                 subservices = service.subservices.all
-                render json: { data: subservices, status: :ok } 
+                render_subservice_json(subservices, :ok)
             end
 
             private
         
+            def serialize_subservices(subservices)
+                ServiceSerializer.new(subservices).serializable_hash[:data].map { |data| data[:attributes] }
+            end
+
+            def render_subservice_json(subservices, status)
+                serialized_data = serialize_subservices(subservices)
+                render json: { data: serialized_data, status: status }
+            end
+
             def subservice_params
                 params.require(:subservice).permit(:service_id, :service_title, :title, :price)
             end
