@@ -19,6 +19,15 @@ module Api
                 render_subservice_json(subservices, :ok)
             end
 
+            def update
+                subservice = subservice.find(params[:id])
+                if subservice.update(subservice_params)
+                    render_subservice_json(subservice, :ok)
+                else
+                    render json: { errors: subservice.errors, status: :unprocessable_entity }
+                end
+            end
+
             private
         
             def serialize_subservices(subservices)
