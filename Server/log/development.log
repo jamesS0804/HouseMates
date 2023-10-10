@@ -31558,3 +31558,15 @@ Migrating to AddImageAndUnitColumnsToSubservice (20231010233328)
   [1m[36mTRANSACTION (5.0ms)[0m  [1m[35mCOMMIT[0m
   [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+Started GET "/api/v1/subservices/1" for ::1 at 2023-10-11 07:57:51 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::SubservicesController#show as */*
+  Parameters: {"id"=>"1"}
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:22:in `show'
+  [1m[36mSubservice Load (0.3ms)[0m  [1m[34mSELECT "subservices".* FROM "subservices" WHERE "subservices"."service_id" = $1[0m  [["service_id", 1]]
+  ↳ app/controllers/api/v1/subservices_controller.rb:39:in `serialize_subservices'
+Completed 200 OK in 58ms (Views: 0.7ms | ActiveRecord: 6.0ms | Allocations: 28126)
+
+

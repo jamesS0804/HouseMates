@@ -3,11 +3,6 @@ module Api
         class SubservicesController < ApplicationController
             respond_to :json
 
-            def update_all
-                Subservice.where(category: nil).update_all(category: "Category Name")
-                render_subservice_json(Subservice.all, :ok)
-            end
-
             def create
                 service = Service.find(subservice_params[:service_id])
                 subservice = service.subservices.new(subservice_params)
