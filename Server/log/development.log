@@ -31545,3 +31545,16 @@ Processing by Api::V1::SubservicesController#update_all as */*
 Completed 200 OK in 10ms (Views: 0.4ms | ActiveRecord: 2.6ms | Allocations: 6303)
 
 
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+DEPRECATION WARNING: `Rails.application.secrets` is deprecated in favor of `Rails.application.credentials` and will be removed in Rails 7.2. (called from <main> at /home/jsucaldito84/Avion/Rails/HouseMates App/Server/config/environment.rb:8)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+Migrating to AddImageAndUnitColumnsToSubservice (20231010233328)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "subservices" ADD "image_url" character varying[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "subservices" ADD "unit" character varying[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20231010233328') RETURNING "version"[0m
+  [1m[36mTRANSACTION (5.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(7370495045852506365)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m

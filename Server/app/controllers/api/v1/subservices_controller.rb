@@ -45,7 +45,7 @@ module Api
             end
 
             def subservice_params
-                params.require(:subservice).permit(:service_id, :service_title, :title, :category, :price)
+                params.require(:subservice).permit(:service_id, :service_title, :unit, :image_url :title, :category, :price)
             end
         end
     end
