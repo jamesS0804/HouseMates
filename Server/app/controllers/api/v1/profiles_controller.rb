@@ -20,7 +20,7 @@ class Api::V1::ProfilesController < ApplicationController
     end
 
     def show
-        user = User.find(profile_params[:id])
+        user = User.find(params[:id])
         profile = user.profile
         serialized_data = ProfileSerializer.new(profile).serializable_hash[:data][:attributes]
         render json: { data: serialized_data, status: :ok }
