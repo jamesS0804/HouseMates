@@ -44,8 +44,13 @@ export default function LoginPage(props:LoginPageProps){
                 }
             })
             if( res.status === 200) {
-                console.log(res)
                 const jsonResponse = res.data.data.user
+                // const resProfile = await api.get("api/v1/profiles", {
+                //     profile: {
+                //         id: jsonResponse.id
+                //     }
+                // })
+                // console.log(resProfile)
                 setCurrentUser({
                     id: jsonResponse.id, 
                     email: jsonResponse.email,

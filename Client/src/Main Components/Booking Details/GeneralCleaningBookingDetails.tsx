@@ -21,15 +21,15 @@ export default function GeneralCleaningBookingDetails(props: GeneralCleaningBook
             <h3 className="font-black text-primary">Booking Details</h3>
             <div className="flex gap-2">
                 <img className="h-5" src={home} />
-                <p className="text-sm">{serviceDetails.data.homeType.title}</p>
+                <p className="text-sm">{serviceDetails.data['Home Type'].title}</p>
             </div>
             <div className="flex gap-2">
                 <img className="h-5" src={bed} />
-                <p className="text-sm">{serviceDetails.data.numberOfBedroom.title}</p>
+                <p className="text-sm">{serviceDetails.data['Room Type'].title}</p>
             </div>
             <div className="flex gap-2">
                 <img className="h-5" src={baththub} />
-                <p className="text-sm">{serviceDetails.data.numberOfBathroom.title}</p>
+                <p className="text-sm">{serviceDetails.data['Bathroom Count'].title}</p>
             </div>
             <div className="flex gap-2">
                 <img className="h-5" src={clock} />

@@ -46,15 +46,11 @@ export default function ServiceSelection(props: ServiceSelectionProps){
     const getServicesData = async () => {
         try {
             const res = await api.get("api/v1/services")
-
-            console.log(res)
             const service_data = res.data.data
-
             if(res.status === 200){
                 const merged_services = service_data.map((service:ServiceData, index:number)=>(
                     { ...service, price: Number(service.price) ,...additional_service_details[index]}
                 ))
-                console.log(merged_services)
                 setServices(merged_services)
             } else {
                 console.log(res)
@@ -83,7 +79,6 @@ export default function ServiceSelection(props: ServiceSelectionProps){
         if(selectionType === 'single') {
             setOutputData(service)
         } else {
-            console.log(service + " is clicked!")
             if (outputData.includes(service)) {
                 setOutputData(outputData.filter((item:any) => item.id !== service));
             } else {

@@ -44,14 +44,12 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
 
     useEffect(()=>{
         if(Object.keys(serviceDetails.data).length !== 0) {
-            console.log(serviceDetails)
             const totalPrice = getTotalCost(serviceDetails)
             setServiceDetails({ ...serviceDetails, totalCost: totalPrice }) 
         }
     },[serviceDetails.data])
 
     const handleSubmit = () => {
-        console.log(serviceDetails)
         navigate("/bookingDetails")
     }
     return(

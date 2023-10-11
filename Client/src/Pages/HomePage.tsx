@@ -30,12 +30,10 @@ export default function HomePage(props: HomePageProps) {
     const { userType, navigate, selectedService, setSelectedService, api } = props
 
     useEffect(()=>{
-        console.log(selectedService)
         setSelectedService(selectedService)
     },[])
 
     useEffect(()=>{
-        console.log(selectedService)
         if(selectedService.title) navigate("/services")
     },[selectedService])
 

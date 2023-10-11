@@ -42,8 +42,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
     },[serviceDetails.data])
 
     useEffect(()=>{
-        setServiceDetails((prevVal:any) => prevVal = serviceDetails)
-        console.log(serviceDetails)
+        setServiceDetails(serviceDetails)
     },[page])
 
     const handleClick = () => {
@@ -100,17 +99,17 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                 <div className="flex flex-col gap-2">
                                     <h3>Extra Services</h3>
                                     {
-                                        serviceDetails.data.extraServices.length === 0 ? <h3 className="text-center">No extra services availed</h3>
+                                        serviceDetails.data['Extra Service'].length === 0 ? <h3 className="text-center">No extra services availed</h3>
                                             :
-                                            serviceDetails.data.extraServices.map((extraService:any)=>{
+                                            serviceDetails.data['Extra Service'].map((extraService:any)=>{
                                                 return(
-                                                    <div key={extraService.type} className="flex flex-col gap-1">
+                                                    <div key={extraService.id} className="flex flex-col gap-1">
                                                         <hr className="border-1 border-black"/>
                                                         <div  className="flex gap-2">
                                                             <img />
                                                             <div>
-                                                                <p className="font-black">{extraService.type}</p>
-                                                                <Counter unit={extraService.unit} valueType="extraServices" value={extraService} inputData={serviceDetails.data} setInputData={setServiceDetails} rootData={serviceDetails} />
+                                                                <p className="font-black">{extraService.title}</p>
+                                                                <Counter unit={extraService.unit} valueType="Extra Service" value={extraService} inputData={serviceDetails.data} setInputData={setServiceDetails} rootData={serviceDetails} />
                                                             </div>
                                                             <p className="ml-auto font-black text-secondary">₱{extraService.price}<span className="text-xs"> / {extraService.unit}</span></p>
                                                         </div>
