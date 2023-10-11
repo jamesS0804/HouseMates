@@ -111,7 +111,6 @@ export default function ServiceMainPage(props: ServiceMainPage) {
     const service = Object.assign({ ...selectedService, ...services[selectedService.serviceName] })
 
     useEffect(()=>{
-        console.log(service)
         setSelectedService(service)
         setServiceDetails({ ...serviceDetails, service: service })
     },[])

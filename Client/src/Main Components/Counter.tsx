@@ -16,24 +16,24 @@ export default function Counter(props: CounterProps){
 
     useEffect(()=>{
         if(inputValue <= 0 ) {
-            const updatedData = inputData[valueType].filter((item:any)=> item.type !== value.type)
+            const updatedData = inputData[valueType].filter((item:any)=> item.id !== value.id)
             rootData ? setInputData({ ...rootData, data : { ...inputData, [valueType] : updatedData } }) : setInputData({ ...inputData, [valueType]: updatedData })
             return setInputValue(0)
         }
-        const found = inputData[valueType].some((item:any)=> item.type === value.type ) 
+        const found = inputData[valueType].some((item:any)=> item.id === value.id ) 
         if(rootData){
             if(found) {
-                const updatedData = inputData[valueType].map((item:any)=> item.type === value.type ? { ...item, quantity: inputValue } : item )
+                const updatedData = inputData[valueType].map((item:any)=> item.id === value.id ? { ...item, quantity: inputValue } : item )
                 setInputData({ ...rootData, data : { ...inputData, [valueType] : updatedData } })
             } else {
-                setInputData({ ...rootData, data : { ...inputData, [valueType] : [ ...valueType, {type: value.type, unit: value.unit, quantity: inputValue, price: value.price} ] } })
+                setInputData({ ...rootData, data : { ...inputData, [valueType] : [ ...valueType, value ] } })
             }
         } else {
             if(found) {
-                const updatedData = inputData[valueType].map((item:any)=> item.type === value.type ? { ...item, quantity: inputValue } : item )
+                const updatedData = inputData[valueType].map((item:any)=> item.id === value.id ? { ...item, quantity: inputValue } : item )
                 setInputData({ ...inputData, [valueType]: updatedData })
             } else {
-                setInputData({ ...inputData, [valueType]: [ ...inputData[valueType], { type: value.type, unit: value.unit, quantity: inputValue, price: value.price } ] })
+                setInputData({ ...inputData, [valueType]: [ ...inputData[valueType], value ] })
             }
         }
     },[inputValue])

@@ -13,7 +13,7 @@ export default function StringIterator(props: StringIteratorProps){
     const [ index, setIndex ] = useState(0)
 
     useEffect(()=>{
-        setInputData({...inputData, [valueType]: { type: values[index].type, title: values[index].title, price: values[index].price } })
+        setInputData({...inputData, [valueType]: values[index] })
     },[index])
 
     const changeIndex = (type:string) => {

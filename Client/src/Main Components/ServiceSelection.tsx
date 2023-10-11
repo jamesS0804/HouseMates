@@ -95,17 +95,30 @@ export default function ServiceSelection(props: ServiceSelectionProps){
     return(
         <div className="grow grid grid-cols-3 gap-3">
             {
-                services.map((service: Services)=>{
-                    return(
-                        <Button key={service.serviceName} 
-                            className={`${selectionType === "single" ? '' : outputData.some((data:any)=> data.id === service.id) ? userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary' : '' } p-1 h-28 flex flex-col justify-start shadow-shadow ${userType === 'Homeowner' ? 'border-primary' : 'border-secondary'}`}
-                            onClick={()=>handleClick(service)}    
-                        >
-                            <h3 className="text-xs font-bold">{service.serviceName}</h3>
-                            <img src={service.icon} className="mt-auto h-[4.5rem]"/>
-                        </Button>
-                    )
-                })
+                services.length > 0 ?
+                    services.map((service: Services)=>{
+                        return(
+                            <Button key={service.serviceName} 
+                                className={`${selectionType === "single" ? '' : outputData.some((data:any)=> data.id === service.id) ? userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary' : '' } p-1 h-28 flex flex-col justify-start shadow-shadow ${userType === 'Homeowner' ? 'border-primary' : 'border-secondary'}`}
+                                onClick={()=>handleClick(service)}    
+                            >
+                                <h3 className="text-xs font-bold">{service.serviceName}</h3>
+                                <img src={service.icon} className="mt-auto h-[4.5rem]"/>
+                            </Button>
+                        )
+                    })
+                    :
+                    <>
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                        <div className={`h-28 w-24 ${userType === "Homeowner" ? 'bg-primary' : 'bg-secondary' } animate-pulse rounded-lg`} />
+                    </>
             }
         </div>
     )

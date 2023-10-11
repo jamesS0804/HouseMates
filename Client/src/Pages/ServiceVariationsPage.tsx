@@ -1,7 +1,7 @@
 import BackButton from "@/Main Components/BackButton"
 import { Button } from "@/components/ui/button"
 import GeneralCleaning from "@/Main Components/Service Variations/GeneralCleaning"
-import { useEffect, useLayoutEffect } from "react"
+import { useEffect } from "react"
 import getTotalCost from "@/utils/getTotalCost"
 import { AxiosInstance } from "axios"
 
@@ -41,13 +41,10 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
             element: <GeneralCleaning serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} api={api} selectedService={selectedService}/>},
     }
     const service = services[selectedService.serviceName]    
-    
-    useEffect(()=>{
-        console.log(selectedService)
-    },[])
 
-    useLayoutEffect(()=>{
+    useEffect(()=>{
         if(Object.keys(serviceDetails.data).length !== 0) {
+            console.log(serviceDetails)
             const totalPrice = getTotalCost(serviceDetails)
             setServiceDetails({ ...serviceDetails, totalCost: totalPrice }) 
         }
