@@ -157,7 +157,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                     }
                 })
                 if(userType === 'Homeowner'){
-                    await updateIsVerified(currentUser.id, 'homeowners')
+                    updateIsVerified(currentUser.id, 'homeowners')
                     navigate("/home")
                 }
                 setVerificationPart(2)

@@ -6,11 +6,12 @@ interface StringIteratorProps {
     values: Array<any>
     inputData: object
     setInputData: Function
+    defaultIndex?: number
 }
 
 export default function StringIterator(props: StringIteratorProps){
-    const { valueType, values, inputData, setInputData } = props
-    const [ index, setIndex ] = useState(0)
+    const { valueType, values, inputData, setInputData, defaultIndex } = props
+    const [ index, setIndex ] = useState(()=> defaultIndex ? defaultIndex : 0 )
 
     useEffect(()=>{
         setInputData({...inputData, [valueType]: values[index] })

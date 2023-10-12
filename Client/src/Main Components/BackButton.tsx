@@ -4,12 +4,18 @@ import backButton from "../assets/icons/backButton.png"
 interface BackButtonProps {
     setSelectedService?: Function
     navigate: Function
+    redirect?: Function
+    redirectValue?: any
 }
 
 export default function BackButton(props: BackButtonProps){
-    const { setSelectedService, navigate } = props
+    const { setSelectedService, navigate, redirect, redirectValue } = props
     const handleClick = () => {
-        navigate(-1)
+        if(redirect !== undefined) {
+            redirect(redirectValue)
+        } else {
+            navigate(-1)
+        }
         if(setSelectedService) setSelectedService("")
     }
     return(

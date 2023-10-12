@@ -41,7 +41,9 @@ type SelectedService = {
 }
 
 export default function App() {
-  const [ userType, setUserType ] = useState(() => sessionStorage.getItem('userType') ? String(sessionStorage.getItem('userType')) : 'Homeowner')
+  const storedSessionData = sessionStorage.getItem('userSessionData')
+  const userSessionData = storedSessionData ? JSON.parse(storedSessionData) : {}
+  const [ userType, setUserType ] = useState(() => userSessionData ? String(sessionStorage.getItem('userType')) : 'Homeowner')
   const [ selectedService, setSelectedService ] = useState<SelectedService>({
     id: 0,
     title: "",
@@ -56,8 +58,8 @@ export default function App() {
     baseURL: 'https://housemates-backend.onrender.com/'
   })
   const [ currentUser, setCurrentUser ] = useState<User>({
-    id: 0, 
-    email: sessionStorage.getItem('email') || "",
+    id: userSessionData?.id || 0, 
+    email: userSessionData?.email || "",
     isVerified: "",
     userType: "",
     name: "",
@@ -71,18 +73,16 @@ export default function App() {
     } })
   const [ authKey, setAuthKey ] = useState(sessionStorage.getItem('authToken') ? sessionStorage.getItem('authToken') : "")
   const [ isVerified, setIsVerified ] = useState(()=>{
-    const storedValue = sessionStorage.getItem('isVerified')
-    return storedValue ? JSON.parse(storedValue) : false
+    return userSessionData?.isVerified ? userSessionData.isVerified : false
   })
-  const [ serviceDetails, setServiceDetails ] = useState({service: {}, data: {}, totalCost: 0})
+  const [ serviceDetails, setServiceDetails ] = useState({service: {}, data: {}, totalCost: 0, date: "", time: { $H: "", $m: "" }})
 
   useEffect(()=>{
-    console.log(currentUser)
-  },[currentUser])
+    getCurrentUserProfile()
+  },[authKey])
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(location.pathname)
     setServiceDetails(serviceDetails)
   }, [location.pathname]);
 
@@ -93,6 +93,30 @@ export default function App() {
     }
     authKey && isVerified ? navigate("/home") : navigate("/verification")
   }, [isVerified])
+
+  const getCurrentUserProfile = async () => {
+    try {
+      const res = await api.get(`api/v1/profiles/${currentUser.id}`)
+      const jsonResponse = res.data.data
+      if(res.status === 200){
+        setCurrentUser({ ...currentUser, 
+          name: jsonResponse.name,
+          phoneNumber: jsonResponse.phone_number,
+          addressAttributes: {
+              addressLine1: jsonResponse.address.address_line_1,
+              barangay: jsonResponse.address.barangay,
+              city: jsonResponse.address.city,
+              province: jsonResponse.address.province,
+              zipCode: jsonResponse.address.zip_code
+          }
+        })
+      } else {
+        console.log(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className='h-screen'>
@@ -116,7 +140,7 @@ export default function App() {
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
         <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} api={api} />} />
-        <Route path='/bookingDetails' element={<BookingDetailsPage navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
+        <Route path='/bookingDetails' element={<BookingDetailsPage navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} currentUser={currentUser} api={api} />} />
       </Routes>
     </div>
   )

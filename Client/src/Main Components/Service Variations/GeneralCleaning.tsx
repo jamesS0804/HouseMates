@@ -57,7 +57,6 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
     const [ subserviceData, setSubserviceData ] = useState([])
     const [ categorizedData, setCategorizedData ] = useState<CategorizedData>({});
     const [ inputData, setInputData ] = useState<InputData>({})
-
     const getSubserviceData = async () => {
         try {
             const res = await api.get(`api/v1/subservices/${selectedService.id}`)
@@ -86,12 +85,17 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
         });
         setCategorizedData(updatedCategorizedData);
         if (updatedCategorizedData['Home Type'] && updatedCategorizedData['Home Type'].length > 0) {
-            setInputData({
-                'Home Type': updatedCategorizedData['Home Type'][0],
-                'Room Type': updatedCategorizedData['Room Type'][0],
-                'Bathroom Count': updatedCategorizedData['Bathroom Count'][0],
-                'Extra Service': []
-        })
+            if(Object.keys(serviceDetails.data).length !== 0){
+                setInputData(serviceDetails.data)
+            } else {
+                setInputData({
+                    'Home Type': updatedCategorizedData['Home Type'][0],
+                    'Room Type': updatedCategorizedData['Room Type'][0],
+                    'Bathroom Count': updatedCategorizedData['Bathroom Count'][0],
+                    'Extra Service': []
+                })
+            }
+            
         }
     },[subserviceData]);
 
@@ -135,7 +139,7 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
                 <h3 className="font-black">What is your home type?</h3>
                 <div className="flex gap-2 p-2 m-0 justify-center">
                     {
-                        categorizedData['Home Type'] ?
+                        categorizedData['Home Type'] && inputData['Home Type'] ?
                             categorizedData['Home Type'].map((home:any) => {
                                 return (
                                     <Button 
@@ -160,7 +164,7 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
                         <h3 className="font-black">How many bedrooms?</h3>
                         {
                             categorizedData['Room Type'] ? 
-                                <StringIterator valueType="Room Type" values={categorizedData['Room Type']} inputData={inputData} setInputData={setInputData} />
+                                <StringIterator valueType="Room Type" values={categorizedData['Room Type']} inputData={inputData} setInputData={setInputData}  />
                                 :
                                 <div className="h-6 w-full bg-primary animate-pulse rounded-lg" />
                         }
@@ -169,7 +173,7 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
                         <h3 className="font-black">How many bathrooms?</h3>
                         {
                             categorizedData['Bathroom Count'] ?
-                                <StringIterator valueType="Bathroom Count" values={categorizedData['Bathroom Count']} inputData={inputData} setInputData={setInputData} />
+                                <StringIterator valueType="Bathroom Count" values={categorizedData['Bathroom Count']} inputData={inputData} setInputData={setInputData}  />
                                 :
                                 <div className="h-6 w-full bg-primary animate-pulse rounded-lg" />
                         }
@@ -183,7 +187,7 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
                 </div>
                 <div className="flex flex-col gap-2">
                     {
-                        categorizedData['Extra Service'] ?
+                        categorizedData['Extra Service'] && inputData['Extra Service'] ?
                             categorizedData['Extra Service'].map((extraService: SubserviceItem) => {
                                 return (
                                     <div key={extraService.id} className="relative border border-primary rounded-xl flex gap-4 shadow-shadow w-fill p-1">
