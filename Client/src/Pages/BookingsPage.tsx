@@ -1,17 +1,51 @@
 import BackButton from "@/Main Components/BackButton";
 import NavigationBar from "@/Main Components/NavigationBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { AxiosInstance } from "axios";
 
 interface BookingsPageProps {
-    userType: string,
+    userType: string
     navigate: Function
+    currentUser: User
+    api: AxiosInstance
+}
+
+type User = {
+    id: Number,
+    addressAttributes: AddressAttributes
+}
+
+type AddressAttributes = {
+    addressLine1: string,
+    barangay: string,
+    city: string,
+    province: string,
+    zipCode: string
 }
 
 export default function BookingsPage(props: BookingsPageProps) {
-    const { userType, navigate } = props
+    const { userType, navigate, currentUser, api } = props
     const [ bookings, setBookings ] = useState([])
     const [ selectedBookingTab, setSelectedBookingTab ] = useState("In Progress")
+
+    useEffect(()=>{
+        getBookingsData()
+    },[])
+
+    const getBookingsData = async () => {
+        try {
+            const res = await api.get(`api/v1/bookings/${currentUser.id}`)
+
+            if (res.status === 200) {
+                console.log(res)
+            } else {
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const handleClick = (tabName:string) => {
         setSelectedBookingTab(tabName)
@@ -19,8 +53,8 @@ export default function BookingsPage(props: BookingsPageProps) {
 
     const bookingTabs = [
         { title: 'In Progress' },
+        { title: 'Pending' },
         { title: 'Completed' },
-        { title: 'Cancelled' },
     ]
 
     return(

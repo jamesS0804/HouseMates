@@ -136,7 +136,7 @@ export default function App() {
           <VerificationPage userType={userType} navigate={navigate} currentUser={currentUser} setCurrentUser={setCurrentUser} setIsVerified={setIsVerified} api={api} />
         } />
         <Route path='/home' element={<HomePage userType={userType} navigate={navigate} selectedService={selectedService} setSelectedService={setSelectedService} api={api}/>} />
-        <Route path='/bookings' element={<BookingsPage userType={userType} navigate={navigate} />} />
+        <Route path='/bookings' element={<BookingsPage userType={userType} navigate={navigate} currentUser={currentUser} api={api} />} />
         <Route path='/messages' element={<MessagesPage userType={userType} navigate={navigate} />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
