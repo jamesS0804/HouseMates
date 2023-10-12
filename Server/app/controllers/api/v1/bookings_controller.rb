@@ -51,7 +51,7 @@ class Api::V1::BookingsController < ApplicationController
         user = User.find(params[:id])
         user_bookings = user.bookings.all
         serialized_user_bookings = user_bookings.map do |housemate_booking|
-            serialize_data(booking)
+            serialize_data(housemate_booking)
         end
         
         render json: { data: serialized_user_bookings, status: :ok }
