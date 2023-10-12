@@ -16,6 +16,7 @@ interface HomePageProps {
     selectedService: Service,
     setSelectedService: Function,
     api: AxiosInstance
+    currentUser: any
 }
 
 type Service = {
@@ -27,7 +28,7 @@ type Service = {
 }
 
 export default function HomePage(props: HomePageProps) {
-    const { userType, navigate, selectedService, setSelectedService, api } = props
+    const { userType, navigate, selectedService, setSelectedService, api, currentUser } = props
 
     useEffect(()=>{
         setSelectedService(selectedService)
@@ -67,7 +68,7 @@ export default function HomePage(props: HomePageProps) {
                         </div>
                     </div>
                     :
-                    <HSHomePage />
+                    <HSHomePage api={api} currentUser={currentUser} />
             }
             <NavigationBar userType={userType} selectedOption="home" />
         </div>

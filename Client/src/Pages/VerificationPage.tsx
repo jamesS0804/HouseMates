@@ -127,46 +127,47 @@ export default function VerificationPage(props:VerificationPageProps) {
     const basicInfoSubmit = async (values: z.infer<typeof formSchema>) => {
         console.log("submitting..")
         console.log(values)
-        try {
-            const res = await authenticated_api.post("api/v1/profiles", {
-                profile: {
-                    id: currentUser.id,
-                    name: values.name,
-                    email: currentUser.email,
-                    phone_number: values.phoneNumber,
-                    address_attributes: {
-                        address_line_1: values.address,
-                        barangay: values.barangay,
-                        city: values.city,
-                        province: values.province,
-                        zip_code: values.zipcode
-                    }
-                }
-            })
-            if( res.status === 201 ) {
-                const jsonResponse = res.data.data
-                setCurrentUser({ ...currentUser,
-                    name: jsonResponse.name,
-                    phoneNumber: jsonResponse.phone_number,
-                    addressAttributes: {
-                        addressLine1: jsonResponse.address_line_1,
-                        barangay: jsonResponse.barangay,
-                        city: jsonResponse.city,
-                        province: jsonResponse.province,
-                        zipCode: jsonResponse.zip_code
-                    }
-                })
-                if(userType === 'Homeowner'){
-                    updateIsVerified(currentUser.id, 'homeowners')
-                    navigate("/home")
-                }
-                setVerificationPart(2)
-            } else {
-                console.log(res)
-            }
-        } catch (error) {
-            console.log(error)
-        }
+        setVerificationPart(2)
+        // try {
+        //     const res = await authenticated_api.post("api/v1/profiles", {
+        //         profile: {
+        //             id: currentUser.id,
+        //             name: values.name,
+        //             email: currentUser.email,
+        //             phone_number: values.phoneNumber,
+        //             address_attributes: {
+        //                 address_line_1: values.address,
+        //                 barangay: values.barangay,
+        //                 city: values.city,
+        //                 province: values.province,
+        //                 zip_code: values.zipcode
+        //             }
+        //         }
+        //     })
+        //     if( res.status === 201 ) {
+        //         const jsonResponse = res.data.data
+        //         setCurrentUser({ ...currentUser,
+        //             name: jsonResponse.name,
+        //             phoneNumber: jsonResponse.phone_number,
+        //             addressAttributes: {
+        //                 addressLine1: jsonResponse.address_line_1,
+        //                 barangay: jsonResponse.barangay,
+        //                 city: jsonResponse.city,
+        //                 province: jsonResponse.province,
+        //                 zipCode: jsonResponse.zip_code
+        //             }
+        //         })
+        //         if(userType === 'Homeowner'){
+        //             updateIsVerified(currentUser.id, 'homeowners')
+        //             navigate("/home")
+        //         }
+        //         setVerificationPart(2)
+        //     } else {
+        //         console.log(res)
+        //     }
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }
 
     const basicInfoAndServicesSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -174,10 +175,18 @@ export default function VerificationPage(props:VerificationPageProps) {
         console.log(values)
         console.log(preferredServices)
         try {
-            const res = await authenticated_api.post("api/v1/housemate", {
-                preferred_services: preferredServices
-            })
+            const res = await authenticated_api.post("api/v1/housemate_services", 
+                {
+                    housemate_service: {
+                        id: currentUser.id,
+                        email: currentUser.email,
+                        services: preferredServices
+                    }
+                }
+            )
+            const jsonResponse = res.data.data
             if ( res.status === 200 ) {
+                console.log(jsonResponse)
                 await updateIsVerified(currentUser.id, 'housemates')
                 navigate("/home")
             } else {

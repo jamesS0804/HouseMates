@@ -1,14 +1,83 @@
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
-import { useState } from "react"
+import { AxiosInstance } from "axios"
+import { useEffect, useState } from "react"
 
-export default function HSHomePage(){
-    const [ switchValue, setSwitchValue ] = useState(false)
+interface HSHomePageProps {
+    api: AxiosInstance
+    currentUser: any
+}
+
+export default function HSHomePage(props:HSHomePageProps){
+    const { api, currentUser } = props
+    const storedSessionData = sessionStorage.getItem('isActive')
+    const [ switchValue, setSwitchValue ] = useState(()=> storedSessionData ? JSON.parse(storedSessionData) : false )
     const [ pendingJobs, setPendingJobs ] = useState([])
 
+    useEffect(()=>{
+        checkForPendingJob()
+    },[])
+
+    useEffect(()=>{
+        setPendingJobs(pendingJobs)
+    },[])
+
+    const checkForPendingJob = async () => {
+        try {
+            const res = await api.get(`api/v1/bookings/${currentUser.id}`)
+            if(res.status === 200) {
+                const jsonResponse = res.data.data
+                console.log(res)
+                console.log(jsonResponse)
+                // setPendingJobs(jsonResponse)
+            } else {
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const handleOnChange = () => {
+        sessionStorage.setItem('isActive', JSON.stringify(!switchValue))
         setSwitchValue(!switchValue)
     }
+
+    const updateIsActive = async () => {
+        console.log(typeof switchValue)
+        try {
+            const res = await api.patch(`api/v1/housemates/${currentUser.id}`,
+                {
+                    housemate: {
+                        is_active: switchValue
+                    }
+                }
+            )
+            if(res.status === 200) {
+                console.log(res)
+                console.log(`You are ${switchValue}`)
+            } else {
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const respondToPendingJob = async (response: string) => {
+        console.log(response)
+        // try {
+        //     const res = await api.patch(`api/v1/${currentUser.id}`)
+        // } catch (error) {
+        //     console.log(error)
+        // }
+    }
+
+    useEffect(()=>{
+        console.log(switchValue)
+        setPendingJobs(pendingJobs)
+        updateIsActive()
+    },[switchValue])
 
     return(
         <div className="flex flex-col p-4 gap-4">
@@ -45,8 +114,8 @@ export default function HSHomePage(){
                                     <div>{pendingJob.total}</div>
                             </div>
                             <div className="flex w-full border-t-2 border-secondary">
-                                    <Button className="grow font-black text-white bg-secondary rounded-none rounded-bl-xl border-none">Accept</Button>
-                                    <Button className="grow font-black text-white bg-secondary rounded-none rounded-br-xl border-none">Decline</Button>
+                                    <Button onClick={()=> respondToPendingJob("ACCEPTED")} className="grow font-black text-white bg-secondary rounded-none rounded-bl-xl border-none">Accept</Button>
+                                    <Button onClick={()=> respondToPendingJob("REJECTED")} className="grow font-black text-white bg-secondary rounded-none rounded-br-xl border-none">Decline</Button>
                             </div>
                             </div>
                         )
@@ -59,11 +128,6 @@ export default function HSHomePage(){
                     <h3 className="font-bold">PHP</h3>
                     <p className="font-black text-2xl">0.00</p>
                 </div>
-                {/* <div className="relative p-0 m-0">
-                    <svg className="absolute top-0 right-0 w-fit h-[132px]" viewBox="0 0 180 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M33.5 16.5C35.2372 6.94519 43.5591 0 53.2705 0H197.6C205.441 0 209.361 0 212.356 1.52591C214.99 2.86814 217.132 5.00986 218.474 7.64413C220 10.6389 220 14.5593 220 22.4V87.6C220 95.4407 220 99.3611 218.474 102.356C217.132 104.99 214.99 107.132 212.356 108.474C209.361 110 205.441 110 197.6 110H0L13 75.5L27.5 34.5L33.5 16.5Z" fill="#CE9354" fillOpacity="0.8"/>
-                    </svg>
-                </div> */}
                 <Button className="bg-secondary border-none mt-4 text-white font-black text-xs w-20 h-6">Send</Button>
             </div>
         </div>

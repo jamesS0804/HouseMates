@@ -1,6 +1,6 @@
 import BackButton from "@/Main Components/BackButton"
 import NavigationBar from "@/Main Components/NavigationBar"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface MessagesPageProps {
     userType: string,
@@ -10,6 +10,11 @@ interface MessagesPageProps {
 export default function MessagesPage(props: MessagesPageProps) {
     const { userType, navigate } = props
     const [ messages, setMessages ] = useState([])
+
+    useEffect(()=>{
+        setMessages(messages)
+    },[userType])
+
     return(
         <div className="h-screen flex flex-col items-center">
             <BackButton navigate={navigate} />
@@ -20,11 +25,12 @@ export default function MessagesPage(props: MessagesPageProps) {
                 {
                     messages.length === 0 ? <h3 className="text-gray-500">You have no messages</h3>
                         :
-                        messages.map((message:object)=>{
-                            return(
-                                <div></div>
-                            )
-                        })
+                        <></>
+                        // messages.map((message:object)=>{
+                        //     return(
+                        //         <div></div>
+                        //     )
+                        // })
                 }
             </div>
             <NavigationBar userType={userType} selectedOption="messages" />

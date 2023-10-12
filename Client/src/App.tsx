@@ -79,7 +79,7 @@ export default function App() {
   const [ serviceDetails, setServiceDetails ] = useState({service: {}, data: {}, totalCost: 0, date: "", time: { $H: "", $m: "" }})
 
   useEffect(()=>{
-    getCurrentUserProfile()
+    if (authKey && userSessionData?.isVerified) getCurrentUserProfile()
   },[authKey])
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export default function App() {
         <Route path='/verification' element={
           <VerificationPage userType={userType} navigate={navigate} currentUser={currentUser} setCurrentUser={setCurrentUser} setIsVerified={setIsVerified} api={api} />
         } />
-        <Route path='/home' element={<HomePage userType={userType} navigate={navigate} selectedService={selectedService} setSelectedService={setSelectedService} api={api}/>} />
+        <Route path='/home' element={<HomePage userType={userType} navigate={navigate} selectedService={selectedService} setSelectedService={setSelectedService} api={api} currentUser={currentUser} />} />
         <Route path='/bookings' element={<BookingsPage userType={userType} navigate={navigate} currentUser={currentUser} api={api} />} />
         <Route path='/messages' element={<MessagesPage userType={userType} navigate={navigate} />} />
         <Route path='/profile' element={<ProfilePage />} />
