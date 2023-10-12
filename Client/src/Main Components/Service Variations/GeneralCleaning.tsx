@@ -95,7 +95,6 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
                     'Extra Service': []
                 })
             }
-            
         }
     },[subserviceData]);
 
@@ -120,7 +119,6 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
             description: ["Kindly provide the laundry detergent", "Does not include ironing"]
         }
     }
-
 
     const handleClick = (home: any) => {
         setInputData({ ...inputData, 'Home Type': home })

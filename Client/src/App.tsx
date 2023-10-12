@@ -14,6 +14,7 @@ import ServiceMainPage from './Pages/ServiceMainPage'
 import axios from 'axios'
 import ServiceVariationsPage from './Pages/ServiceVariationsPage'
 import BookingDetailsPage from './Pages/BookingDetailsPage'
+import TrackingPage from './Pages/TrackingPage'
 
 type User = {
   id: number,
@@ -141,6 +142,7 @@ export default function App() {
         <Route path='/services' element={<ServiceMainPage selectedService={selectedService} setSelectedService={setSelectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} />} />
         <Route path='/services/variations' element={<ServiceVariationsPage selectedService={selectedService} navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} api={api} />} />
         <Route path='/bookingDetails' element={<BookingDetailsPage navigate={navigate} serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} currentUser={currentUser} api={api} />} />
+        <Route path='/tracking' element={<TrackingPage navigate={navigate} serviceDetails={serviceDetails} setSelectedService={setSelectedService} />} />
       </Routes>
     </div>
   )

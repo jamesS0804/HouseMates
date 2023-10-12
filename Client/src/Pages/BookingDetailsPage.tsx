@@ -2,7 +2,7 @@ import BackButton from "@/Main Components/BackButton";
 import { Button } from "@/components/ui/button";
 import addressPin from "../assets/icons/addressPin.png"
 import { Calendar } from "@/components/ui/calendar"
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import cash from "../assets/icons/cash.png"
 import Counter from "@/Main Components/Counter";
 import getTotalCost from "@/utils/getTotalCost";
@@ -14,6 +14,7 @@ import { StaticTimePicker } from "@mui/x-date-pickers"
 import GeneralCleaningBookingDetails from "@/Main Components/Booking Details/GeneralCleaningBookingDetails";
 import { AxiosInstance } from "axios";
 import extractDataFromDate from "@/utils/extractDataFromDate";
+import check from "../assets/images/check.png"
 
 type ServiceDetails = {
     service: Record<string, any>,
@@ -53,27 +54,31 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
     const [ date, setDate ] = useState<Date | undefined>(new Date())
     const [ page, setPage ] = useState(1)
     const [ time, setTime ] = useState<Dayjs | null>(dayjs());
+    const [ extraServiceCost, setExtraServiceCost ] = useState(0)
 
     useEffect(()=>{
         setPage(1)
     },[])
 
-    useLayoutEffect(()=>{    
+    useEffect(()=>{    
         if(Object.keys(serviceDetails.data).length !== 0) {
             const totalPrice = getTotalCost(serviceDetails)
             setServiceDetails({ ...serviceDetails, totalCost: totalPrice }) 
         }
+        const extraServiceCost = serviceDetails.data['Extra Service'].reduce((acc: number, service: { quantity?: number, price: number }) => {
+            const quantity = service.quantity || 1;
+            return acc + service.price * quantity;
+        }, 0);
+        setExtraServiceCost(extraServiceCost)
     },[serviceDetails.data])
 
     useEffect(()=>{
         setServiceDetails(serviceDetails)
     },[page])
 
-    const nextPage = () => {
+    const nextPage = (page:number) => {
         setServiceDetails({ ...serviceDetails, time: time, date: date })
-        if(page === 1 ) {
-            setPage((prevVal)=> prevVal + 1)
-        }
+        setPage(page)
     }
 
     const submitBooking = async () => {
@@ -101,6 +106,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
             )
             if (res.status === 201) {
                 console.log(res)
+                navigate('/tracking')
             } else {
                 console.log(res)
             }
@@ -115,25 +121,33 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                 page === 1 ? 
                     <BackButton navigate={navigate} />
                     :
-                    <BackButton navigate={navigate} redirect={setPage} redirectValue={1} />
+                    page === 2 ?
+                        <BackButton navigate={navigate} redirect={setPage} redirectValue={1} />
+                        :
+                        <BackButton navigate={navigate} redirect={setPage} redirectValue={2} />
             }
             <div className="flex flex-col items-center w-full bg-primary">
                 <h1 className="pl-3 my-4 font-verdana text-[#EBCE9F] font-black">Booking Details</h1>
             </div>
             <div className="p-2 flex flex-col items-center gap-5">
-                <div className="border border-primary flex flex-col shadow-shadow p-2 gap-1 rounded-xl">
-                    <h3 className="font-black text-primary">Address Details</h3>
-                    <div className="flex gap-2 items-center">
-                        <img className="h-11" src={addressPin}/>
-                        <div className="flex flex-col gap-1 text-sm">
-                            <p>{`${currentUser.addressAttributes.addressLine1.toUpperCase()}, 
-                                ${currentUser.addressAttributes.barangay}, ${currentUser.addressAttributes.city}, 
-                                ${currentUser.addressAttributes.province}, ${currentUser.addressAttributes.zipCode}`}
-                            </p>
-                            <a className="text-primary font-black underline">Change</a>
+                {
+                    page !== 3 ?
+                        <div className="border border-primary flex flex-col shadow-shadow p-2 gap-1 rounded-xl">
+                            <h3 className="font-black text-primary">Address Details</h3>
+                            <div className="flex gap-2 items-center">
+                                <img className="h-11" src={addressPin}/>
+                                <div className="flex flex-col gap-1 text-sm">
+                                    <p>{`${currentUser.addressAttributes.addressLine1.toUpperCase()}, 
+                                        ${currentUser.addressAttributes.barangay}, ${currentUser.addressAttributes.city}, 
+                                        ${currentUser.addressAttributes.province}, ${currentUser.addressAttributes.zipCode}`}
+                                    </p>
+                                    <a className="text-primary font-black underline">Change</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        :
+                        <></>
+                }
                 {
                     page === 1 ? 
                         <div className="w-full">
@@ -151,62 +165,124 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                             
                         </div>
                         :
-                        <div className="flex flex-col gap-4 w-full">
-                            <div className="flex flex-col gap-2 border border-primary shadow-shadow w-full p-2 rounded-xl">
-                                <GeneralCleaningBookingDetails serviceDetails={serviceDetails} />
-                            </div>
-                            <div className="flex flex-col gap-2 border border-primary shadow-shadow w-full p-3 rounded-xl mb-44">
-                                <h3 className="font-black text-primary text-xl">Price Breakdown</h3>
-                                <div className="flex">
-                                    <p className="font-black">Basic Price</p>
-                                    <p className="font-black text-secondary ml-auto">₱{serviceDetails.service.price}</p>
+                        page === 2 ?
+                            <div className="flex flex-col gap-4 w-full">
+                                <div className="flex flex-col gap-2 border border-primary shadow-shadow w-full p-2 rounded-xl">
+                                    <GeneralCleaningBookingDetails serviceDetails={serviceDetails} />
                                 </div>
-                                {
-                                    <>
-                                        <div className="flex">
-                                            <p className="font-black">{serviceDetails.data['Home Type'].title}</p>
-                                            <p className="font-black text-secondary ml-auto">₱{serviceDetails.data['Home Type'].price}</p>
-                                        </div>
-                                        <div className="flex">
-                                            <p className="font-black">{serviceDetails.data['Room Type'].title}</p>
-                                            <p className="font-black text-secondary ml-auto">₱{serviceDetails.data['Room Type'].price}</p>
-                                        </div>
-                                        <div className="flex">
-                                            <p className="font-black">{serviceDetails.data['Bathroom Count'].title}</p>
-                                            <p className="font-black text-secondary ml-auto">₱{serviceDetails.data['Bathroom Count'].price}</p>
-                                        </div>
-                                    </>
-                                }
-                                <hr className="border-1 border-black"/>
-                                <div className="flex flex-col gap-2">
-                                    <h3>Extra Services</h3>
+                                <div className="flex flex-col gap-2 border border-primary shadow-shadow w-full p-3 rounded-xl mb-44">
+                                    <h3 className="font-black text-primary text-xl">Price Breakdown</h3>
+                                    <div className="flex">
+                                        <p className="font-black">Basic Price</p>
+                                        <p className="font-black text-secondary ml-auto">₱{serviceDetails.service.price}</p>
+                                    </div>
                                     {
-                                        serviceDetails.data['Extra Service'].length === 0 ? <h3 className="text-center">No extra services availed</h3>
-                                            :
-                                            serviceDetails.data['Extra Service'].map((extraService:any)=>{
-                                                return(
-                                                    <div key={extraService.id} className="flex flex-col gap-1">
-                                                        <hr className="border-1 border-black"/>
-                                                        <div  className="flex gap-2">
-                                                            <img />
-                                                            <div>
-                                                                <p className="font-black">{extraService.title}</p>
-                                                                <Counter unit={extraService.unit} valueType="Extra Service" value={extraService} inputData={serviceDetails.data} setInputData={setServiceDetails} rootData={serviceDetails} />
-                                                            </div>
-                                                            <p className="ml-auto font-black text-secondary">₱{extraService.price}<span className="text-xs"> / {extraService.unit}</span></p>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })
+                                        <>
+                                            {
+                                                serviceDetails.data['Home Type'].price > 0 &&
+                                                <div className="flex">
+                                                    <p className="font-black">{serviceDetails.data['Home Type'].title}</p>
+                                                    <p className="font-black text-secondary ml-auto">₱{serviceDetails.data['Home Type'].price}</p>
+                                                </div>
+                                            }
+                                            {
+                                                serviceDetails.data['Room Type'].price > 0 &&
+                                                <div className="flex">
+                                                    <p className="font-black">{serviceDetails.data['Room Type'].title}</p>
+                                                    <p className="font-black text-secondary ml-auto">₱{serviceDetails.data['Room Type'].price}</p>
+                                                </div>
+                                            }
+                                            {
+                                                serviceDetails.data['Bathroom Count'].price > 0 &&
+                                                <div className="flex">
+                                                <p className="font-black">{serviceDetails.data['Bathroom Count'].title}</p>
+                                                <p className="font-black text-secondary ml-auto">₱{serviceDetails.data['Bathroom Count'].price}</p>
+                                            </div>
+                                            }
+                                        </>
                                     }
+                                    <hr className="border-1 border-black"/>
+                                    <div className="flex flex-col gap-2">
+                                        <h3>Extra Services</h3>
+                                        {
+                                            serviceDetails.data['Extra Service'].length === 0 ? <h3 className="text-center">No extra services availed</h3>
+                                                :
+                                                serviceDetails.data['Extra Service'].map((extraService:any)=>{
+                                                    return(
+                                                        <div key={extraService.id} className="flex flex-col gap-1">
+                                                            <hr className="border-1 border-black"/>
+                                                            <div  className="flex gap-2">
+                                                                <div>
+                                                                    <p className="font-black">{extraService.title}</p>
+                                                                    <Counter unit={extraService.unit} valueType="Extra Service" value={extraService} inputData={serviceDetails.data} setInputData={setServiceDetails} rootData={serviceDetails} />
+                                                                </div>
+                                                                <p className="ml-auto font-black text-secondary">₱{extraService.price}<span className="text-xs"> / {extraService.unit}</span></p>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            :
+                            <div className="h-full w-full flex justify-center items-center flex-1 grow relative p-3">
+                                <img className="absolute top-0 animate-[ping_2s_ease-in-out]" src={check}/>
+                                <div className="border border-primary w-full rounded-xl p-3 pt-10 mt-12">
+                                    <div className="border border-[#A3C3CA66] w-full rounded-xl bg-[#A3C3CA66]">
+                                        <div className="flex flex-col items-center mt-5">
+                                            <p className="font-black">Great!</p>
+                                            <h1 className="text-primarySelected font-bold text-3xl">Payment Success</h1>
+                                        </div>
+                                        <div className="absolute top-[78%] left-[6.5%] border-2 border-dotted border-black w-[87%]"/>
+                                        <div className="w-full rounded-xl flex flex-col gap-5 items-center p-4 pt-7">
+                                            
+                                            <div className="flex w-full">
+                                                <p className="font-black">Basic Price</p>
+                                                <p className="font-black text-secondarySelected ml-auto">₱{serviceDetails.service.price}</p>
+                                            </div>
+                                            {
+                                                serviceDetails.data['Home Type'].price > 0 &&
+                                                <div className="flex w-full">
+                                                    <p className="font-black">{serviceDetails.data['Home Type'].title}</p>
+                                                    <p className="font-black text-secondarySelected ml-auto">₱{serviceDetails.data['Home Type'].price}</p>
+                                                </div>
+                                            }
+                                            {
+                                                serviceDetails.data['Room Type'].price > 0 &&
+                                                <div className="flex w-full">
+                                                    <p className="font-black">{serviceDetails.data['Room Type'].title}</p>
+                                                    <p className="font-black text-secondarySelected ml-auto">₱{serviceDetails.data['Room Type'].price}</p>
+                                                </div>
+                                            }
+                                            {
+                                                serviceDetails.data['Bathroom Count'].price > 0 &&
+                                                <div className="flex w-full">
+                                                <p className="font-black">{serviceDetails.data['Bathroom Count'].title}</p>
+                                                <p className="font-black text-secondarySelected ml-auto">₱{serviceDetails.data['Bathroom Count'].price}</p>
+                                            </div>
+                                            }
+                                            <div className="flex w-full">
+                                                <p className="font-black">Extra Service</p>
+                                                <p className="font-black text-secondarySelected ml-auto">₱{extraServiceCost}</p>
+                                            </div>
+                                            <div className="flex w-full">
+                                                <p className="font-black">Payment Method</p>
+                                                <p className="font-black text-secondarySelected ml-auto">Credit</p>
+                                            </div>
+                                            <div className="flex flex-col gap-1 w-full items-center mt-20">
+                                                <p className="font-black text-primarySelected text-lg">Total Pay</p>
+                                                <p className="font-black text-3xl">₱{serviceDetails.totalCost}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                 }
             </div>
             <div className="mt-auto fixed bottom-0">
-                {
-                    page === 1 ? <></> : 
+                { 
+                    page === 2 ?
                         <div>
                             <div className="flex flex-col relative border border-primary p-2 bg-white rounded-t-xl gap-2 pb-16">
                                 <h3 className="font-black text-primary">Payment Method</h3>
@@ -220,10 +296,18 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                     <p className="ml-auto text-xl font-black">₱{serviceDetails.totalCost}</p>
                                 </div>
                             </div>
-                            
-                        </div>
+                        </div> : <></>
                 }
-                <Button onClick={page === 1 ? nextPage : submitBooking } className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Next</Button>
+                {
+                    page === 1 ? 
+                        <Button onClick={()=>nextPage(2)} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Next</Button>
+                        : 
+                        page === 2 ? 
+                        <Button onClick={()=>nextPage(3)} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Book</Button>
+                        : 
+                        <Button onClick={submitBooking} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">View Map</Button>
+                    
+                }
             </div>
         </div>
     )

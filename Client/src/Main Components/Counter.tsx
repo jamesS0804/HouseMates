@@ -33,7 +33,7 @@ export default function Counter(props: CounterProps){
                 const updatedData = inputData[valueType].map((item:any)=> item.id === value.id ? { ...item, quantity: inputValue } : item )
                 setInputData({ ...inputData, [valueType]: updatedData })
             } else {
-                setInputData({ ...inputData, [valueType]: [ ...inputData[valueType], value ] })
+                setInputData({ ...inputData, [valueType]: [ ...inputData[valueType], { ...value, quantity: inputValue } ] })
             }
         }
     },[inputValue])
