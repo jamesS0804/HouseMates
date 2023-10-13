@@ -1,7 +1,8 @@
 module Api
     module V1
         class HousemateServicesController < ApplicationController
-
+            before_action :authenticate_user!
+            
             def create
                 housemate = Housemate.find(housemate_services_params[:id])
 

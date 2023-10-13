@@ -1,6 +1,8 @@
 module Api
     module V1
         class HomeownersController < ApplicationController
+            before_action :authenticate_user!
+
             def create
                 homeowner = Homeowner.new(homeowner_params)
                 if homeowner.save

@@ -2,7 +2,8 @@ module Api
     module V1
         class SubservicesController < ApplicationController
             respond_to :json
-
+            before_action :authenticate_user!
+            
             def create
                 service = Service.find(subservice_params[:service_id])
                 subservice = service.subservices.new(subservice_params)

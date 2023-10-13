@@ -2,6 +2,7 @@ module Api
     module V1
         class ServicesController < ApplicationController
             respond_to :json
+            before_action :authenticate_user!
             before_action :get_specific_service, only: [:show, :update]
 
             def index

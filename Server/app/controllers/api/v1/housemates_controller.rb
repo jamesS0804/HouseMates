@@ -1,6 +1,8 @@
 module Api
     module V1
         class HousematesController < ApplicationController
+            before_action :authenticate_user!
+            
             def create
                 housemate = Housemate.new(housemate_params)
                 if housemate.save
