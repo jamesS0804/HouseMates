@@ -1,17 +1,14 @@
-import BackButton from "@/Main Components/BackButton";
 import NavigationBar from "@/Main Components/NavigationBar";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AxiosInstance } from "axios";
 import calendar from "../assets/icons/calendar.png"
 import calendar2 from "../assets/icons/calendar2.png"
 import addressPin from "../assets/icons/addressPin.png"
+import authenticated_api from "@/utils/authenticated_api";
 
 interface BookingsPageProps {
     userType: string
-    navigate: Function
     currentUser: User
-    api: AxiosInstance
 }
 
 type User = {
@@ -62,7 +59,7 @@ type Options = {
 };
 
 export default function BookingsPage(props: BookingsPageProps) {
-    const { userType, navigate, currentUser, api } = props
+    const { userType, currentUser } = props
     const [ bookings, setBookings ] = useState([])
     const [ categorizedData, setCategorizedData ] = useState<CategorizedData>({});
     const [ selectedBookingTab, setSelectedBookingTab ] = useState("In Progress")
@@ -90,7 +87,7 @@ export default function BookingsPage(props: BookingsPageProps) {
 
     const getBookingsData = async () => {
         try {
-            const res = await api.get(`api/v1/bookings/${currentUser.id}`)
+            const res = await authenticated_api.get(`api/v1/bookings/${currentUser.id}`)
             const jsonResponse = res.data.data
             if (res.status === 200) {
                 setBookings(jsonResponse)
@@ -114,7 +111,6 @@ export default function BookingsPage(props: BookingsPageProps) {
 
     return(
         <div className="h-screen flex flex-col items-center ">
-            <BackButton navigate={navigate} />
             <div className={`flex flex-col items-center w-full ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
                 <h1 className="m-0 mt-4 font-verdana text-[#EBCE9F] font-black header-2">My Bookings</h1>
                 <div className={`grid grid-cols-3`}>

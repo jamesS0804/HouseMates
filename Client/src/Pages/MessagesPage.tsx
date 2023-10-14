@@ -1,14 +1,12 @@
-import BackButton from "@/Main Components/BackButton"
 import NavigationBar from "@/Main Components/NavigationBar"
 import { useEffect, useState } from "react"
 
 interface MessagesPageProps {
     userType: string,
-    navigate: Function
 }
 
 export default function MessagesPage(props: MessagesPageProps) {
-    const { userType, navigate } = props
+    const { userType } = props
     const [ messages, setMessages ] = useState([])
 
     useEffect(()=>{
@@ -17,7 +15,6 @@ export default function MessagesPage(props: MessagesPageProps) {
 
     return(
         <div className="h-screen flex flex-col items-center">
-            <BackButton navigate={navigate} />
             <div className={`flex flex-col items-center w-full ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
                 <h1 className="my-4 font-verdana text-[#EBCE9F] font-black header-2">My Messages</h1>
             </div>

@@ -21,4 +21,14 @@ authenticated_api.interceptors.request.use(
   }
 );
 
+authenticated_api.interceptors.response.use(response => {
+  return response;
+}, error => {
+  if (error.response.status === 401) {
+    sessionStorage.clear()
+    window.location.reload()
+  }
+  return error;
+});
+
 export default authenticated_api;

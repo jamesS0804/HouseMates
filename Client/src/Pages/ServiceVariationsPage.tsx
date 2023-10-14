@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import GeneralCleaning from "@/Main Components/Service Variations/GeneralCleaning"
 import { useEffect } from "react"
 import getTotalCost from "@/utils/getTotalCost"
-import { AxiosInstance } from "axios"
 
 interface ServiceVariationsPageProps {
     selectedService: SelectedService
@@ -11,7 +10,6 @@ interface ServiceVariationsPageProps {
     navigate: Function
     serviceDetails: ServiceDetails
     setServiceDetails: Function
-    api: AxiosInstance
 }
 
 type ServiceDetails = {
@@ -34,11 +32,11 @@ type SelectedService = {
 }
 
 export default function ServiceVariationsPage(props: ServiceVariationsPageProps) {
-    const { selectedService, navigate, serviceDetails, setServiceDetails, api } = props
+    const { selectedService, navigate, serviceDetails, setServiceDetails } = props
 
     const services: Services = {
         'General Cleaning': { 
-            element: <GeneralCleaning serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} api={api} selectedService={selectedService}/>},
+            element: <GeneralCleaning serviceDetails={serviceDetails} setServiceDetails={setServiceDetails} selectedService={selectedService}/>},
     }
     const service = services[selectedService.serviceName]    
 
@@ -67,7 +65,7 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
                         <div className="bg-white border border-primary flex text-primary text-xs text-center p-2 rounded-t-lg">
                             <h3 className="text-xl font-black flex items-center">Total cost:</h3>
                             <div className="flex flex-col ml-auto">
-                                <p className="text-2xl font-black">₱{serviceDetails.totalCost}</p>
+                                <p className="text-2xl font-black">₱{Number(serviceDetails.totalCost).toLocaleString('en-PH')}</p>
                                 <p className="text-xs">includes materials</p>
                             </div>
                         </div>

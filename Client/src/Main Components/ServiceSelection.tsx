@@ -12,14 +12,13 @@ import familyCare from "../assets/images/familyCare.png"
 import gardening from "../assets/images/gardening.png"
 import dogSitting from "../assets/images/dogSitting.png"
 import { useEffect, useState } from "react"
-import { AxiosInstance } from "axios"
+import authenticated_api from "@/utils/authenticated_api"
 
 interface ServiceSelectionProps {
     userType: string,
     selectionType: 'single' | 'multiple',
     outputData: any,
     setOutputData: Function,
-    api: AxiosInstance
 }
 
 type Services = {
@@ -36,7 +35,7 @@ type ServiceData = {
 }
 
 export default function ServiceSelection(props: ServiceSelectionProps){
-    const { userType, selectionType, outputData, setOutputData, api } = props
+    const { userType, selectionType, outputData, setOutputData } = props
     const [ services, setServices ] = useState<Array<Services>>([])
 
     useEffect(()=>{
@@ -45,8 +44,9 @@ export default function ServiceSelection(props: ServiceSelectionProps){
 
     const getServicesData = async () => {
         try {
-            const res = await api.get("api/v1/services")
+            const res = await authenticated_api.get("api/v1/services")
             const service_data = res.data.data
+            console.log(res)
             if(res.status === 200){
                 const merged_services = service_data.map((service:ServiceData, index:number)=>(
                     { ...service, price: Number(service.price) ,...additional_service_details[index]}

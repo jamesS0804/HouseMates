@@ -8,6 +8,7 @@ import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
 import { AxiosInstance } from "axios";
+import { Loader2 } from "lucide-react";
 
 interface LoginPageProps {
     userType: string,
@@ -15,7 +16,10 @@ interface LoginPageProps {
     api: AxiosInstance,
     setCurrentUser: Function,
     setAuthKey: Function,
-    setIsVerified: Function
+    setUserSessionData: Function
+    actionIsLoading: boolean
+    setActionIsLoading: Function
+    setAlert: Function
 }
 
 const formSchema = z.object({
@@ -25,7 +29,7 @@ const formSchema = z.object({
 })
 
 export default function LoginPage(props:LoginPageProps){
-    const { userType, navigate, api, setCurrentUser, setAuthKey, setIsVerified } = props
+    const { userType, navigate, api, setCurrentUser, setAuthKey, setUserSessionData, actionIsLoading, setActionIsLoading, setAlert } = props
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -36,6 +40,7 @@ export default function LoginPage(props:LoginPageProps){
     })
 
     const onSubmit = async(values: z.infer<typeof formSchema>) => {
+        setActionIsLoading(true)
         try {
             const res = await api.post("login", {
                 user: {
@@ -43,14 +48,9 @@ export default function LoginPage(props:LoginPageProps){
                     password: values.password
                 }
             })
+            console.log(res)
             if( res.status === 200) {
                 const jsonResponse = res.data.data.user
-                // const resProfile = await api.get("api/v1/profiles", {
-                //     profile: {
-                //         id: jsonResponse.id
-                //     }
-                // })
-                // console.log(resProfile)
                 setCurrentUser({
                     id: jsonResponse.id, 
                     email: jsonResponse.email,
@@ -60,19 +60,27 @@ export default function LoginPage(props:LoginPageProps){
                 sessionStorage.setItem('userSessionData', JSON.stringify({
                     id: jsonResponse.id, 
                     email: jsonResponse.email,
-                    isVerified: jsonResponse.is_verified
+                    isVerified: jsonResponse.is_verified,
+                    userType: jsonResponse.type
                 }))
+                sessionStorage.setItem('expiry', res.headers['expiry'])
                 setAuthKey(res.headers['authorization'])
                 sessionStorage.setItem('authToken', res.headers['authorization'].split(' ')[1])
-                setIsVerified(jsonResponse.is_verified)
-                sessionStorage.setItem('isVerified', jsonResponse.is_verified)
+                setUserSessionData({
+                    id: jsonResponse.id, 
+                    email: jsonResponse.email,
+                    isVerified: jsonResponse.is_verified,
+                    userType: jsonResponse.type
+                })
+                setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Login Successful!" })
                 jsonResponse.is_verified ? navigate("/home") : navigate("/verification")
             } else {
-                console.log(res)
+                setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
+        setActionIsLoading(false)
     }
 
     return(
@@ -104,7 +112,9 @@ export default function LoginPage(props:LoginPageProps){
             <Button
                 className={`page-action-button text-white border-none rounded-none ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}
                 onClick={form.handleSubmit(onSubmit)}
-            >Login</Button>
+            >
+                { actionIsLoading ? <>Logging In<Loader2 className={'animate-spin'} /></> : "Login" }
+            </Button>
         </div>
     )
 }

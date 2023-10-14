@@ -12,9 +12,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticTimePicker } from "@mui/x-date-pickers"
 import GeneralCleaningBookingDetails from "@/Main Components/Booking Details/GeneralCleaningBookingDetails";
-import { AxiosInstance } from "axios";
 import extractDataFromDate from "@/utils/extractDataFromDate";
 import check from "../assets/images/check.png"
+import authenticated_api from "@/utils/authenticated_api";
+import { Loader2 } from "lucide-react";
 
 type ServiceDetails = {
     service: Record<string, any>,
@@ -28,7 +29,10 @@ interface BookingDetailsPropsPage {
     serviceDetails: ServiceDetails
     setServiceDetails: Function
     currentUser: User
-    api: AxiosInstance
+    setTrackedBooking: Function
+    actionIsLoading: boolean
+    setActionIsLoading: Function
+    setAlert: Function
 }
 
 type User = {
@@ -50,7 +54,7 @@ type Time = {
 }
 
 export default function BookingDetailsPage(props: BookingDetailsPropsPage){
-    const { navigate, serviceDetails, setServiceDetails, currentUser, api } = props
+    const { navigate, serviceDetails, setServiceDetails, currentUser, setTrackedBooking, actionIsLoading, setActionIsLoading, setAlert } = props
     const [ date, setDate ] = useState<Date | undefined>(new Date())
     const [ page, setPage ] = useState(1)
     const [ time, setTime ] = useState<Dayjs | null>(dayjs());
@@ -82,15 +86,16 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
     }
 
     const submitBooking = async () => {
+        setActionIsLoading(true)
         const day = extractDataFromDate(serviceDetails.date, "day")
         const month = extractDataFromDate(serviceDetails.date, "month")
         const date = extractDataFromDate(serviceDetails.date, "date")
         const year = extractDataFromDate(serviceDetails.date, "year")
-        const hour = serviceDetails.time.$H
+        const hour = Number(serviceDetails.time.$H) % 12
         const minute = serviceDetails.time.$m
         const scheduled_at = `${hour}:${minute} ${Number(hour) % 12 ? "PM" : "AM"} ${month} ${date}, ${year} ${day}`
         try {
-            const res = await api.post("api/v1/bookings", 
+            const res = await authenticated_api.post("api/v1/bookings", 
                 {
                     booking: {
                         homeowner_id: currentUser.id,
@@ -104,15 +109,16 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                     }
                 }
             )
-            if (res.status === 201) {
-                console.log(res)
+            if (res.status === 200) {
+                setTrackedBooking(res.data.data)
                 navigate('/tracking')
             } else {
-                console.log(res)
+                setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
+        setActionIsLoading(false)
     }
 
     return(
@@ -264,7 +270,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                             }
                                             <div className="flex w-full">
                                                 <p className="font-black">Extra Service</p>
-                                                <p className="font-black text-secondarySelected ml-auto">₱{extraServiceCost}</p>
+                                                <p className="font-black text-secondarySelected ml-auto">₱{Number(extraServiceCost).toLocaleString('en-PH')}</p>
                                             </div>
                                             <div className="flex w-full">
                                                 <p className="font-black">Payment Method</p>
@@ -272,7 +278,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                             </div>
                                             <div className="flex flex-col gap-1 w-full items-center mt-20">
                                                 <p className="font-black text-primarySelected text-lg">Total Pay</p>
-                                                <p className="font-black text-3xl">₱{serviceDetails.totalCost}</p>
+                                                <p className="font-black text-3xl">₱{Number(serviceDetails.totalCost).toLocaleString('en-PH')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -293,19 +299,30 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                 </div>
                                 <div className="bg-white absolute h-fit w-full left-0 bottom-0 border font-semibold border-primary text-primary flex text-xs text-center p-3 rounded-t-lg">
                                     <h3 className="font-black text-xl">Total Cost:</h3>
-                                    <p className="ml-auto text-xl font-black">₱{serviceDetails.totalCost}</p>
+                                    <p className="ml-auto text-xl font-black">₱{Number(serviceDetails.totalCost).toLocaleString('en-PH')}</p>
                                 </div>
                             </div>
                         </div> : <></>
                 }
                 {
                     page === 1 ? 
-                        <Button onClick={()=>nextPage(2)} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Next</Button>
+                        <Button onClick={()=>nextPage(2)} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">
+                            Next
+                        </Button>
                         : 
                         page === 2 ? 
-                        <Button onClick={()=>nextPage(3)} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Book</Button>
+                        <Button onClick={()=>nextPage(3)} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">
+                            Book
+                        </Button>
                         : 
-                        <Button onClick={submitBooking} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">View Map</Button>
+                        <Button onClick={submitBooking} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">
+                            {
+                                actionIsLoading ? 
+                                    <>Viewing Map<Loader2 className="animate-spin" /></>
+                                    :
+                                    "View Map"
+                            }
+                        </Button>
                     
                 }
             </div>

@@ -1,19 +1,23 @@
-import Header from "@/Main Components/Header";
-import CustomFormField from "@/Main Components/CustomFormField";
 import * as z from "zod"
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/ui/form"
-import homeowner from "../assets/images/homeowner.png"
-import housemates from "../assets/images/housemates.png"
 import { Link } from "react-router-dom";
 import { AxiosInstance } from "axios";
+import { Loader2 } from "lucide-react";
+import homeowner from "../assets/images/homeowner.png"
+import housemates from "../assets/images/housemates.png"
+import Header from "@/Main Components/Header";
+import CustomFormField from "@/Main Components/CustomFormField";
 
 interface SignupPageProps {
-    userType: string,
-    api: AxiosInstance,
+    userType: string
+    api: AxiosInstance
     navigate: Function
+    setAlert: Function
+    actionIsLoading: boolean
+    setActionIsLoading: Function
 }
 
 const formSchema = z.object({
@@ -40,7 +44,7 @@ const formSchema = z.object({
 });
 
 export default function SignupPage(props: SignupPageProps) {
-    const { userType, navigate, api } = props
+    const { userType, navigate, api, setAlert, actionIsLoading, setActionIsLoading } = props
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -53,7 +57,7 @@ export default function SignupPage(props: SignupPageProps) {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+        setActionIsLoading(true)
         try {
             const res = await api.post("signup", {
                 user: {
@@ -63,14 +67,15 @@ export default function SignupPage(props: SignupPageProps) {
                 }
             })
             if ( res.status === 200 ) {
-                console.log("signup success")
+                setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Signup Successful!" })
                 navigate("/login")
             } else {
-                console.log(res.status)
+                setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
+        setActionIsLoading(false)
     }
 
     return (
@@ -105,12 +110,13 @@ export default function SignupPage(props: SignupPageProps) {
                 <Link to="/login">
                     <div className={`${userType === "Homeowner" ? 'text-primary' : 'text-secondary'} font-black underline`}>Login</div>
                 </Link>
-                
             </div>
             <Button
                 className={`page-action-button text-white border-none rounded-none ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}
                 onClick={form.handleSubmit(onSubmit)}
-            >Sign Up</Button>
+            >
+                { actionIsLoading ? <>Signing Up<Loader2 className={'animate-spin'} /></> : "Signup" }
+            </Button>
         </div>
     )
 }

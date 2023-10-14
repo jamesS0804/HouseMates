@@ -16,7 +16,7 @@ import progressPart1 from "../assets/images/progress1.png"
 import progressPart2 from "../assets/images/progress2.png"
 import ServiceSelection from "@/Main Components/ServiceSelection";
 import authenticated_api from "@/utils/authenticated_api";
-import { AxiosInstance } from "axios";
+import { Loader2 } from "lucide-react";
 
 interface VerificationPageProps {
     userType: string,
@@ -35,8 +35,11 @@ interface VerificationPageProps {
         }
     },
     setCurrentUser: Function,
-    setIsVerified: Function,
-    api: AxiosInstance
+    setUserSessionData: Function,
+    userSessionData: any
+    actionIsLoading: boolean
+    setActionIsLoading: Function
+    setAlert: Function
 }
 
 const formSchema = z.object({
@@ -53,7 +56,7 @@ const formSchema = z.object({
 })
 
 export default function VerificationPage(props:VerificationPageProps) {
-    const { userType, navigate, currentUser, setCurrentUser, setIsVerified, api } = props
+    const { userType, navigate, currentUser, setCurrentUser, setUserSessionData, userSessionData, actionIsLoading, setActionIsLoading, setAlert } = props
     const provinces = getProvinces()
     const [ selectedProvince, setSelectedProvince ] = useState("")
     const [ selectedCity, setSelectedCity ] = useState("") 
@@ -107,7 +110,7 @@ export default function VerificationPage(props:VerificationPageProps) {
     };
 
     const updateIsVerified = async (userID:number, userUrl:string) => {
-        console.log("updating verified")
+        setActionIsLoading(true)
         try {
             const res = await authenticated_api.patch(`api/v1/${userUrl}/${userID}`, {
                 [userType.toLowerCase()]: {
@@ -115,65 +118,67 @@ export default function VerificationPage(props:VerificationPageProps) {
                 } 
             })
             if ( res.status === 200 ) {
+                setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Verification Successful!" })
                 sessionStorage.setItem("isVerified", JSON.stringify(true))
-                setIsVerified(true)
+                setUserSessionData({ ...userSessionData, isVerified: true })
                 setCurrentUser({...currentUser, isVerified: true})
+            } else {
+                setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
+        setActionIsLoading(false)
     }
 
     const basicInfoSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log("submitting..")
-        console.log(values)
-        setVerificationPart(2)
-        // try {
-        //     const res = await authenticated_api.post("api/v1/profiles", {
-        //         profile: {
-        //             id: currentUser.id,
-        //             name: values.name,
-        //             email: currentUser.email,
-        //             phone_number: values.phoneNumber,
-        //             address_attributes: {
-        //                 address_line_1: values.address,
-        //                 barangay: values.barangay,
-        //                 city: values.city,
-        //                 province: values.province,
-        //                 zip_code: values.zipcode
-        //             }
-        //         }
-        //     })
-        //     if( res.status === 201 ) {
-        //         const jsonResponse = res.data.data
-        //         setCurrentUser({ ...currentUser,
-        //             name: jsonResponse.name,
-        //             phoneNumber: jsonResponse.phone_number,
-        //             addressAttributes: {
-        //                 addressLine1: jsonResponse.address_line_1,
-        //                 barangay: jsonResponse.barangay,
-        //                 city: jsonResponse.city,
-        //                 province: jsonResponse.province,
-        //                 zipCode: jsonResponse.zip_code
-        //             }
-        //         })
-        //         if(userType === 'Homeowner'){
-        //             updateIsVerified(currentUser.id, 'homeowners')
-        //             navigate("/home")
-        //         }
-        //         setVerificationPart(2)
-        //     } else {
-        //         console.log(res)
-        //     }
-        // } catch (error) {
-        //     console.log(error)
-        // }
+        setActionIsLoading(true)
+        try {
+            const res = await authenticated_api.post("api/v1/profiles", {
+                profile: {
+                    id: currentUser.id,
+                    name: values.name,
+                    email: currentUser.email,
+                    phone_number: values.phoneNumber,
+                    address_attributes: {
+                        address_line_1: values.address,
+                        barangay: values.barangay,
+                        city: values.city,
+                        province: values.province,
+                        zip_code: values.zipcode
+                    }
+                }
+            })
+            if( res.status === 200 ) {
+                const jsonResponse = res.data.data
+                setCurrentUser({ ...currentUser,
+                    name: jsonResponse.name,
+                    phoneNumber: jsonResponse.phone_number,
+                    addressAttributes: {
+                        addressLine1: jsonResponse.address_line_1,
+                        barangay: jsonResponse.barangay,
+                        city: jsonResponse.city,
+                        province: jsonResponse.province,
+                        zipCode: jsonResponse.zip_code
+                    }
+                })
+                if(userType === 'Homeowner'){
+                    setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Profile successfully updated!" })
+                    updateIsVerified(currentUser.id, 'homeowners')
+                    navigate("/home")
+                }
+                setVerificationPart(2)
+            } else {
+                setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
+            }
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
+        }
+        setActionIsLoading(false)
     }
 
-    const basicInfoAndServicesSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log("submitting..")
-        console.log(values)
-        console.log(preferredServices)
+    const basicInfoAndServicesSubmit = async () => {
+        setActionIsLoading(true)
         try {
             const res = await authenticated_api.post("api/v1/housemate_services", 
                 {
@@ -184,17 +189,17 @@ export default function VerificationPage(props:VerificationPageProps) {
                     }
                 }
             )
-            const jsonResponse = res.data.data
             if ( res.status === 200 ) {
-                console.log(jsonResponse)
-                await updateIsVerified(currentUser.id, 'housemates')
+                setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Profile and preferred services successfully updated!" })
+                updateIsVerified(currentUser.id, 'housemates')
                 navigate("/home")
             } else {
-                console.log(res.status)
+                setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
-        } catch (error) {
-            console.log(error)
-        }   
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
+        }
+        setActionIsLoading(false)
     }
 
     return(
@@ -250,7 +255,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                                 :
                                 <div className="mt-4 flex flex-col gap-2">
                                     <h3>Please select your preferred service below:</h3>
-                                    <ServiceSelection userType={userType} selectionType="multiple" outputData={preferredServices} setOutputData={setPreferredServices} api={api}/>
+                                    <ServiceSelection userType={userType} selectionType="multiple" outputData={preferredServices} setOutputData={setPreferredServices}/>
                                 </div>
                         }
                     </div>
@@ -259,7 +264,24 @@ export default function VerificationPage(props:VerificationPageProps) {
                 <Button
                     className={`text-white rounded-2xl border-none ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}
                     onClick={ verificationPart === 1 ? form.handleSubmit(basicInfoSubmit) : form.handleSubmit(basicInfoAndServicesSubmit)}
-                >{ verificationPart === 1 ? "Next" : "Submit" }</Button>
+                >
+                    {
+                        actionIsLoading ? 
+                            <>
+                                {
+                                    verificationPart === 1 ?
+                                        <>Processing<Loader2 className="animate-spin"/></> 
+                                        : 
+                                        <>Submitting<Loader2 className="animate-spin"/></>
+                                }
+                            </>
+                            :
+                            verificationPart === 1 ? 
+                                "Next" 
+                                : 
+                                "Submit" 
+                    }
+                </Button>
             </div>
         </div>
     )

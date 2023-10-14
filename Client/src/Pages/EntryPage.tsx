@@ -6,15 +6,15 @@ import homeowner from "../assets/images/homeowner.png"
 
 interface EntryPageProps {
     userType: string;
-    setUserType: (value: string) => void
+    setUserSessionData: (value: string) => void
+    userSessionData: any
 }
 
 export default function EntryPage(props:EntryPageProps) {
-    const { userType,setUserType } = props
+    const { userType, setUserSessionData, userSessionData } = props
 
     const handleClick = (type: string) => {
-        setUserType(type)
-        sessionStorage.setItem('userType', type)
+        setUserSessionData({ ...userSessionData, userType: type })
     }
     return(
         <div className="h-screen flex flex-col">

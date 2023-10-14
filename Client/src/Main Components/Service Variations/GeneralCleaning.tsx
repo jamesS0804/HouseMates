@@ -2,12 +2,11 @@ import { Button } from "@/components/ui/button";
 import Counter from "../Counter";
 import StringIterator from "../StringIterator";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { AxiosInstance } from "axios";
+import authenticated_api from "@/utils/authenticated_api";
 
 interface GeneralCleaningProps {
     serviceDetails: Record<string, any>
     setServiceDetails: Function
-    api: AxiosInstance
     selectedService: SelectedService
 }
 
@@ -52,14 +51,14 @@ type ServiceDescription = {
   };
 
 export default function GeneralCleaning(props: GeneralCleaningProps) {
-    const { serviceDetails, setServiceDetails, api, selectedService } = props
+    const { serviceDetails, setServiceDetails, selectedService } = props
 
     const [ subserviceData, setSubserviceData ] = useState([])
     const [ categorizedData, setCategorizedData ] = useState<CategorizedData>({});
     const [ inputData, setInputData ] = useState<InputData>({})
     const getSubserviceData = async () => {
         try {
-            const res = await api.get(`api/v1/subservices/${selectedService.id}`)
+            const res = await authenticated_api.get(`api/v1/subservices/${selectedService.id}`)
             const jsonResponse = res.data
             if(res.status === 200){
                 setSubserviceData(jsonResponse.data)
