@@ -1,5 +1,4 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  include JsonRender
   respond_to :json
 
   def create
@@ -7,20 +6,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     resource.save
     if resource.persisted?
-      data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
-      message = 'Signed up successfully.'
+      render json: { data: UserSerializer.new(resource).serializable_hash[:data][:attributes] }, status: :ok
     else
-      status_code = 422
-      message = "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}"
+      render json: { errors: resource.errors }, status: :unprocessable_entity
     end
-    render_json_response(status_code: status_code, message: message, data: data)
   end
 
   private
-
-  def render_json_response(status_code: nil, message: , data: nil)
-    render_json(status_code, message , data)
-  end
 
   def sign_up_params
     params.require(:user).permit(:email, :password, :type)

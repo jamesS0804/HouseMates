@@ -10,7 +10,7 @@ module Api
                 if subservice.save
                     render_subservice_json(subservice, :created)
                 else
-                    render json: { errors: subservice.errors, status: :unprocessable_entity }
+                    render json: { errors: subservice.errors }, status: :unprocessable_entity
                 end
             end
         
@@ -25,19 +25,25 @@ module Api
                 if subservice.update(subservice_params)
                     render_subservice_json(subservice, :ok)
                 else
-                    render json: { errors: subservice.errors, status: :unprocessable_entity }
+                    render json: { errors: subservice.errors }, status: :unprocessable_entity
                 end
             end
 
             private
         
-            def serialize_subservices(subservices)
-                SubserviceSerializer.new(subservices).serializable_hash[:data].map { |data| data[:attributes] }
+            def serialize_subservices(data)
+                if data.is_a?(ActiveRecord::Relation)
+                    data.map do |subservice|
+                        SubserviceSerializer.new(subservice).serializable_hash[:data][:attributes]
+                    end
+                else
+                    SubserviceSerializer.new(data).serializable_hash[:data][:attributes]
+                end
             end
 
             def render_subservice_json(subservices, status)
                 serialized_data = serialize_subservices(subservices)
-                render json: { data: serialized_data, status: status }
+                render json: { data: serialized_data }, status: status
             end
 
             def subservice_params

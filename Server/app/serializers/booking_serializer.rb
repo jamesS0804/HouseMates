@@ -5,7 +5,7 @@ class BookingSerializer
   attribute :homeowner do |booking|
     {
       id: booking.homeowner.id,
-      name: booking.homeowner.profile.name
+      name: booking.homeowner&.profile&.name || ""
     }
   end
 

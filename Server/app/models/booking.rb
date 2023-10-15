@@ -8,5 +8,8 @@ class Booking < ApplicationRecord
     accepts_nested_attributes_for :address
 
     validates :status, inclusion: { in: statuses.keys }
-    validates :scheduled_at, presence: true
+    validates :scheduled_at, presence: { message: "Scheduled at cannot be blank." }
+    validates :total_cost, presence: { message: "Total cost cannot be blank." }
+    validates :payment_method, presence: { message: "Payment method cannot be blank." }
+    validates :service_title, presence: { message: "Service Title cannot be blank." }
 end

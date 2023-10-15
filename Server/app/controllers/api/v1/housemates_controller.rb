@@ -6,9 +6,9 @@ module Api
             def create
                 housemate = Housemate.new(housemate_params)
                 if housemate.save
-                  render json: { data: HousemateSerializer.new(housemate).serializable_hash[:data][:attributes], status: :created }
+                    render_serialized_data(housemate, :created)
                 else
-                  render json: housemate.errors, status: :unprocessable_entity
+                    render json: { errors: housemate.errors }, status: :unprocessable_entity
                 end
             end
 
@@ -16,14 +16,18 @@ module Api
                 housemate = Housemate.find(params[:id])
 
                 if housemate.update(housemate_params)
-                    render json: { data: HousemateSerializer.new(housemate).serializable_hash[:data][:attributes], status: :ok }
-                  else
+                    render_serialized_data(housemate, :ok)
+                else
                     render json: { errors: housemate.errors }, status: :unprocessable_entity
-                  end
+                end
             end
 
             private
         
+            def render_serialized_data(data, status)
+                render json: { data: HousemateSerializer.new(data).serializable_hash[:data][:attributes] }, status: status
+            end
+
             def housemate_params
                 params.require(:housemate).permit(:id, :email, :password, :is_active, :is_verified)
             end

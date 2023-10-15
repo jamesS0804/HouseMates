@@ -20,11 +20,11 @@ module Api
                     housemate_services_data = housemate.housemate_services.all.each do |house_service|
                       HousemateServiceSerializer.new(house_service).serializable_hash[:data][:attributes]
                     end
-                    render json: { data: housemate_services_data, status: :created }
+                    render json: { data: housemate_services_data }, status: :created
                   rescue ActiveRecord::RecordInvalid => e
-                    render json: { error: e.message, status: :unprocessable_entity }
+                    render json: { error: e.message }, status: :unprocessable_entity
                   rescue StandardError => e
-                    render json: { error: e.message, status: :internal_server_error }
+                    render json: { error: e.message }, status: :internal_server_error
                   end
             end
 

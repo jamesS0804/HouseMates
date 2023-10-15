@@ -8,7 +8,7 @@ module Api
             def index
                 services = Service.order(:id)
                 serialized_data = serialize_services(services)
-                render json: { data: serialized_data, status: :ok }
+                render json: { data: serialized_data }, status: :ok
             end
 
             def create
@@ -16,7 +16,7 @@ module Api
                 if service.save
                     render_service_json(service, :created)
                 else
-                    render json: { errors: service.errors, status: :unprocessable_entity }
+                    render json: { errors: service.errors }, status: :unprocessable_entity
                 end
             end
         
@@ -28,7 +28,7 @@ module Api
                 if @service.update(service_params)
                     render_service_json(@service, :ok)
                 else
-                    render json: { errors: service.errors, status: :unprocessable_entity }
+                    render json: { errors: @service.errors }, status: :unprocessable_entity
                 end
             end
 
@@ -38,13 +38,19 @@ module Api
                 @service = Service.find(params[:id])
             end
 
-            def serialize_services(services)
-                ServiceSerializer.new(services).serializable_hash[:data].map { |data| data[:attributes] }
+            def serialize_services(data)
+                if data.is_a?(ActiveRecord::Relation)
+                    data.map do |service|
+                        ServiceSerializer.new(service).serializable_hash[:data][:attributes]
+                    end
+                else
+                    ServiceSerializer.new(data).serializable_hash[:data][:attributes]
+                end
             end
 
             def render_service_json(service, status)
                 serialized_data = serialize_services(service)
-                render json: { data: serialized_data, status: status }
+                render json: { data: serialized_data }, status: status
             end
 
             def service_params
