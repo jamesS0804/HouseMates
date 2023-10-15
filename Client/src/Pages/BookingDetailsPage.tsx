@@ -86,14 +86,17 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
     }
 
     const submitBooking = async () => {
+        
         setActionIsLoading(true)
         const day = extractDataFromDate(serviceDetails.date, "day")
         const month = extractDataFromDate(serviceDetails.date, "month")
         const date = extractDataFromDate(serviceDetails.date, "date")
         const year = extractDataFromDate(serviceDetails.date, "year")
-        const hour = Number(serviceDetails.time.$H) % 12
+        const hour = (Number(serviceDetails.time.$H) + 12) % 12
         const minute = serviceDetails.time.$m
         const scheduled_at = `${hour}:${minute} ${Number(hour) % 12 ? "PM" : "AM"} ${month} ${date}, ${year} ${day}`
+        console.log(currentUser)
+        console.log(scheduled_at)
         try {
             const res = await authenticated_api.post("api/v1/bookings", 
                 {
@@ -104,11 +107,18 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                         total_cost: serviceDetails.totalCost,
                         status: "PENDING",
                         service_details: serviceDetails.data['Extra Service'],
-                        address_attributes: currentUser.addressAttributes,
+                        address_attributes: {
+                            address_line_1: currentUser.addressAttributes.addressLine1,
+                            barangay: currentUser.addressAttributes.barangay,
+                            city: currentUser.addressAttributes.city,
+                            province: currentUser.addressAttributes.province,
+                            zip_code: currentUser.addressAttributes.zipCode,
+                        },
                         scheduled_at: scheduled_at
                     }
                 }
             )
+            console.log(res)
             if (res.status === 200) {
                 setTrackedBooking(res.data.data)
                 navigate('/tracking')
@@ -161,7 +171,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                                 mode="single"
                                 selected={date}
                                 onSelect={setDate}
-                                className="rounded-md border w-full bg-[rgba(116_171_183_/0.65)]"
+                                className="w-full bg-white"
                             />
                             <div className="w-full">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>

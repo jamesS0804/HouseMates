@@ -63,7 +63,7 @@ export default function HomePage(props: HomePageProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="p-4 flex flex-col gap-2 pb-20">
+                        <div className="p-4 flex flex-col gap-2 pb-24">
                             <h3 className="font-bold text-xl">Categories</h3>
                             <ServiceSelection userType={userType} selectionType="single" outputData={selectedService} setOutputData={setSelectedService} />
                         </div>

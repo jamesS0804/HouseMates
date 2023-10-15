@@ -25,8 +25,7 @@ authenticated_api.interceptors.response.use(response => {
   return response;
 }, error => {
   if (error.response.status === 401) {
-    sessionStorage.clear()
-    window.location.reload()
+    // window.location.reload()
   }
   return error;
 });

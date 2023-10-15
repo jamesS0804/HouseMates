@@ -56,6 +56,7 @@ export default function HSHomePage(props:HSHomePageProps){
                     }
                 }
             )
+            console.log(res)
             if(res.status === 200) {
                 // setAlert({ status: "SUCCESS", message: res?.data?.data?.message || `You have set yourself as ${switchValue ? 'Active' : 'Inactive'}` })
             } else {

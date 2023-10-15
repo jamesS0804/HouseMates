@@ -17,6 +17,8 @@ interface ProfilePageProps {
     navigate: Function
     userType: string
     currentUser: any
+    setCurrentUser: Function
+    setAlert: Function
 }
 
 const formSchema = z.object({
@@ -33,7 +35,7 @@ const formSchema = z.object({
 })
 
 export default function ProfilePage(props: ProfilePageProps) {
-    const { userType, currentUser } = props
+    const { userType, currentUser, setCurrentUser, setAlert } = props
     const provinces = getProvinces()
     const [ selectedProvince, setSelectedProvince ] = useState("")
     const [ selectedCity, setSelectedCity ] = useState("") 
@@ -54,6 +56,11 @@ export default function ProfilePage(props: ProfilePageProps) {
             zipcode: currentUser.addressAttributes.zipCode,
         }
     })
+
+    useEffect(()=>{
+        handleProvinceChange(currentUser.addressAttributes.province)
+        handleCityChange(currentUser.addressAttributes.city)
+    },[])
 
     useEffect(()=>{
         form.setValue('zipcode',zipcode)
@@ -101,14 +108,32 @@ export default function ProfilePage(props: ProfilePageProps) {
                     }
                 }
             )
+            console.log(res)
             if(res.status === 200) {
-                console.log(res)
+                const jsonResponse = res.data.data
+                setCurrentUser({
+                    ...currentUser,
+                    email: jsonResponse?.email || "",
+                    name: jsonResponse?.name,
+                    balance: jsonResponse?.balance,
+                    phoneNumber: jsonResponse?.phone_number,
+                    addressAttributes: {
+                        addressLine1: (jsonResponse?.address.address_line_1).toUpperCase(),
+                        barangay: jsonResponse?.address.barangay,
+                        city: jsonResponse?.address.city,
+                        province: jsonResponse?.address.province,
+                        zipCode: jsonResponse?.address.zip_code
+                    }
+                })
+                setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Profile update successful!" })
                 setInUpdateState(false)
             } else {
-                console.log(res)
+                console.log(res?.data?.data?.errors)
+                console.log(typeof res?.data?.data?.errors)
+                // setAlert({ status: "WARNING", message: res?.response?.data?.errors || "Something's not quite right." })
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
     }
 
@@ -135,19 +160,19 @@ export default function ProfilePage(props: ProfilePageProps) {
                 </div>
                 <div className="w-full flex flex-col gap-2">
                     {
-                        <div className={`relative flex flex-col gap-2 border ${userType === 'Homeowner' ? 'border-primary' : 'border-secondary'} rounded-2xl p-3`}>
+                        <div className={`relative flex flex-col gap-2 border ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'} rounded-2xl p-3 py-4`}>
                             <h3 className={`${userType === 'Homeowner' ? 'border-primary' : 'border-secondary'} font-black`}>Credit Wallet <span>Balance</span></h3>
-                            <div className="flex gap-1">
-                                <h3 className="font-bold">PHP</h3>
-                                <p className="font-black text-3xl">
+                            <div className="flex gap-2">
+                                <h3 className="font-black text-lg">PHP</h3>
+                                <p className="font-black text-[2.75rem]">
                                     {Number(currentUser.balance).toLocaleString('en-PH')}</p>
                             </div>
-                            <Button className={`${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'} border-none mt-4 text-white font-black text-xs w-20 h-6`}>Send</Button>
+                            <Button className={`${userType === 'Homeowner' ? 'bg-primarySelected' : 'bg-secondarySelected'} border-none text-white font-black text-xs w-20 h-6`}>Send</Button>
                         </div>
                     }
-                    <div className={`${userType === 'Homeowner' ? 'border-primary' : 'border-secondary'} border`} />
+                    <div className={`${userType === 'Homeowner' ? 'border-primary' : 'border-secondary'} border mt-1`} />
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(updateProfile)} className="space-y-4 w-full overflow-auto h-[350px] pb-3">
+                        <form onSubmit={form.handleSubmit(updateProfile)} className="space-y-4 w-full overflow-auto h-[350px] pb-3 px-2">
                             {
                                 inUpdateState ?
                                     <>
@@ -202,7 +227,7 @@ export default function ProfilePage(props: ProfilePageProps) {
                                     </div>  
                             }
                         </form>
-                        <Button onClick={ inUpdateState ? form.handleSubmit(updateProfile) : ()=> { setInUpdateState(true) } } className={`${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'} border-none mt-2 text-white font-black text-xs py-4 px-0 w-full h-6`}>{ inUpdateState ? 'Update Profile' : 'Edit Profile' }</Button>
+                        <Button onClick={ inUpdateState ? form.handleSubmit(updateProfile) : ()=> { setInUpdateState(true) } } className={`${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'} border-none mt-2 text-white font-black text-xs py-4 px-0 w-full h-6 m-0`}>{ inUpdateState ? 'Update Profile' : 'Edit Profile' }</Button>
                     </Form>
                 </div>
             </div>

@@ -18,18 +18,7 @@ import TrackingPage from './Pages/TrackingPage'
 import authenticated_api from './utils/authenticated_api'
 import LoadingPage from './Pages/LoadingPage'
 import AlertNotification from './Main Components/AlertNotification'
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog"
-// import { Button } from "@/components/ui/button"
+import AlertDialog from './Main Components/AlertDialog'
 
 type User = {
   id: number,
@@ -97,8 +86,7 @@ export default function App() {
   const [ pageIsLoading, setPageIsLoading ] = useState(false)
   const [ alert, setAlert ] = useState({ status: "", message: "" })
   const [ actionIsLoading, setActionIsLoading ] = useState(false)
-  // const [ show, setShow ] = useState(false)
-  // const timeoutId = useRef<any>()
+  const [ show, setShow ] = useState(false)
 
   useEffect(()=>{
     sessionStorage.setItem("userSessionData", JSON.stringify(userSessionData))
@@ -109,27 +97,12 @@ export default function App() {
   },[userSessionData.isVerified][userSessionData.userType])
 
   useEffect(()=>{
-    // openSessionModal()
+    checkSessionExpiry()
     if (authKey && userSessionData?.isVerified) getCurrentUserProfile()
-    // return () => {
-    //   timeoutId.current = null;
-    //   clearTimeout(timeoutId.current);
-    // };
   },[])
 
-  // const openSessionModal = () => {
-  //   const storedSessionExpiry = sessionStorage.getItem('expiry')
-  //   const expiry = JSON.parse(storedSessionExpiry)
-  //   const currentTimeInMilliseconds = new Date().getTime();
-  //   const expiryInMilliseconds = parseInt(expiry,10) * 1000;
-  //   const millisecondsTillSessionExpires = expiryInMilliseconds - currentTimeInMilliseconds;
-
-  //   timeoutId.current = setTimeout(() => {
-  //     setShow(true);
-  //   }, millisecondsTillSessionExpires);
-  // };
-
   useEffect(() => {
+    checkSessionExpiry()
     window.scrollTo(0, 0);
     setAlert({ status: "", message: "" })
     setServiceDetails(serviceDetails)
@@ -144,20 +117,31 @@ export default function App() {
     authKey && userSessionData.isVerified ? navigate("/home") : navigate("/verification")
   }, [userSessionData.isVerified])
 
+  const checkSessionExpiry = () => {
+    const expiry = sessionStorage.getItem('expiry')
+    const currentTimeInMilliseconds = new Date().getTime();
+    const expiryInMilliseconds = parseInt(String(expiry),10) * 1000;
+    const millisecondsTillSessionExpires = expiryInMilliseconds - currentTimeInMilliseconds;
+    const minutesTillSessionExpires = millisecondsTillSessionExpires / 60000;
+    console.log(minutesTillSessionExpires)
+    if(minutesTillSessionExpires <= 0) {
+      console.log("Session expired.")
+      setShow(true)
+    }
+  }
+
   const getCurrentUserProfile = async () => {
-    console.log("getting profile")
     setPageIsLoading(true)
     try {
       const res = await authenticated_api.get(`api/v1/profiles/${currentUser.id}`)
       const jsonResponse = res.data.data
-      console.log(res)
       if(res.status === 200){
         setCurrentUser({ ...currentUser, 
           name: jsonResponse.name,
           phoneNumber: jsonResponse.phone_number,
           balance: Number(jsonResponse.balance),
           addressAttributes: {
-              addressLine1: jsonResponse.address.address_line_1,
+              addressLine1: (jsonResponse.address.address_line_1).toUpperCase(),
               barangay: jsonResponse.address.barangay,
               city: jsonResponse.address.city,
               province: jsonResponse.address.province,
@@ -165,18 +149,19 @@ export default function App() {
           }
         })
       } else {
-        console.log(res)
+        setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error:any) {
+        console.log(error)
+        setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
     }
     setPageIsLoading(false)
   }
 
   return (
     <div className='h-screen'>
-      <AlertNotification alert={alert} />
-      {/* <AlertDialog show={show} /> */}
+      <AlertNotification alert={alert} setAlert={setAlert}/>
+      <AlertDialog show={show} />
       {
         pageIsLoading ? 
           <LoadingPage />
@@ -254,6 +239,8 @@ export default function App() {
                 navigate={navigate}
                 userType={userSessionData.userType}
                 currentUser={currentUser}
+                setCurrentUser={setCurrentUser}
+                setAlert={setAlert}
               />} 
             />
             <Route path='/services' element={

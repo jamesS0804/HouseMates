@@ -40,9 +40,9 @@ function Calendar({
           "h-9 w-9 p-0 font-normal aria-selected:opacity-100 bg-transparent"
         ),
         day_selected:
-          "bg-primarySelected w-full text-slate-50 hover:bg-primarySelected hover:text-slate-50 focus:bg-primarySelected focus:text-slate-50 dark:bg-slate-50 dark:text-primarySelected dark:hover:bg-slate-50 dark:hover:text-primarySelected dark:focus:bg-slate-50 dark:focus:text-primarySelected",
-        day_today: "border-2 border-primarySelected rounded-3xl text-primarySelected font-black dark:bg-slate-800 dark:text-slate-50",
-        day_outside: "text-slate-500 opacity-50 dark:text-slate-400 text-white",
+          "bg-primarySelected text-primarySelected hover:bg-primarySelected hover:text-slate-50 focus:bg-primarySelected focus:text-slate-50 dark:bg-slate-50 dark:text-primarySelected dark:hover:bg-slate-50 dark:hover:text-primarySelected dark:focus:bg-slate-50 dark:focus:text-primarySelected",
+        day_today: "border-2 border-primarySelected rounded-3xl text-primarySelected font-black dark:bg-slate-800 dark:text-primarySelected",
+        day_outside: "text-slate-500 opacity-50 dark:text-slate-400 text-red-500",
         day_disabled: "text-slate-500 opacity-50 dark:text-slate-400",
         day_range_middle:
           "aria-selected:bg-slate-100 aria-selected:text-slate-900 dark:aria-selected:bg-slate-800 dark:aria-selected:text-slate-50",

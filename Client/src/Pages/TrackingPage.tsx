@@ -30,7 +30,7 @@ export default function TrackingPage(props: TrackingPageProps) {
             </div>
             <div className="mt-auto fixed bottom-0">
                 <div className="flex flex-col relative border border-primary p-2 bg-white rounded-t-xl pb-20">
-                    <h3 className="font-black text-primary">{trackedBooking.housemate.name}</h3>
+                    <h3 className="font-black text-primary">{trackedBooking?.housemate?.name || "Searching..."}</h3>
                     <div className="flex gap-1 items-center">
                         <p className="font-black">HouseMate</p>
                         <div className="flex gap-2 ml-auto">

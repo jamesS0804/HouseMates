@@ -50,7 +50,7 @@ export default function LoginPage(props:LoginPageProps){
             })
             console.log(res)
             if( res.status === 200) {
-                const jsonResponse = res.data.data.user
+                const jsonResponse = res.data.data
                 setCurrentUser({
                     id: jsonResponse.id, 
                     email: jsonResponse.email,
@@ -78,6 +78,7 @@ export default function LoginPage(props:LoginPageProps){
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
         } catch (error:any) {
+            console.log(error)
             setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
         setActionIsLoading(false)

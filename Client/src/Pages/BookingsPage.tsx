@@ -161,8 +161,8 @@ export default function BookingsPage(props: BookingsPageProps) {
                                 const formattedDate = dateObject.toLocaleDateString("en-US", options);
                                 return(
                                     <div key={booking.id} className={`h-full w-full p-3 rounded-xl flex flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-primary': 'border-secondary'}`}>
-                                        <div className="flex flex-col w-full gap-1">
-                                            <h3 className="font-black">{booking.homeowner.name}</h3>
+                                        <div className="flex flex-col w-full gap-2 p-1">
+                                            <h3 className="font-black text-lg">{booking.homeowner.name}</h3>
                                             <div className="flex gap-2 justify-center items-center">
                                                 <img className="w-10" src={addressPin} />
                                                 <p className="text-xs">{`${addressLine1} ${barangay}, ${city}, ${province}, ${zipCode}`}</p>
@@ -170,32 +170,39 @@ export default function BookingsPage(props: BookingsPageProps) {
                                         </div>
                                         <div className="border border-primary w-[calc(100%+1.5rem)]" />
                                         <div className="w-full flex flex-col items-start gap-2">
-                                            <h3 className="font-black">Service Details</h3>
+                                            <h3 className="font-black mt-2">Service Details</h3>
                                             <div className="flex gap-2 w-full justify-start items-center">
                                                 <img className="w-8" src={userType === 'Homeowner' ? calendar : calendar2}/>
                                                 <p className="text-sm">{formattedDate}</p>
                                             </div>
-                                            <h3 className="font-black">Extra Service/s</h3>
-                                            <div className="flex flex-col gap-1 items-center w-full">
+                                            <h3 className="font-black mt-3">Extra Service/s</h3>
+                                            <ul className={`flex flex-col gap-1 w-full list-disc ${booking.service_details.length === 0 ? '': 'pl-8'}`}>
                                                 {
                                                     booking.service_details.length === 0 ? 
-                                                        <p>No extra service availed.</p>
+                                                        <p className="w-full text-center">No extra service availed.</p>
                                                         :
                                                         booking.service_details.map((subservice:any)=>{
                                                                 return(
-                                                                    <div>{`${subservice.quantity} order of ${subservice.title}`}</div>
+                                                                    <li key={subservice.id}>{`${subservice.quantity} order of ${subservice.title}`}</li>
                                                                 ) 
                                                         }) 
                                                 }
-                                            </div>
-                                            <div className="flex w-full">
+                                            </ul>
+                                            <div className="flex w-full mt-10 text-xl">
                                                 <div className="font-black">Total:</div>
-                                                <div className="ml-auto font-black">₱{booking.total_cost}</div>
+                                                <div className="ml-auto font-black">₱{Number(booking.total_cost).toLocaleString('en-PH')}</div>
                                             </div>
                                         </div>
                                         <div className="border border-primary w-[calc(100%+1.5rem)]" />
-                                        <div className="w-full flex justify-end">
-                                            <Button className={`border rounded-xl p-2 text-xs text-white ${userType === 'Homeowner' ? 'border-primary bg-primary' : 'border-secondary bg-secondary'}`}>{`Contact ${userType === 'Homeowner' ? 'Housemate' : 'Homeowner'}`}</Button>
+                                        <div className="w-full flex gap-2">
+                                            <Button className={`border rounded-xl w-full p-2 text-xs text-white ${userType === 'Homeowner' ? 'border-primary bg-primary' : 'border-secondary bg-secondary'}`}>{`Contact ${userType === 'Homeowner' ? 'Housemate' : 'Homeowner'}`}</Button>
+                                            {
+                                                userType === 'Homeowner' && selectedBookingTab === 'In Progress' ?
+                                                    <Button className="rounded-xl w-full p-2 text-base border border-green-500 bg-green-500 text-white">Complete</Button>
+                                                    :
+                                                    <></>
+                                            }
+                                            
                                         </div>
                                     </div>
                                 )
