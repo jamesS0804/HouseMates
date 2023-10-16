@@ -98,14 +98,14 @@ export default function App() {
 
   useEffect(()=>{
     checkSessionExpiry()
-    if (authKey && userSessionData?.isVerified) getCurrentUserProfile()
+    if (authKey && userSessionData?.isVerified === true) getCurrentUserProfile()
   },[])
 
   useEffect(() => {
     checkSessionExpiry()
     window.scrollTo(0, 0);
-    setAlert({ status: "", message: "" })
     setServiceDetails(serviceDetails)
+    if(location.pathname === "/home") setAlert({ status: '', message: '' })
     if(location.pathname === "/home" && currentUser.balance === undefined ) getCurrentUserProfile()
   }, [location.pathname]);
 
@@ -114,7 +114,7 @@ export default function App() {
       navigate("/")
       return
     }
-    authKey && userSessionData.isVerified ? navigate("/home") : navigate("/verification")
+    authKey && userSessionData.isVerified === true ? navigate("/home") : navigate("/verification")
   }, [userSessionData.isVerified])
 
   const checkSessionExpiry = () => {
@@ -135,6 +135,7 @@ export default function App() {
     try {
       const res = await authenticated_api.get(`api/v1/profiles/${currentUser.id}`)
       const jsonResponse = res.data.data
+      console.log(jsonResponse)
       if(res.status === 200){
         setCurrentUser({ ...currentUser, 
           name: jsonResponse.name,
@@ -153,7 +154,7 @@ export default function App() {
       }
     } catch (error:any) {
         console.log(error)
-        setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
+        setAlert({ status: "ERROR", message: error?.response?.data?.status?.message || "Something went wrong." })
     }
     setPageIsLoading(false)
   }

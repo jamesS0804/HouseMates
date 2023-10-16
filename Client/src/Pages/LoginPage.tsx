@@ -4,7 +4,7 @@ import * as z from "zod"
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
 import { AxiosInstance } from "axios";
@@ -24,8 +24,7 @@ interface LoginPageProps {
 
 const formSchema = z.object({
     email: z.string(),
-    password: z.string(),
-    rememberMe: z.boolean()
+    password: z.string()
 })
 
 export default function LoginPage(props:LoginPageProps){
@@ -51,6 +50,7 @@ export default function LoginPage(props:LoginPageProps){
             console.log(res)
             if( res.status === 200) {
                 const jsonResponse = res.data.data
+                console.log(jsonResponse.is_verified)
                 setCurrentUser({
                     id: jsonResponse.id, 
                     email: jsonResponse.email,
@@ -78,8 +78,7 @@ export default function LoginPage(props:LoginPageProps){
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
         } catch (error:any) {
-            console.log(error)
-            setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
+            setAlert({ status: "ERROR", message: error?.response?.data || "Something went wrong." })
         }
         setActionIsLoading(false)
     }
@@ -94,19 +93,6 @@ export default function LoginPage(props:LoginPageProps){
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
                         <CustomFormField userType={userType} form={form} name={"email"} label={"Email"} type={"email"} placeholder={"johnsmith@gmail.com"} />
                         <CustomFormField userType={userType} form={form} name={"password"} label={"Password"} type={"password"} placeholder={"********"} />
-                        <FormField 
-                             control={form.control}
-                             name="rememberMe"
-                             render={() => (
-                                 <FormItem>
-                                    <div className="flex gap-2 items-center">
-                                        <input type="checkbox" className={`${userType === "Homeowner" ? 'border-primary' : 'border-secondary'} rounded-xl`} {...form.register('rememberMe')} />
-                                        <FormLabel className="font-black">Remember me</FormLabel>
-                                    </div> 
-                                    <FormMessage />
-                                 </FormItem>
-                             )}
-                        />
                     </form>
                 </Form>
             </div>

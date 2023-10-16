@@ -117,15 +117,16 @@ export default function VerificationPage(props:VerificationPageProps) {
                     is_verified: true
                 } 
             })
+            console.log(res)
             if ( res.status === 200 ) {
                 setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Verification Successful!" })
-                sessionStorage.setItem("isVerified", JSON.stringify(true))
                 setUserSessionData({ ...userSessionData, isVerified: true })
                 setCurrentUser({...currentUser, isVerified: true})
             } else {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
         } catch (error:any) {
+            console.log(error)
             setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
         setActionIsLoading(false)
@@ -149,7 +150,8 @@ export default function VerificationPage(props:VerificationPageProps) {
                     }
                 }
             })
-            if( res.status === 200 ) {
+            console.log(res)
+            if( res.status === 201 ) {
                 const jsonResponse = res.data.data
                 setCurrentUser({ ...currentUser,
                     name: jsonResponse.name,
@@ -172,6 +174,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
         } catch (error:any) {
+            console.log(error)
             setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
         setActionIsLoading(false)
@@ -189,7 +192,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                     }
                 }
             )
-            if ( res.status === 200 ) {
+            if ( res.status === 201 ) {
                 setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Profile and preferred services successfully updated!" })
                 updateIsVerified(currentUser.id, 'housemates')
                 navigate("/home")

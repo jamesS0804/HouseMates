@@ -18,8 +18,7 @@ export default function HSHomePage(props:HSHomePageProps){
     const [ pendingJobs, setPendingJobs ] = useState([])
 
     useEffect(()=>{
-        console.log(actionIsLoading)
-        if(actionIsLoading) checkForPendingJob()
+        checkForPendingJob()
     },[])
 
     const checkForPendingJob = async () => {
