@@ -17,6 +17,7 @@ class Users::SessionsController < Devise::SessionsController
       current_user = User.find(user_id)
 
     if current_user
+      current_user.update(is_active: false)
       sign_out(current_user)
       render json: { status: :ok }
     end

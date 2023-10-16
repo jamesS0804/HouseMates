@@ -2,20 +2,15 @@ module Api
     module V1
       class BookingsController < ApplicationController
         before_action :authenticate_user!
+        before_action :find_homeowner, only: [:create, :update]
   
         def create
-          homeowner = find_homeowner
-          booking = build_booking(homeowner)
+          render_error_response("Insufficient homeowner balance.", :unprocessable_entity) and return if @homeowner.profile.balance.to_f < booking_params[:total_cost].to_f
+          booking = build_booking(@homeowner)
           booking_address = booking.build_address(booking_params[:address_attributes])
-          if save_booking(booking, booking_address)
-            handle_successful_booking(booking)
-          else
-            render_error_response("Failed to create booking", :unprocessable_entity, booking.errors)
-          end
+          handle_successful_booking(booking, @homeowner) if save_booking(booking, booking_address)
         rescue ActiveRecord::RecordInvalid => e
-          render_error_response(e.message, :unprocessable_entity)
-        rescue StandardError => e
-          render_error_response(e.message, :internal_server_error)
+            render_error_response(e.message, :unprocessable_entity)
         end
   
         def show
@@ -27,20 +22,15 @@ module Api
   
         def update
           booking = Booking.find(params[:id])
-  
-          if booking_params[:housemate_id]
-            handle_housemate_update(booking)
-          else
-            handle_homeowner_update(booking)
-          end
+          handle_update(booking)
         end
   
         private
   
         def find_homeowner
-          Homeowner.find(booking_params[:homeowner_id])
+          @homeowner = Homeowner.find(booking_params[:homeowner_id])
         end
-  
+
         def build_booking(homeowner)
           scheduled_at = convert_scheduled_at(booking_params[:scheduled_at])
           booking_params[:status] = "PENDING" unless Booking.statuses.include?(booking_params[:status])
@@ -83,68 +73,33 @@ module Api
           end
         end
   
-        def handle_successful_booking(booking)
+        def handle_successful_booking(booking, homeowner)
+          remaining_balance = homeowner.profile.balance -= booking[:total_cost].to_f
+          homeowner.profile.update(balance: remaining_balance)
           serialized_data = serialize_booking(booking)
-
           find_housemate(serialized_data, "")
         end
   
-        def handle_housemate_update(booking)
+        def handle_update(booking)
           housemate = Housemate.find(booking_params[:housemate_id])
-          if booking_params[:status] == "ACCEPTED"
-            booking.status = booking_params[:status]
-            if booking.save
+          case booking_params[:status]
+            when "ACCEPTED"
+              booking.update(status: "ACCEPTED", housemate_id: housemate[:id])
+              render_serialized_response(booking, :ok)
+            when "REJECTED"
               serialized_data = serialize_booking(booking)
-              render json: { data: serialized_data, status: :ok }
+              find_housemate(serialized_data, housemate[:id])
+            when "COMPLETED"
+              booking.update(status: "COMPLETED")
+              update_housemate_balance(housemate, booking)
             else
-              render_error_response("Failed to update booking", :unprocessable_entity, booking.errors)
-            end
-          else
-            serialized_data = serialize_booking(booking)
-            find_housemate(serialized_data, housemate.id)
+              render_error_response("Invalid status input.", :unprocessable_entity)
           end
         end
   
-        def handle_homeowner_update(booking)
-          homeowner = Homeowner.find(booking_params[:homeowner_id])
-          booking.status = booking_params[:status]
-          if booking.save
-            update_homeowner_and_housemate_balances(homeowner, booking)
-          else
-            render_error_response("Failed to update booking", :unprocessable_entity, booking.errors)
-          end
-        end
-  
-        def update_homeowner_and_housemate_balances(homeowner, booking)
-          housemate = Housemate.find(booking.housemate_id)
-          homeowner.profile.balance -= booking.total_cost
+        def update_housemate_balance(housemate, booking)
           housemate.profile.balance += booking.total_cost
-  
-          if homeowner.profile.save && housemate.profile.save
-            render json: { data: booking, status: :ok }
-          else
-            render_error_response("Failed to update balances", :unprocessable_entity)
-          end
-        end
-  
-        def find_housemate(booking_data, housemate_id)
-          address = booking_data[:address]
-          city = address[:city]
-          service_id = booking_data[:service][:id]
-  
-          nearby_housemates = find_nearby_housemates(city, service_id)
-  
-          if nearby_housemates.empty?
-            render_error_response("No nearby available housemate found.", :ok)
-          else
-            index = housemate_id.present? ? nearby_housemates.find_index { |housemate| housemate[:id] == housemate_id } + 1 : 0
-            if index < nearby_housemates.length
-              update_booking_housemate(booking, nearby_housemates[index])
-            else
-              booking.update(housemate_id: "")
-              render_error_response("No nearby available housemate found.", :ok)
-            end
-          end
+          render_serialized_response(booking, :ok)
         end
   
         def find_nearby_housemates(city, service_id)
@@ -154,18 +109,28 @@ module Api
             .where(is_active: true)
             .where(housemate_services: { service_id: service_id })
         end
+
+        def find_housemate(booking_data, housemate_id)
+          address = booking_data[:address]
+          city = address[:city]
+          service_id = booking_data[:service][:id]
   
-        def update_booking_housemate(booking, housemate)
-          booking.assign_attributes(housemate_id: housemate.id, status: "IN_PROGRESS")
-  
-          if booking.save
-            serialized_data = serialize_booking(booking)
-            render json: { data: serialized_data, status: :ok }
+          nearby_housemates = find_nearby_housemates(city, service_id)
+          if nearby_housemates.empty?
+            render_error_response("No nearby available housemate found.", :ok)
           else
-            render_error_response("Failed to update booking", :unprocessable_entity, booking.errors)
+            index = housemate_id.present? ? nearby_housemates.find_index { |housemate| housemate[:id] == housemate_id } + 1 : 0
+            booking = Booking.find(booking_data[:id])
+            if index < nearby_housemates.length
+              booking.assign_attributes(housemate_id: nearby_housemates[index].id, status: "IN_PROGRESS")
+              render_serialized_response(booking, :ok)
+            else
+              booking.update(housemate_id: "")
+              render_error_response("No nearby available housemate found.", :ok)
+            end
           end
         end
-  
+        
         def serialize_booking(booking)
           booking_services_data = booking.booking_services.map do |booking_service|
             BookingServiceSerializer.new(booking_service).serializable_hash[:data][:attributes]
@@ -175,8 +140,13 @@ module Api
           booking_data.merge(address: booking_address_data).merge(service_details: booking_services_data)
         end
   
+        def render_serialized_response(data, status)
+          serialized_data = serialize_booking(data)
+          render json: { data: serialized_data }, status: status
+        end
+
         def render_error_response(message, status, errors = nil)
-          response = { error: message, status: status }
+          response = { error: message }
           response[:errors] = errors if errors
           render json: response, status: status
         end

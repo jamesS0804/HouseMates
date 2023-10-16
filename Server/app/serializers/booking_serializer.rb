@@ -10,10 +10,18 @@ class BookingSerializer
   end
 
   attribute :housemate do |booking|
-    {
-      id: booking.housemate&.id || "",
-      name: booking.housemate&.profile&.name || ""
-    }
+    if booking.housemate_id
+      housemate = Housemate.find(booking.housemate_id)
+      {
+        id: booking.housemate_id,
+        name: housemate.profile[:name]
+      }
+    else
+      {
+        id: booking.housemate&.id || "",
+        name: booking&.housemate&.profile&.name || ""
+      }
+    end
   end
 
   attribute :service do |booking|
