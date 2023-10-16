@@ -62,7 +62,7 @@ export default function BookingsPage(props: BookingsPageProps) {
     const { userType, currentUser } = props
     const [ bookings, setBookings ] = useState([])
     const [ categorizedData, setCategorizedData ] = useState<CategorizedData>({});
-    const [ selectedBookingTab, setSelectedBookingTab ] = useState("In_Progress")
+    const [ selectedBookingTab, setSelectedBookingTab ] = useState("In Progress")
 
     useEffect(()=>{
         console.log('getting bookings...')
@@ -110,10 +110,28 @@ export default function BookingsPage(props: BookingsPageProps) {
     }
 
     const bookingTabs = [
-        { title: 'In_Progress' },
+        { title: 'In Progress' },
         { title: 'Pending' },
         { title: 'Completed' },
     ]
+
+    const handleComplete = async (booking:any) => {
+        console.log(booking)
+        try {
+            const res = await authenticated_api.patch(`api/v1/bookings/${booking.item.id}`,
+                {
+                    booking: {
+                        status: 'COMPLETED',
+                        homeowner_id: currentUser.id,
+                        housemate_id: booking.item.housemate.id
+                    }
+                }
+            )
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return(
         <div className="h-screen flex flex-col items-center">
@@ -204,8 +222,8 @@ export default function BookingsPage(props: BookingsPageProps) {
                                         <div className="w-full flex gap-2">
                                             <Button className={`border rounded-xl w-full p-2 text-xs text-white ${userType === 'Homeowner' ? 'border-primary bg-primary' : 'border-secondary bg-secondary'}`}>{`Contact ${userType === 'Homeowner' ? 'Housemate' : 'Homeowner'}`}</Button>
                                             {
-                                                userType === 'Homeowner' && selectedBookingTab === 'In_Progress' ?
-                                                    <Button className="rounded-xl w-full p-2 text-base border border-green-500 bg-green-500 text-white">Complete</Button>
+                                                userType === 'Homeowner' && selectedBookingTab === 'In Progress' ?
+                                                    <Button onClick={()=>handleComplete(booking)} className="rounded-xl w-full p-2 text-base border border-green-500 bg-green-500 text-white">Complete</Button>
                                                     :
                                                     <></>
                                             }

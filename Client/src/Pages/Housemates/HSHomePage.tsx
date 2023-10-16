@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import authenticated_api from "@/utils/authenticated_api"
 import LoadingPage from "../LoadingPage"
 import addressPin from "../../assets/icons/addressPin.png"
@@ -24,6 +24,10 @@ export default function HSHomePage(props:HSHomePageProps){
         checkForPendingJob()
     },[])
 
+    useLayoutEffect(()=>{
+        setPendingJobs(pendingJobs)
+    },[actionIsLoading])
+
     const checkForPendingJob = async () => {
         console.log("checking for pending job")
         setActionIsLoading(true)
@@ -32,9 +36,10 @@ export default function HSHomePage(props:HSHomePageProps){
             console.log(res)
             if(res.status === 200) {
                 const jsonResponse = res.data.data
-                console.log(res)
-                console.log(jsonResponse)
-                setPendingJobs(jsonResponse)
+                const pendingJobs = jsonResponse.filter((item:any)=>{
+                    if(item.status === 'PENDING') return item
+                })
+                setPendingJobs(pendingJobs)
             } else {
                 console.log(res)
             }
@@ -58,7 +63,6 @@ export default function HSHomePage(props:HSHomePageProps){
                     }
                 }
             )
-            console.log(res)
             if(res.status === 200) {
                 // setAlert({ status: "SUCCESS", message: res?.data?.data?.message || `You have set yourself as ${switchValue ? 'Active' : 'Inactive'}` })
             } else {
@@ -111,7 +115,7 @@ export default function HSHomePage(props:HSHomePageProps){
                             <div className="p-3">
                                 <h3 className="text-secondary font-bold">Pending Job</h3>
                                 {
-                                    pendingJobs.length === 0 ? 
+                                    pendingJobs.length === 0 || pendingJobs[0] === undefined ? 
                                         <p className="text-xs">You have no pending job, set yourself as <span className="font-black">active</span> to get started 
                                         and receive pending requests!</p>
                                         :
@@ -120,13 +124,12 @@ export default function HSHomePage(props:HSHomePageProps){
                             </div>
                             <hr className="border-1 border-secondary w-full mb-3"></hr>
                             {
-                                pendingJobs.length === 0 ?
+                                pendingJobs.length === 0 || pendingJobs[0] === undefined ?
                                     <></>
                                     :
                                     pendingJobs.map((pendingJob:any)=>{
                                         const address = pendingJob.address
                                         const addressLine1 = address.address_line_1
-                                        console.log(addressLine1)
                                         const barangay = address.barangay
                                         const city = address.city
                                         const province = address.province
@@ -144,7 +147,6 @@ export default function HSHomePage(props:HSHomePageProps){
                                             hour12: true
                                         };
                                         const formattedDate = dateObject.toLocaleDateString("en-US", options);
-                                        console.log(pendingJob)
                                         return(
                                             <div key={pendingJob.id} className="h-full w-full rounded-xl flex flex-col items-center justify-center gap-3" >
                                                 <div className="flex flex-col w-full gap-2 p-3 border">
