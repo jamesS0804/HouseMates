@@ -4,7 +4,7 @@ class Users::SessionsController < Devise::SessionsController
   private
 
   def respond_with(resource, _opts = {})
-    expiry_object = Time.parse("#{Time.now + 10.minutes.to_i}")
+    expiry_object = Time.parse("#{Time.now + 15.minutes.to_i}")
     expiry_in_seconds = expiry_object.to_i
 
     response.headers['expiry'] = expiry_in_seconds

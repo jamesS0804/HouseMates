@@ -123,6 +123,7 @@ module Api
             booking = Booking.find(booking_data[:id])
             if index < nearby_housemates.length
               booking.assign_attributes(housemate_id: nearby_housemates[index].id, status: "IN_PROGRESS")
+              booking.save
               render_serialized_response(booking, :ok)
             else
               booking.update(housemate_id: "")
