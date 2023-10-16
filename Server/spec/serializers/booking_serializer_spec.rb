@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe BookingSerializer do
   let(:homeowner) { User.create(email: 'homeowner@example.com', password: 'password', type: 'Homeowner') }
   let(:housemate) { User.create(email: 'housemate@example.com', password: 'password', type: 'Housemate') }
-  let(:service) { Service.create(title: 'Cleaning Service') }
+  let(:service) { Service.create(title: 'Cleaning Service', price: 399) }
   let(:booking) do
     Booking.new(
       id: 1,
@@ -34,6 +34,7 @@ RSpec.describe BookingSerializer do
       user: housemate
     ) 
     serialized_booking = BookingSerializer.new(booking).serializable_hash
+    
     expect(serialized_booking[:data][:attributes]).to include(
       id: 1,
       status: 'PENDING',

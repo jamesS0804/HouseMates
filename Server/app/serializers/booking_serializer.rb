@@ -25,9 +25,11 @@ class BookingSerializer
   end
 
   attribute :service do |booking|
+    service = Service.find(booking.service_id)
     {
-      id: booking.service_id,
-      title: booking.service_title
+      id: service.id,
+      title: service.title,
+      price: service.price
     }
   end
 end

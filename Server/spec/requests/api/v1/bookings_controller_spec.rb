@@ -118,13 +118,12 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
 
     it "returns a successful response when a nearby housemate is found" do
       housemate.update(is_active: true)
-      
       post :create, params: { booking: valid_booking_params, format: :json }
 
       expect(response).to have_http_status(:ok)
 
       jsonResponse = JSON.parse(response.body)
-      expect(jsonResponse['data']['status']).to eq('IN_PROGRESS')
+      expect(jsonResponse['data']['status']).to eq('PENDING')
       expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
       expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
     end
@@ -170,7 +169,7 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
       expect(response).to have_http_status(:ok)
       jsonResponse = JSON.parse(response.body)
 
-      expect(jsonResponse['data']['status']).to eq('ACCEPTED')
+      expect(jsonResponse['data']['status']).to eq('IN PROGRESS')
       expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
       expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
     end

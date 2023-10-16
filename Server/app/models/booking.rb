@@ -4,7 +4,7 @@ class Booking < ApplicationRecord
     has_one :address, dependent: :destroy
     has_many :booking_services, dependent: :destroy
 
-    enum status: { 'PENDING' => 0, 'ACCEPTED' => 1, 'REJECTED' => 2, 'IN_PROGRESS' => 3, 'COMPLETED' => 4, 'CANCELLED' => 5 }
+    enum status: { 'PENDING' => 0, 'ACCEPTED' => 1, 'REJECTED' => 2, 'IN PROGRESS' => 3, 'COMPLETED' => 4, 'CANCELLED' => 5 }
     accepts_nested_attributes_for :address
 
     validates :status, inclusion: { in: statuses.keys }

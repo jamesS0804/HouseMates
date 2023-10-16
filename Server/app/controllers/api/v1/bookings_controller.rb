@@ -84,7 +84,7 @@ module Api
           housemate = Housemate.find(booking_params[:housemate_id])
           case booking_params[:status]
             when "ACCEPTED"
-              booking.update(status: "ACCEPTED", housemate_id: housemate[:id])
+              booking.update(status: "IN PROGRESS", housemate_id: housemate[:id])
               render_serialized_response(booking, :ok)
             when "REJECTED"
               serialized_data = serialize_booking(booking)
@@ -122,7 +122,7 @@ module Api
             index = housemate_id.present? ? nearby_housemates.find_index { |housemate| housemate[:id] == housemate_id } + 1 : 0
             booking = Booking.find(booking_data[:id])
             if index < nearby_housemates.length
-              booking.assign_attributes(housemate_id: nearby_housemates[index].id, status: "IN_PROGRESS")
+              booking.assign_attributes(housemate_id: nearby_housemates[index].id, status: "PENDING")
               booking.save
               render_serialized_response(booking, :ok)
             else
