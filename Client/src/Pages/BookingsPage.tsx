@@ -28,26 +28,26 @@ type CategorizedData = {
     [category: string]: Array<any>;
 }
 
-type Booking = {
-    id: number,
-    scheduled_at: string,
-    service_details: Array<any>,
-    total_cost: number,
-    homeowner: Homeowner,
-    address: Address
-}
+// type Booking = {
+//     id: number,
+//     scheduled_at: string,
+//     service_details: Array<any>,
+//     total_cost: number,
+//     homeowner: Homeowner,
+//     address: Address
+// }
 
-type Address = {
-    address_line_1: string,
-    barangay: string,
-    city: string,
-    province: string,
-    zip_code: string
-}
+// type Address = {
+//     address_line_1: string,
+//     barangay: string,
+//     city: string,
+//     province: string,
+//     zip_code: string
+// }
 
-type Homeowner = {
-    name: string
-}
+// type Homeowner = {
+//     name: string
+// }
 
 type Options = {
     weekday: "short";
@@ -62,17 +62,22 @@ export default function BookingsPage(props: BookingsPageProps) {
     const { userType, currentUser } = props
     const [ bookings, setBookings ] = useState([])
     const [ categorizedData, setCategorizedData ] = useState<CategorizedData>({});
-    const [ selectedBookingTab, setSelectedBookingTab ] = useState("In Progress")
+    const [ selectedBookingTab, setSelectedBookingTab ] = useState("In_Progress")
 
     useEffect(()=>{
+        console.log('getting bookings...')
         getBookingsData()
     },[])
 
     useEffect(()=>{
         console.log(categorizedData)
         console.log(selectedBookingTab.toUpperCase())
-        console.log(categorizedData[selectedBookingTab.toUpperCase()]?.length)
+        console.log(categorizedData[selectedBookingTab.toUpperCase()])
     },[selectedBookingTab])
+
+    useEffect(()=>{
+        console.log(categorizedData)
+    },[categorizedData])
 
     useEffect(()=>{
         const updatedCategorizedData: CategorizedData = {};
@@ -89,6 +94,7 @@ export default function BookingsPage(props: BookingsPageProps) {
         try {
             const res = await authenticated_api.get(`api/v1/bookings/${currentUser.id}`)
             const jsonResponse = res.data.data
+            console.log(res)
             if (res.status === 200) {
                 setBookings(jsonResponse)
             } else {
@@ -104,13 +110,13 @@ export default function BookingsPage(props: BookingsPageProps) {
     }
 
     const bookingTabs = [
-        { title: 'In Progress' },
+        { title: 'In_Progress' },
         { title: 'Pending' },
         { title: 'Completed' },
     ]
 
     return(
-        <div className="h-screen flex flex-col items-center ">
+        <div className="h-screen flex flex-col items-center">
             <div className={`flex flex-col items-center w-full ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}>
                 <h1 className="m-0 mt-4 font-verdana text-[#EBCE9F] font-black header-2">My Bookings</h1>
                 <div className={`grid grid-cols-3`}>
@@ -138,15 +144,16 @@ export default function BookingsPage(props: BookingsPageProps) {
                                 <h3 className="text-gray-500 h-full">You have no {selectedBookingTab} bookings</h3>
                             </div>
                             :
-                            bookings.map((booking:Booking)=>{
-                                const address = booking.address
+                            categorizedData[selectedBookingTab.toUpperCase()].map((booking:any)=>{
+                                const address = booking.item.address
                                 const addressLine1 = address.address_line_1
+                                console.log(addressLine1)
                                 const barangay = address.barangay
                                 const city = address.city
                                 const province = address.province
                                 const zipCode = address.zip_code
 
-                                const dateString = booking.scheduled_at;
+                                const dateString = booking.item.scheduled_at;
                                 const dateObject = new Date(dateString);
 
                                 const options: Options = {
@@ -162,13 +169,13 @@ export default function BookingsPage(props: BookingsPageProps) {
                                 return(
                                     <div key={booking.id} className={`h-full w-full p-3 rounded-xl flex flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-primary': 'border-secondary'}`}>
                                         <div className="flex flex-col w-full gap-2 p-1">
-                                            <h3 className="font-black text-lg">{booking.homeowner.name}</h3>
+                                            <h3 className="font-black text-lg">{booking.item.homeowner.name}</h3>
                                             <div className="flex gap-2 justify-center items-center">
                                                 <img className="w-10" src={addressPin} />
                                                 <p className="text-xs">{`${addressLine1} ${barangay}, ${city}, ${province}, ${zipCode}`}</p>
                                             </div>
                                         </div>
-                                        <div className="border border-primary w-[calc(100%+1.5rem)]" />
+                                        <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
                                         <div className="w-full flex flex-col items-start gap-2">
                                             <h3 className="font-black mt-2">Service Details</h3>
                                             <div className="flex gap-2 w-full justify-start items-center">
@@ -176,12 +183,12 @@ export default function BookingsPage(props: BookingsPageProps) {
                                                 <p className="text-sm">{formattedDate}</p>
                                             </div>
                                             <h3 className="font-black mt-3">Extra Service/s</h3>
-                                            <ul className={`flex flex-col gap-1 w-full list-disc ${booking.service_details.length === 0 ? '': 'pl-8'}`}>
+                                            <ul className={`flex flex-col gap-1 w-full list-disc ${booking.item.service_details.length === 0 ? '': 'pl-8'}`}>
                                                 {
-                                                    booking.service_details.length === 0 ? 
+                                                    booking.item.service_details.length === 0 ? 
                                                         <p className="w-full text-center">No extra service availed.</p>
                                                         :
-                                                        booking.service_details.map((subservice:any)=>{
+                                                        booking.item.service_details.map((subservice:any)=>{
                                                                 return(
                                                                     <li key={subservice.id}>{`${subservice.quantity} order of ${subservice.title}`}</li>
                                                                 ) 
@@ -190,14 +197,14 @@ export default function BookingsPage(props: BookingsPageProps) {
                                             </ul>
                                             <div className="flex w-full mt-10 text-xl">
                                                 <div className="font-black">Total:</div>
-                                                <div className="ml-auto font-black">₱{Number(booking.total_cost).toLocaleString('en-PH')}</div>
+                                                <div className="ml-auto font-black">₱{Number(booking.item.total_cost).toLocaleString('en-PH')}</div>
                                             </div>
                                         </div>
-                                        <div className="border border-primary w-[calc(100%+1.5rem)]" />
+                                        <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
                                         <div className="w-full flex gap-2">
                                             <Button className={`border rounded-xl w-full p-2 text-xs text-white ${userType === 'Homeowner' ? 'border-primary bg-primary' : 'border-secondary bg-secondary'}`}>{`Contact ${userType === 'Homeowner' ? 'Housemate' : 'Homeowner'}`}</Button>
                                             {
-                                                userType === 'Homeowner' && selectedBookingTab === 'In Progress' ?
+                                                userType === 'Homeowner' && selectedBookingTab === 'In_Progress' ?
                                                     <Button className="rounded-xl w-full p-2 text-base border border-green-500 bg-green-500 text-white">Complete</Button>
                                                     :
                                                     <></>
