@@ -98,7 +98,7 @@ module Api
         end
   
         def update_housemate_balance(housemate, booking)
-          housemate.profile.balance += booking.total_cost
+          housemate.profile.update(balance: housemate.profile.balance + booking.total_cost)
           render_serialized_response(booking, :ok)
         end
   

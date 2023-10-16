@@ -106,48 +106,56 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
   end
 
   describe 'POST #create' do
-    it "returns an error response when there's no nearby housemate found" do
-      post :create, params: { booking: valid_booking_params, format: :json }
+    context 'when a homeowner successfully books a job' do
+      context 'but no nearby housemate was found' do
+        it "returns an error response" do
+          post :create, params: { booking: valid_booking_params, format: :json }
 
-      expect(response).to have_http_status(:ok)
-      expect(homeowner.profile.balance).to eq(9900)
+          expect(response).to have_http_status(:ok)
+          expect(homeowner.profile.balance).to eq(9900)
 
-      jsonResponse = JSON.parse(response.body)
-      expect(jsonResponse['error']).to eq('No nearby available housemate found.')
+          jsonResponse = JSON.parse(response.body)
+          expect(jsonResponse['error']).to eq('No nearby available housemate found.')
+        end
+      end
+      context 'and a housemate is found' do
+        it "returns a successful response when a nearby housemate is found" do
+          housemate.update(is_active: true)
+          post :create, params: { booking: valid_booking_params, format: :json }
+
+          expect(response).to have_http_status(:ok)
+
+          jsonResponse = JSON.parse(response.body)
+          expect(jsonResponse['data']['status']).to eq('PENDING')
+          expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
+          expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
+        end
+      end
     end
+    context 'when a homeowner attempts to book a job but provides invalid data' do
+      it 'returns an error response' do
+        post :create, params: { booking: invalid_booking_params, format: :json }
 
-    it "returns a successful response when a nearby housemate is found" do
-      housemate.update(is_active: true)
-      post :create, params: { booking: valid_booking_params, format: :json }
-
-      expect(response).to have_http_status(:ok)
-
-      jsonResponse = JSON.parse(response.body)
-      expect(jsonResponse['data']['status']).to eq('PENDING')
-      expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
-      expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
-    end
-
-    it 'returns an error response for invalid data' do
-      post :create, params: { booking: invalid_booking_params, format: :json }
-
-      expect(response).to have_http_status(:unprocessable_entity)
-      
-      jsonResponse = JSON.parse(response.body)
-      expect(jsonResponse).to have_key('error')
+        expect(response).to have_http_status(:unprocessable_entity)
+        
+        jsonResponse = JSON.parse(response.body)
+        expect(jsonResponse).to have_key('error')
+      end
     end
   end
 
   describe 'GET #show' do
-    it 'returns a list of bookings for a user' do
-      post :create, params: { booking: valid_booking_params, format: :json }
-      get :show, params: { id: homeowner.id, format: :json }
+    context 'when a homeowner or a housemate wants to see his/her list of bookings' do
+      it 'returns a list of bookings for a user' do
+        post :create, params: { booking: valid_booking_params, format: :json }
+        get :show, params: { id: homeowner.id, format: :json }
 
-      expect(response).to have_http_status(:ok)
+        expect(response).to have_http_status(:ok)
 
-      jsonResponse = JSON.parse(response.body)
-      expect(jsonResponse['data'].length).to eq(1)
-      expect(jsonResponse['data'][0]['homeowner']['id']).to eq(homeowner[:id])
+        jsonResponse = JSON.parse(response.body)
+        expect(jsonResponse['data'].length).to eq(1)
+        expect(jsonResponse['data'][0]['homeowner']['id']).to eq(homeowner[:id])
+      end
     end
   end
 
@@ -156,86 +164,92 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
       post :create, params: { booking: valid_booking_params, format: :json }
       @booking = Booking.last
     end
+    context 'when a housemate was assigned a job' do
+      context 'and he/she accepts it' do
+        it 'returns a success response' do
+          patch :update, params: {
+            id: @booking.id,
+            booking: {
+              status: 'ACCEPTED',
+              homeowner_id: @booking.homeowner[:id],
+              housemate_id: housemate[:id]
+            }
+          }
+          expect(response).to have_http_status(:ok)
+          jsonResponse = JSON.parse(response.body)
 
-    it 'returns a successful response when housemate accepted a booking' do
-      patch :update, params: {
-        id: @booking.id,
-        booking: {
-          status: 'ACCEPTED',
-          homeowner_id: @booking.homeowner[:id],
-          housemate_id: housemate[:id]
-        }
-      }
-      expect(response).to have_http_status(:ok)
-      jsonResponse = JSON.parse(response.body)
+          expect(jsonResponse['data']['status']).to eq('IN PROGRESS')
+          expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
+          expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
+        end
+      end
+      context 'but he/she rejects it' do
+        it "returns an error response" do
+          housemate.update(is_active: true)
+          patch :update, params: {
+            id: @booking.id,
+            booking: {
+              status: 'REJECTED',
+              homeowner_id: @booking.homeowner[:id],
+              housemate_id: housemate[:id]
+            }
+          }
+          expect(response).to have_http_status(:ok)
 
-      expect(jsonResponse['data']['status']).to eq('IN PROGRESS')
-      expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
-      expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
-    end
+          jsonResponse = JSON.parse(response.body)
+          expect(jsonResponse['error']).to eq('No nearby available housemate found.')
+        end
+      end
+      context 'and he/she accepted it and the homeowner completed the job' do
+        it 'returns a successful response when COMPLETED' do
+          @booking.update(housemate_id: housemate[:id])
+          
+          housemate_profile = Profile.create(
+            user: housemate,
+            name: 'Jane Doe',
+            phone_number: '1234567891',
+            email: housemate[:email],
+            address_attributes: {
+              address_line_1: '123 Main Street',
+              barangay: 'Sample Barangay',
+              city: 'Sample City',
+              province: 'Sample Province',
+              zip_code: '12345'
+            }
+          )
+          patch :update, params: {
+            id: @booking.id,
+            booking: {
+              status: 'COMPLETED',
+              homeowner_id: @booking.homeowner[:id],
+              housemate_id: @booking.housemate[:id]
+            }
+          }
+          expect(response).to have_http_status(:ok)
+          jsonResponse = JSON.parse(response.body)
 
-    it "returns an error response when housemate rejected the booking and there's no other nearby housemate" do
-      housemate.update(is_active: true)
-      patch :update, params: {
-        id: @booking.id,
-        booking: {
-          status: 'REJECTED',
-          homeowner_id: @booking.homeowner[:id],
-          housemate_id: housemate[:id]
-        }
-      }
-      expect(response).to have_http_status(:ok)
+          expect(jsonResponse['data']['status']).to eq('COMPLETED')
+          expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
+          expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
+        end
+      end
+      context 'when a user wants to update the status of the booking but provided an invalid status input' do
+        it 'returns an error response' do
+          patch :update, params: {
+            id: @booking.id,
+            booking: {
+              status: 'INVALID_STATUS',
+              homeowner_id: @booking.homeowner.id,
+              housemate_id: housemate[:id]
+            }
+          }
+          expect(response).to have_http_status(:unprocessable_entity) 
 
-      jsonResponse = JSON.parse(response.body)
-      expect(jsonResponse['error']).to eq('No nearby available housemate found.')
-    end
-
-    it 'returns a successful response when COMPLETED' do
-      @booking.update(housemate_id: housemate[:id])
-      
-      housemate_profile = Profile.create(
-        user: housemate,
-        name: 'Jane Doe',
-        phone_number: '1234567891',
-        email: housemate[:email],
-        address_attributes: {
-          address_line_1: '123 Main Street',
-          barangay: 'Sample Barangay',
-          city: 'Sample City',
-          province: 'Sample Province',
-          zip_code: '12345'
-        }
-      )
-      patch :update, params: {
-        id: @booking.id,
-        booking: {
-          status: 'COMPLETED',
-          homeowner_id: @booking.homeowner[:id],
-          housemate_id: @booking.housemate[:id]
-        }
-      }
-      expect(response).to have_http_status(:ok)
-      jsonResponse = JSON.parse(response.body)
-
-      expect(jsonResponse['data']['status']).to eq('COMPLETED')
-      expect(jsonResponse['data']['housemate']['id']).to eq(housemate[:id])
-      expect(jsonResponse['data']['housemate']['name']).to eq(housemate.profile.name)
-    end
-
-    it 'handles errors and returns an error response if update fails due to invalid status input' do
-      patch :update, params: {
-        id: @booking.id,
-        booking: {
-          status: 'INVALID_STATUS',
-          homeowner_id: @booking.homeowner.id,
-          housemate_id: housemate[:id]
-        }
-      }
-      expect(response).to have_http_status(:unprocessable_entity) 
-
-      jsonResponse = JSON.parse(response.body)
-      expect(jsonResponse).to have_key('error')
-      expect(jsonResponse['error']).to eq('Invalid status input.')
+          jsonResponse = JSON.parse(response.body)
+          expect(jsonResponse).to have_key('error')
+          expect(jsonResponse['error']).to eq('Invalid status input.')
+        end
+      end
     end
   end
 end
