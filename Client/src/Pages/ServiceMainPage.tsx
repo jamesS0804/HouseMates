@@ -112,8 +112,11 @@ export default function ServiceMainPage(props: ServiceMainPage) {
 
     useEffect(()=>{
         setSelectedService(service)
-        setServiceDetails({ ...serviceDetails, service: service })
     },[])
+
+    useEffect(()=>{
+        setServiceDetails({ ...serviceDetails, service: service })
+    },[selectedService])
 
     return (
         <div className="h-screen flex flex-col relative">
