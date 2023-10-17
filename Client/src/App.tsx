@@ -174,7 +174,7 @@ export default function App() {
                 userSessionData={userSessionData}
               />
             } />
-            <Route path='/signup' element={
+          <Route path='/signup' element={
               <SignupPage 
                 userType={userSessionData.userType} 
                 navigate={navigate} 
