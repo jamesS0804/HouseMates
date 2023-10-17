@@ -165,7 +165,7 @@ export default function VerificationPage(props:VerificationPageProps) {
                 if(userType === 'Homeowner'){
                     setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Profile successfully updated!" })
                     updateIsVerified(currentUser.id, 'homeowners')
-                    navigate("/home")
+                    navigate("https://housemate-frontend.onrender.com/home")
                 }
                 setVerificationPart(2)
             } else {
@@ -193,7 +193,7 @@ export default function VerificationPage(props:VerificationPageProps) {
             if ( res.status === 201 ) {
                 setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Profile and preferred services successfully updated!" })
                 updateIsVerified(currentUser.id, 'housemates')
-                navigate("/home")
+                navigate("https://housemate-frontend.onrender.com/home")
             } else {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }

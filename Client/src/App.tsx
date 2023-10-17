@@ -105,13 +105,13 @@ export default function App() {
     checkSessionExpiry()
     window.scrollTo(0, 0);
     setServiceDetails(serviceDetails)
-    if(location.pathname === "/home") setAlert({ status: '', message: '' })
-    if(location.pathname === "/home" && currentUser.balance === undefined ) getCurrentUserProfile()
+    if(location.pathname === "https://housemate-frontend.onrender.com/home") setAlert({ status: '', message: '' })
+    if(location.pathname === "https://housemate-frontend.onrender.com/home" && currentUser.balance === undefined ) getCurrentUserProfile()
   }, [location.pathname]);
 
   useEffect(()=> {
     if(!authKey) {
-      navigate("/")
+      navigate("https://housemate-frontend.onrender.com/")
       return
     }
     authKey && userSessionData.isVerified === true ? navigate("/home") : navigate("/verification")
@@ -166,15 +166,15 @@ export default function App() {
           <LoadingPage />
           :
           <Routes>
-            <Route index path='/' element={<GetStartedPage />} />
-            <Route path='/entry' element={
+            <Route index path='https://housemate-frontend.onrender.com/' element={<GetStartedPage />} />
+            <Route path='https://housemate-frontend.onrender.com/entry' element={
               <EntryPage 
                 userType={userSessionData.userType} 
                 setUserSessionData={setUserSessionData} 
                 userSessionData={userSessionData}
               />
             } />
-            <Route path='/signup' element={
+            <Route path='https://housemate-frontend.onrender.com/signup' element={
               <SignupPage 
                 userType={userSessionData.userType} 
                 navigate={navigate} 
@@ -184,7 +184,7 @@ export default function App() {
                 setActionIsLoading={setActionIsLoading} 
               />
             } />
-            <Route path='/login' element={
+            <Route path='https://housemate-frontend.onrender.com/login' element={
               <LoginPage 
                 userType={userSessionData.userType} 
                 navigate={navigate} 
@@ -197,7 +197,7 @@ export default function App() {
                 setAlert={setAlert}
               />
             } />
-            <Route path='/verification' element={
+            <Route path='https://housemate-frontend.onrender.com/verification' element={
               <VerificationPage 
                 userType={userSessionData.userType} 
                 navigate={navigate} 
@@ -210,7 +210,7 @@ export default function App() {
                 setAlert={setAlert} 
               />
             } />
-            <Route path='/home' element={
+            <Route path='https://housemate-frontend.onrender.com/home' element={
               <HomePage 
                 userType={userSessionData.userType} 
                 navigate={navigate} 
@@ -222,18 +222,18 @@ export default function App() {
                 setActionIsLoading={setActionIsLoading}
               />} 
             />
-            <Route path='/bookings' element={
+            <Route path='https://housemate-frontend.onrender.com/bookings' element={
               <BookingsPage 
                 userType={userSessionData.userType} 
                 currentUser={currentUser} 
               />} 
             />
-            <Route path='/messages' element={
+            <Route path='https://housemate-frontend.onrender.com/messages' element={
               <MessagesPage 
                 userType={userSessionData.userType} 
               />} 
             />
-            <Route path='/profile' element={
+            <Route path='https://housemate-frontend.onrender.com/profile' element={
               <ProfilePage 
                 navigate={navigate}
                 userType={userSessionData.userType}
@@ -242,7 +242,7 @@ export default function App() {
                 setAlert={setAlert}
               />} 
             />
-            <Route path='/services' element={
+            <Route path='https://housemate-frontend.onrender.com/services' element={
               <ServiceMainPage 
                 selectedService={selectedService} 
                 setSelectedService={setSelectedService} 
@@ -251,7 +251,7 @@ export default function App() {
                 setServiceDetails={setServiceDetails} 
               />} 
             />
-            <Route path='/services/variations' element={
+            <Route path='https://housemate-frontend.onrender.com/services/variations' element={
               <ServiceVariationsPage 
                 selectedService={selectedService} 
                 navigate={navigate} 
@@ -259,7 +259,7 @@ export default function App() {
                 setServiceDetails={setServiceDetails} 
               />} 
             />
-            <Route path='/bookingDetails' element={
+            <Route path='https://housemate-frontend.onrender.com/bookingDetails' element={
               <BookingDetailsPage 
                 navigate={navigate} 
                 serviceDetails={serviceDetails} 
@@ -271,7 +271,7 @@ export default function App() {
                 setAlert={setAlert} 
               />} 
             />
-            <Route path='/tracking' element={
+            <Route path='https://housemate-frontend.onrender.com/tracking' element={
               <TrackingPage 
                 navigate={navigate} 
                 serviceDetails={serviceDetails} 
