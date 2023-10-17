@@ -47,10 +47,8 @@ export default function LoginPage(props:LoginPageProps){
                     password: values.password
                 }
             })
-            console.log(res)
             if( res.status === 200) {
                 const jsonResponse = res.data.data
-                console.log(jsonResponse.is_verified)
                 setCurrentUser({
                     id: jsonResponse.id, 
                     email: jsonResponse.email,

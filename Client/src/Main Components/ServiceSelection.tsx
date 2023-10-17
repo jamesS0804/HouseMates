@@ -46,14 +46,11 @@ export default function ServiceSelection(props: ServiceSelectionProps){
         try {
             const res = await authenticated_api.get("api/v1/services")
             const service_data = res.data.data
-            console.log(res)
             if(res.status === 200){
                 const merged_services = service_data.map((service:ServiceData, index:number)=>(
                     { ...service, price: Number(service.price) ,...additional_service_details[index]}
                 ))
                 setServices(merged_services)
-            } else {
-                console.log(res)
             }
         } catch (error) {
             console.log(error)

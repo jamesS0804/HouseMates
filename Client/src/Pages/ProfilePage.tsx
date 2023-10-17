@@ -88,8 +88,6 @@ export default function ProfilePage(props: ProfilePageProps) {
     };
 
     const updateProfile = async (values: z.infer<typeof formSchema>) => {
-        console.log("here")
-        console.log(values)
         try {
             const res = await authenticated_api.patch(`api/v1/profiles/${currentUser.id}`,
                 {
@@ -108,7 +106,6 @@ export default function ProfilePage(props: ProfilePageProps) {
                     }
                 }
             )
-            console.log(res)
             if(res.status === 200) {
                 const jsonResponse = res.data.data
                 setCurrentUser({
@@ -128,8 +125,6 @@ export default function ProfilePage(props: ProfilePageProps) {
                 setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Profile update successful!" })
                 setInUpdateState(false)
             } else {
-                console.log(res?.data?.data?.errors)
-                console.log(typeof res?.data?.data?.errors)
                 // setAlert({ status: "WARNING", message: res?.response?.data?.errors || "Something's not quite right." })
             }
         } catch (error:any) {

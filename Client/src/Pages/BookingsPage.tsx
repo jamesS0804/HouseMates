@@ -65,19 +65,8 @@ export default function BookingsPage(props: BookingsPageProps) {
     const [ selectedBookingTab, setSelectedBookingTab ] = useState("In Progress")
 
     useEffect(()=>{
-        console.log('getting bookings...')
         getBookingsData()
     },[])
-
-    useEffect(()=>{
-        console.log(categorizedData)
-        console.log(selectedBookingTab.toUpperCase())
-        console.log(categorizedData[selectedBookingTab.toUpperCase()])
-    },[selectedBookingTab])
-
-    useEffect(()=>{
-        console.log(categorizedData)
-    },[categorizedData])
 
     useEffect(()=>{
         const updatedCategorizedData: CategorizedData = {};
@@ -94,11 +83,8 @@ export default function BookingsPage(props: BookingsPageProps) {
         try {
             const res = await authenticated_api.get(`api/v1/bookings/${currentUser.id}`)
             const jsonResponse = res.data.data
-            console.log(res)
             if (res.status === 200) {
                 setBookings(jsonResponse)
-            } else {
-                console.log(res)
             }
         } catch (error) {
             console.log(error)
@@ -116,7 +102,6 @@ export default function BookingsPage(props: BookingsPageProps) {
     ]
 
     const handleComplete = async (booking:any) => {
-        console.log(booking)
         try {
             const res = await authenticated_api.patch(`api/v1/bookings/${booking.item.id}`,
                 {
@@ -165,7 +150,6 @@ export default function BookingsPage(props: BookingsPageProps) {
                             categorizedData[selectedBookingTab.toUpperCase()].map((booking:any)=>{
                                 const address = booking.item.address
                                 const addressLine1 = address.address_line_1
-                                console.log(addressLine1)
                                 const barangay = address.barangay
                                 const city = address.city
                                 const province = address.province

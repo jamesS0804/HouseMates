@@ -95,8 +95,6 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
         const hour = (Number(serviceDetails.time.$H) + 12) % 12
         const minute = serviceDetails.time.$m
         const scheduled_at = `${hour}:${minute} ${Number(hour) % 12 ? "PM" : "AM"} ${month} ${date}, ${year} ${day}`
-        console.log(currentUser)
-        console.log(scheduled_at)
         try {
             const res = await authenticated_api.post("api/v1/bookings", 
                 {
@@ -118,7 +116,6 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                     }
                 }
             )
-            console.log(res)
             if (res.status === 200) {
                 setTrackedBooking(res.data.data)
                 navigate('/tracking')

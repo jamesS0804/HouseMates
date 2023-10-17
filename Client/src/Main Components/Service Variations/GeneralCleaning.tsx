@@ -62,8 +62,6 @@ export default function GeneralCleaning(props: GeneralCleaningProps) {
             const jsonResponse = res.data
             if(res.status === 200){
                 setSubserviceData(jsonResponse.data)
-            } else {
-                console.log(res)
             }
         } catch (error) {
             console.log(error)

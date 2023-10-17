@@ -135,7 +135,6 @@ export default function App() {
     try {
       const res = await authenticated_api.get(`api/v1/profiles/${currentUser.id}`)
       const jsonResponse = res.data.data
-      console.log(jsonResponse)
       if(res.status === 200){
         setCurrentUser({ ...currentUser, 
           name: jsonResponse.name,
@@ -153,7 +152,6 @@ export default function App() {
         setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
       }
     } catch (error:any) {
-        console.log(error)
         setAlert({ status: "ERROR", message: error?.response?.data?.status?.message || "Something went wrong." })
     }
     setPageIsLoading(false)

@@ -29,19 +29,15 @@ export default function HSHomePage(props:HSHomePageProps){
     },[actionIsLoading])
 
     const checkForPendingJob = async () => {
-        console.log("checking for pending job")
         setActionIsLoading(true)
         try {
             const res = await authenticated_api.get(`api/v1/bookings/${currentUser.id}`)
-            console.log(res)
             if(res.status === 200) {
                 const jsonResponse = res.data.data
                 const pendingJobs = jsonResponse.filter((item:any)=>{
                     if(item.status === 'PENDING') return item
                 })
                 setPendingJobs(pendingJobs)
-            } else {
-                console.log(res)
             }
         } catch (error) {
             console.log(error)
@@ -74,7 +70,6 @@ export default function HSHomePage(props:HSHomePageProps){
     }
 
     const respondToPendingJob = async (response: string, bookingId: number, homeownerId: number) => {
-        console.log(response)
         try {
             const res = await authenticated_api.patch(`api/v1/bookings/${bookingId}`, 
             {

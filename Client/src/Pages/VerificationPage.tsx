@@ -117,7 +117,6 @@ export default function VerificationPage(props:VerificationPageProps) {
                     is_verified: true
                 } 
             })
-            console.log(res)
             if ( res.status === 200 ) {
                 setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Verification Successful!" })
                 setUserSessionData({ ...userSessionData, isVerified: true })
@@ -126,7 +125,6 @@ export default function VerificationPage(props:VerificationPageProps) {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
         } catch (error:any) {
-            console.log(error)
             setAlert({ status: "ERROR", message: error?.response?.data?.status.message || "Something went wrong." })
         }
         setActionIsLoading(false)
