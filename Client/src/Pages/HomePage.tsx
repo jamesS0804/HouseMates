@@ -36,7 +36,7 @@ export default function HomePage(props: HomePageProps) {
     },[])
 
     useEffect(()=>{
-        if(selectedService.title) navigate("https://housemate-frontend.onrender.com/services")
+        if(selectedService.title) navigate("/services")
     },[selectedService])
 
     return(

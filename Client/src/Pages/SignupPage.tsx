@@ -68,7 +68,7 @@ export default function SignupPage(props: SignupPageProps) {
             })
             if ( res.status === 200 ) {
                 setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Signup Successful!" })
-                navigate("https://housemate-frontend.onrender.com/login")
+                navigate("/login")
             } else {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
