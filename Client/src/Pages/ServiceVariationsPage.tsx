@@ -48,7 +48,7 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
     },[serviceDetails.data])
 
     const handleSubmit = () => {
-        navigate("/bookingDetails")
+        navigate("https://housemate-frontend.onrender.com/bookingDetails")
     }
     return(
         <div className="h-screen flex flex-col relative">

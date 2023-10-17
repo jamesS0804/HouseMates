@@ -46,7 +46,7 @@ export default function TrackingPage(props: TrackingPageProps) {
                         <p className="ml-auto text-xl font-black text-black">₱{serviceDetails.totalCost}</p>
                     </div>
                 </div>
-                <Button onClick={()=> {setSelectedService(""); navigate('/home')}} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Home</Button>
+                <Button onClick={()=> {setSelectedService(""); navigate('https://housemate-frontend.onrender.com/home')}} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Home</Button>
             </div>
         </div>
     )

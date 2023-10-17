@@ -118,7 +118,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
             )
             if (res.status === 200) {
                 setTrackedBooking(res.data.data)
-                navigate('/tracking')
+                navigate('https://housemate-frontend.onrender.com/tracking')
             } else {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }

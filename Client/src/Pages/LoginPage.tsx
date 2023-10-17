@@ -71,7 +71,7 @@ export default function LoginPage(props:LoginPageProps){
                     userType: jsonResponse.type
                 })
                 setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Login Successful!" })
-                jsonResponse.is_verified ? navigate("/home") : navigate("/verification")
+                jsonResponse.is_verified ? navigate("https://housemate-frontend.onrender.com/home") : navigate("https://housemate-frontend.onrender.comverification")
             } else {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
