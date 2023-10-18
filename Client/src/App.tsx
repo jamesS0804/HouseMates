@@ -107,6 +107,7 @@ export default function App() {
     setServiceDetails(serviceDetails)
     if(location.pathname === "/home") setAlert({ status: '', message: '' })
     if(location.pathname === "/home" && currentUser.balance === undefined ) getCurrentUserProfile()
+    if(location.pathname === "/profile") getCurrentUserProfile()
   }, [location.pathname]);
 
   useEffect(()=> {
@@ -131,7 +132,6 @@ export default function App() {
   }
 
   const getCurrentUserProfile = async () => {
-    setPageIsLoading(true)
     try {
       const res = await authenticated_api.get(`api/v1/profiles/${currentUser.id}`)
       const jsonResponse = res.data.data
@@ -154,7 +154,6 @@ export default function App() {
     } catch (error:any) {
         setAlert({ status: "ERROR", message: error?.response?.data?.status?.message || "Something went wrong." })
     }
-    setPageIsLoading(false)
   }
 
   return (
@@ -225,7 +224,9 @@ export default function App() {
             <Route path='/bookings' element={
               <BookingsPage 
                 userType={userSessionData.userType} 
-                currentUser={currentUser} 
+                currentUser={currentUser}
+                actionIsLoading={actionIsLoading}
+                setActionIsLoading={setActionIsLoading} 
               />} 
             />
             <Route path='/messages' element={
@@ -277,6 +278,7 @@ export default function App() {
                 serviceDetails={serviceDetails} 
                 setSelectedService={setSelectedService} 
                 trackedBooking={trackedBooking} 
+                setServiceDetails={setServiceDetails}
               />} 
             />
           </Routes>

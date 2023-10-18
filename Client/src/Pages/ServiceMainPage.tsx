@@ -112,6 +112,7 @@ export default function ServiceMainPage(props: ServiceMainPage) {
 
     useEffect(()=>{
         setSelectedService(service)
+        setServiceDetails({ service: {}, data: {}, totalCost: 0, date: "", time: { $H: "", $m: "" } })
     },[])
 
     useEffect(()=>{

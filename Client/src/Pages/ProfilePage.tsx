@@ -35,7 +35,7 @@ const formSchema = z.object({
 })
 
 export default function ProfilePage(props: ProfilePageProps) {
-    const { userType, currentUser, setCurrentUser, setAlert } = props
+    const { userType, currentUser, setCurrentUser, setAlert, navigate } = props
     const provinces = getProvinces()
     const [ selectedProvince, setSelectedProvince ] = useState("")
     const [ selectedCity, setSelectedCity ] = useState("") 
@@ -135,6 +135,7 @@ export default function ProfilePage(props: ProfilePageProps) {
     const handleLogout = async () => {
         try {
             await authenticated_api.delete("logout")
+            navigate('/')
             sessionStorage.clear()
             window.location.reload()
         } catch (error) {

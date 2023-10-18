@@ -86,7 +86,6 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
     }
 
     const submitBooking = async () => {
-        
         setActionIsLoading(true)
         const day = extractDataFromDate(serviceDetails.date, "day")
         const month = extractDataFromDate(serviceDetails.date, "month")
@@ -95,6 +94,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
         const hour = (Number(serviceDetails.time.$H) + 12) % 12
         const minute = serviceDetails.time.$m
         const scheduled_at = `${hour}:${minute} ${Number(hour) % 12 ? "PM" : "AM"} ${month} ${date}, ${year} ${day}`
+        const allServiceDetails = [ ...serviceDetails.data['Extra Service'], serviceDetails.data['Home Type'], serviceDetails.data['Room Type'], serviceDetails.data['Bathroom Count'] ]
         try {
             const res = await authenticated_api.post("api/v1/bookings", 
                 {
@@ -104,7 +104,7 @@ export default function BookingDetailsPage(props: BookingDetailsPropsPage){
                         payment_method: "Credit Wallet",
                         total_cost: serviceDetails.totalCost,
                         status: "PENDING",
-                        service_details: serviceDetails.data['Extra Service'],
+                        service_details: allServiceDetails,
                         address_attributes: {
                             address_line_1: currentUser.addressAttributes.addressLine1,
                             barangay: currentUser.addressAttributes.barangay,

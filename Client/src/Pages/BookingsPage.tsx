@@ -1,14 +1,17 @@
 import NavigationBar from "@/Main Components/NavigationBar";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import calendar from "../assets/icons/calendar.png"
 import calendar2 from "../assets/icons/calendar2.png"
 import addressPin from "../assets/icons/addressPin.png"
 import authenticated_api from "@/utils/authenticated_api";
+import calendar from "../assets/icons/calendar.png"
+import clock from "../assets/icons/clock.png"
 
 interface BookingsPageProps {
     userType: string
     currentUser: User
+    actionIsLoading: boolean
+    setActionIsLoading: Function
 }
 
 type User = {
@@ -59,9 +62,10 @@ type Options = {
 };
 
 export default function BookingsPage(props: BookingsPageProps) {
-    const { userType, currentUser } = props
+    const { userType, currentUser, actionIsLoading, setActionIsLoading } = props
     const [ bookings, setBookings ] = useState([])
     const [ categorizedData, setCategorizedData ] = useState<CategorizedData>({});
+    const [ categorizedServices, setCategorizedServices ] = useState({})
     const [ selectedBookingTab, setSelectedBookingTab ] = useState("In Progress")
 
     useEffect(()=>{
@@ -80,19 +84,23 @@ export default function BookingsPage(props: BookingsPageProps) {
     },[bookings])
 
     const getBookingsData = async () => {
+        setActionIsLoading(true)
         try {
             const res = await authenticated_api.get(`api/v1/bookings/${currentUser.id}`)
             const jsonResponse = res.data.data
             if (res.status === 200) {
                 setBookings(jsonResponse)
             }
+            console.log(res)
         } catch (error) {
             console.log(error)
         }
+        setActionIsLoading(false)
     }
 
     const handleClick = (tabName:string) => {
         setSelectedBookingTab(tabName)
+        getBookingsData()
     }
 
     const bookingTabs = [
@@ -113,6 +121,9 @@ export default function BookingsPage(props: BookingsPageProps) {
                 }
             )
             console.log(res)
+            if(res.status === 200){
+                getBookingsData()
+            }
         } catch (error) {
             console.log(error)
         }
@@ -138,86 +149,154 @@ export default function BookingsPage(props: BookingsPageProps) {
                 </div>
             </div>
             <div className="overflow-auto h-full">
-                <div className={
-                    `w-full flex flex-col items-center justify-center gap-3 p-5 pb-24 ${categorizedData[selectedBookingTab.toUpperCase()]?.length === undefined? 'h-full' : ''}`
-                    }>
-                    {
-                        categorizedData[selectedBookingTab.toUpperCase()]?.length === undefined ? 
-                            <div className="flex justify-center">
-                                <h3 className="text-gray-500 h-full">You have no {selectedBookingTab} bookings</h3>
-                            </div>
-                            :
-                            categorizedData[selectedBookingTab.toUpperCase()].map((booking:any)=>{
-                                const address = booking.item.address
-                                const addressLine1 = address.address_line_1
-                                const barangay = address.barangay
-                                const city = address.city
-                                const province = address.province
-                                const zipCode = address.zip_code
-
-                                const dateString = booking.item.scheduled_at;
-                                const dateObject = new Date(dateString);
-
-                                const options: Options = {
-                                    weekday: "short",
-                                    month: "short",
-                                    day: "numeric",
-                                    hour: "numeric",
-                                    minute: "numeric",
-                                    hour12: true
-                                };
-
-                                const formattedDate = dateObject.toLocaleDateString("en-US", options);
-                                return(
-                                    <div key={booking.id} className={`h-full w-full p-3 rounded-xl flex flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-primary': 'border-secondary'}`}>
-                                        <div className="flex flex-col w-full gap-2 p-1">
-                                            <h3 className="font-black text-lg">{booking.item.homeowner.name}</h3>
-                                            <div className="flex gap-2 justify-center items-center">
-                                                <img className="w-10" src={addressPin} />
-                                                <p className="text-xs">{`${addressLine1} ${barangay}, ${city}, ${province}, ${zipCode}`}</p>
-                                            </div>
-                                        </div>
-                                        <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
-                                        <div className="w-full flex flex-col items-start gap-2">
-                                            <h3 className="font-black mt-2">Service Details</h3>
-                                            <div className="flex gap-2 w-full justify-start items-center">
-                                                <img className="w-8" src={userType === 'Homeowner' ? calendar : calendar2}/>
-                                                <p className="text-sm">{formattedDate}</p>
-                                            </div>
-                                            <h3 className="font-black mt-3">Extra Service/s</h3>
-                                            <ul className={`flex flex-col gap-1 w-full list-disc ${booking.item.service_details.length === 0 ? '': 'pl-8'}`}>
-                                                {
-                                                    booking.item.service_details.length === 0 ? 
-                                                        <p className="w-full text-center">No extra service availed.</p>
-                                                        :
-                                                        booking.item.service_details.map((subservice:any)=>{
-                                                                return(
-                                                                    <li key={subservice.id}>{`${subservice.quantity} order of ${subservice.title}`}</li>
-                                                                ) 
-                                                        }) 
-                                                }
-                                            </ul>
-                                            <div className="flex w-full mt-10 text-xl">
-                                                <div className="font-black">Total:</div>
-                                                <div className="ml-auto font-black">₱{Number(booking.item.total_cost).toLocaleString('en-PH')}</div>
-                                            </div>
-                                        </div>
-                                        <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
-                                        <div className="w-full flex gap-2">
-                                            <Button className={`border rounded-xl w-full p-2 text-xs text-white ${userType === 'Homeowner' ? 'border-primary bg-primary' : 'border-secondary bg-secondary'}`}>{`Contact ${userType === 'Homeowner' ? 'Housemate' : 'Homeowner'}`}</Button>
-                                            {
-                                                userType === 'Homeowner' && selectedBookingTab === 'In Progress' ?
-                                                    <Button onClick={()=>handleComplete(booking)} className="rounded-xl w-full p-2 text-base border border-green-500 bg-green-500 text-white">Complete</Button>
-                                                    :
-                                                    <></>
-                                            }
-                                            
-                                        </div>
+                {
+                    actionIsLoading ?
+                        <div className="w-screen flex flex-col items-center justify-center gap-3 p-5 pb-24">
+                            <div className={`h-[27.5rem] w-full p-3 rounded-xl flex animate-pulse flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-[#F7F7F7] bg-primary': 'border-[#F7F7F7] bg-secondary'}`}>
+                                <div className="flex flex-col w-full gap-2 p-1">
+                                    <h3 className="font-black w-1/3 h-4 text-lg bg-[#F7F7F7] rounded-xl"></h3>
+                                    <div className="flex gap-2 justify-center items-center flex-col">
+                                        <p className="text-xs h-3 w-full bg-[#F7F7F7] rounded-xl"></p>
+                                        <p className="text-xs h-3 w-full bg-[#F7F7F7] rounded-xl"></p>
                                     </div>
-                                )
-                            })
-                    }
-                </div>
+                                </div>
+                                <div className={`border border-white w-[calc(100%+1.5rem)]`} />
+                                <div className="w-full h-2/3 flex flex-col items-start gap-3">
+                                    <p className="text-xs h-4 w-1/3 bg-[#F7F7F7] rounded-xl"></p>
+                                    <div className="flex gap-2 w-full justify-start items-center">
+                                        <p className="text-xs h-3 w-full bg-[#F7F7F7] rounded-xl"></p>
+                                    </div>
+                                    <p className="text-xs h-4 w-1/3 bg-[#F7F7F7] rounded-xl mt-10"></p>
+                                    <div className="flex w-full justify-start items-center flex-col gap-3">
+                                        <p className="text-xs h-3 w-full bg-[#F7F7F7] rounded-xl"></p>
+                                        <p className="text-xs h-3 w-full bg-[#F7F7F7] rounded-xl"></p>
+                                    </div>
+                                    <div className="flex w-full mt-auto text-xl gap-20">
+                                        <p className="text-xs h-4 w-full bg-[#F7F7F7] rounded-xl"></p>
+                                        <p className="text-xs h-4 w-full bg-[#F7F7F7] rounded-xl"></p>
+                                    </div>
+                                </div>
+                                <div className={`border border-white w-[calc(100%+1.5rem)]`} />
+                                <div className="w-full flex gap-2 items-center justify-center">
+                                    <Button className={`border rounded-xl mt-3 w-full p-2 text-xs text-white bg-[#F7F7F7] border-[#F7F7F7]`}></Button>
+                                </div>
+                            </div>
+                            <div className={`h-[27.5rem] w-full p-3 rounded-xl flex animate-pulse flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-[#F7F7F7] bg-primary': 'border-[#F7F7F7] bg-secondary'}`}>
+                                <div className="flex flex-col w-full gap-2 p-1">
+                                    <h3 className="font-black w-1/3 h-4 text-lg bg-gray-200 rounded-xl"></h3>
+                                    <div className="flex gap-2 justify-center items-center flex-col">
+                                        <p className="text-xs h-3 w-full bg-gray-200 rounded-xl"></p>
+                                        <p className="text-xs h-3 w-full bg-gray-200 rounded-xl"></p>
+                                    </div>
+                                </div>
+                                <div className={`border border-white w-[calc(100%+1.5rem)]`} />
+                                <div className="w-full h-2/3 flex flex-col items-start gap-3">
+                                    <p className="text-xs h-4 w-1/3 bg-gray-200 rounded-xl"></p>
+                                    <div className="flex gap-2 w-full justify-start items-center">
+                                        <p className="text-xs h-3 w-full bg-gray-200 rounded-xl"></p>
+                                    </div>
+                                    <p className="text-xs h-4 w-1/3 bg-gray-200 rounded-xl mt-10"></p>
+                                    <div className="flex w-full justify-start items-center flex-col gap-3">
+                                        <p className="text-xs h-3 w-full bg-gray-200 rounded-xl"></p>
+                                        <p className="text-xs h-3 w-full bg-gray-200 rounded-xl"></p>
+                                    </div>
+                                    <div className="flex w-full mt-auto text-xl gap-20">
+                                        <p className="text-xs h-4 w-full bg-gray-200 rounded-xl"></p>
+                                        <p className="text-xs h-4 w-full bg-gray-200 rounded-xl"></p>
+                                    </div>
+                                </div>
+                                <div className={`border border-white w-[calc(100%+1.5rem)]`} />
+                                <div className="w-full flex gap-2 items-center justify-center">
+                                    <Button className={`border rounded-xl mt-3 w-full p-2 text-xs text-white bg-gray-200 border-white`}></Button>
+                                </div>
+                            </div>
+                        </div>
+                        :
+                        <div className={
+                            `w-full flex flex-col items-center justify-center gap-3 p-5 pb-24 ${categorizedData[selectedBookingTab.toUpperCase()]?.length === undefined? 'h-full' : ''}`
+                            }>
+                            {
+                                categorizedData[selectedBookingTab.toUpperCase()]?.length === undefined ? 
+                                    <div className="flex justify-center">
+                                        <h3 className="text-gray-500 h-full">You have no {selectedBookingTab} bookings</h3>
+                                    </div>
+                                    :
+                                    categorizedData[selectedBookingTab.toUpperCase()].map((booking:any)=>{
+                                        const address = booking.item.address
+                                        const addressLine1 = address.address_line_1
+                                        const barangay = address.barangay
+                                        const city = address.city
+                                        const province = address.province
+                                        const zipCode = address.zip_code
+        
+                                        const dateString = booking.item.scheduled_at;
+                                        const dateObject = new Date(dateString);
+        
+                                        const options: Options = {
+                                            weekday: "short",
+                                            month: "short",
+                                            day: "numeric",
+                                            hour: "numeric",
+                                            minute: "numeric",
+                                            hour12: true
+                                        };
+                                        console.log(booking)
+                                        const formattedDate = dateObject.toLocaleDateString("en-US", options);
+                                        return(
+                                            <div key={booking.id} className={`h-full w-full p-3 rounded-xl flex flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-primary': 'border-secondary'}`}>
+                                                <div className="flex flex-col w-full gap-2 p-1">
+                                                    <h3 className="font-black text-lg">{booking.item.homeowner.name}</h3>
+                                                    <div className="flex gap-2 justify-center items-center">
+                                                        <img className="w-10" src={addressPin} />
+                                                        <p className="text-xs">{`${addressLine1} ${barangay}, ${city}, ${province}, ${zipCode}`}</p>
+                                                    </div>
+                                                </div>
+                                                <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
+                                                <div className="w-full flex flex-col items-start gap-2">
+                                                    <h3 className="font-black mt-2">Service Details</h3>
+                                                    <div className="flex gap-2 w-full justify-start items-center">
+                                                        <img className="w-8" src={clock}/>
+                                                        <p className="text-sm">2 hours, 15 minutes</p>
+                                                    </div>
+                                                    <div className="flex gap-2 w-full justify-start items-center">
+                                                        <img className="w-8" src={userType === 'Homeowner' ? calendar : calendar2}/>
+                                                        <p className="text-sm">{formattedDate}</p>
+                                                    </div>
+                                                    <h3 className="font-black mt-3">Extra Service/s</h3>
+                                                    <ul key={booking.id} className={`flex flex-col gap-1 w-full list-disc ${booking.item.service_details.length === 0 ? '': 'pl-8'}`}>
+                                                        {
+                                                            booking.item.service_details.length === 0 ? 
+                                                                <p className="w-full text-center">No extra service availed.</p>
+                                                                :
+                                                                booking.item.service_details.map((subservice:any)=>{
+                                                                        return(
+                                                                            <li key={subservice.id}>{`${subservice.quantity} order of ${subservice.title}`}</li>
+                                                                        ) 
+                                                                }) 
+                                                        }
+                                                    </ul>
+                                                    <div className="flex w-full mt-10 text-xl">
+                                                        <div className="font-black">Total:</div>
+                                                        <div className="ml-auto font-black">₱{Number(booking.item.total_cost).toLocaleString('en-PH')}</div>
+                                                    </div>
+                                                </div>
+                                                <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
+                                                <div className="w-full flex gap-2">
+                                                    <Button className={`border rounded-xl w-full p-2 text-xs text-white ${userType === 'Homeowner' ? 'border-primary bg-primary' : 'border-secondary bg-secondary'}`}>{`Contact ${userType === 'Homeowner' ? 'Housemate' : 'Homeowner'}`}</Button>
+                                                    {
+                                                        userType === 'Homeowner' && selectedBookingTab === 'In Progress' ?
+                                                            <Button onClick={()=>handleComplete(booking)} className="rounded-xl w-full p-2 text-base border border-green-500 bg-green-500 text-white">Complete</Button>
+                                                            :
+                                                            <></>
+                                                    }
+                                                    
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                            }
+                        </div>
+                }
             </div>
             <NavigationBar userType={userType} selectedOption="bookings" />
         </div>

@@ -9,6 +9,7 @@ interface TrackingPageProps {
     serviceDetails: ServiceDetails
     setSelectedService: Function
     trackedBooking: any
+    setServiceDetails: Function
 }
 
 type ServiceDetails = {
@@ -18,7 +19,7 @@ type ServiceDetails = {
     date: string
 }
 export default function TrackingPage(props: TrackingPageProps) {
-    const { navigate, serviceDetails, setSelectedService, trackedBooking } = props
+    const { navigate, serviceDetails, setSelectedService, trackedBooking, setServiceDetails } = props
     return(
         <div className="flex flex-col">
             <BackButton navigate={navigate} />
@@ -46,7 +47,11 @@ export default function TrackingPage(props: TrackingPageProps) {
                         <p className="ml-auto text-xl font-black text-black">₱{serviceDetails.totalCost}</p>
                     </div>
                 </div>
-                <Button onClick={()=> {setSelectedService(""); navigate('/home')}} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Home</Button>
+                <Button onClick={()=> { 
+                    setSelectedService("") 
+                    setServiceDetails({ service: {}, data: {}, totalCost: 0, date: "", time: { $H: "", $m: "" } })
+                    navigate('/home')
+                }} className="w-screen rounded-none bg-primary border-none font-bold text-white text-lg">Home</Button>
             </div>
         </div>
     )

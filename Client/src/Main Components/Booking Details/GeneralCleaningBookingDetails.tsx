@@ -1,7 +1,7 @@
 import extractDataFromDate from "@/utils/extractDataFromDate"
-import baththub from "../../assets/icons/bathtub.png"
-import bed from "../../assets/icons/bed.png"
 import calendar from "../../assets/icons/calendar.png"
+import bathtub from "../../assets/icons/bathtub.png"
+import bed from "../../assets/icons/bed.png"
 import clock from "../../assets/icons/clock.png"
 import home from "../../assets/icons/home.png"
 
@@ -28,7 +28,7 @@ export default function GeneralCleaningBookingDetails(props: GeneralCleaningBook
                 <p className="text-sm">{serviceDetails.data['Room Type'].title}</p>
             </div>
             <div className="flex gap-2">
-                <img className="h-5" src={baththub} />
+                <img className="h-5" src={bathtub} />
                 <p className="text-sm">{serviceDetails.data['Bathroom Count'].title}</p>
             </div>
             <div className="flex gap-2">

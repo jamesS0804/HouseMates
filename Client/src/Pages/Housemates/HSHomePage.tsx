@@ -80,6 +80,9 @@ export default function HSHomePage(props:HSHomePageProps){
                 }    
             })
             console.log(res)
+            if(res.status === 200){
+                checkForPendingJob()
+            }
         } catch (error) {
             console.log(error)
         }
