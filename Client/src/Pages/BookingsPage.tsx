@@ -1,11 +1,13 @@
 import NavigationBar from "@/Main Components/NavigationBar";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import calendar2 from "../assets/icons/calendar2.png"
 import addressPin from "../assets/icons/addressPin.png"
 import authenticated_api from "@/utils/authenticated_api";
 import calendar from "../assets/icons/calendar.png"
 import clock from "../assets/icons/clock.png"
+import home from "../assets/icons/home.png"
+import bed from "../assets/icons/bed.png"
+import bathtub from "../assets/icons/bathtub.png"
 
 interface BookingsPageProps {
     userType: string
@@ -65,7 +67,6 @@ export default function BookingsPage(props: BookingsPageProps) {
     const { userType, currentUser, actionIsLoading, setActionIsLoading } = props
     const [ bookings, setBookings ] = useState([])
     const [ categorizedData, setCategorizedData ] = useState<CategorizedData>({});
-    const [ categorizedServices, setCategorizedServices ] = useState({})
     const [ selectedBookingTab, setSelectedBookingTab ] = useState("In Progress")
 
     useEffect(()=>{
@@ -91,7 +92,6 @@ export default function BookingsPage(props: BookingsPageProps) {
             if (res.status === 200) {
                 setBookings(jsonResponse)
             }
-            console.log(res)
         } catch (error) {
             console.log(error)
         }
@@ -120,7 +120,6 @@ export default function BookingsPage(props: BookingsPageProps) {
                     }
                 }
             )
-            console.log(res)
             if(res.status === 200){
                 getBookingsData()
             }
@@ -240,10 +239,16 @@ export default function BookingsPage(props: BookingsPageProps) {
                                             minute: "numeric",
                                             hour12: true
                                         };
-                                        console.log(booking)
+                                        const categorizedByServiceType:any = {}
+                                        booking.item.service_details.forEach((subservice:any)=>{
+                                            if (!categorizedByServiceType[subservice.category]) {
+                                                categorizedByServiceType[subservice.category] = [];
+                                            }
+                                            categorizedByServiceType[subservice.category].push({subservice});
+                                        })
                                         const formattedDate = dateObject.toLocaleDateString("en-US", options);
                                         return(
-                                            <div key={booking.id} className={`h-full w-full p-3 rounded-xl flex flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-primary': 'border-secondary'}`}>
+                                            <div key={booking.item.id} className={`h-full w-full p-3 rounded-xl flex flex-col items-center justify-center gap-3 border-2 ${userType === 'Homeowner' ? 'border-primary': 'border-secondary'}`}>
                                                 <div className="flex flex-col w-full gap-2 p-1">
                                                     <h3 className="font-black text-lg">{booking.item.homeowner.name}</h3>
                                                     <div className="flex gap-2 justify-center items-center">
@@ -251,26 +256,51 @@ export default function BookingsPage(props: BookingsPageProps) {
                                                         <p className="text-xs">{`${addressLine1} ${barangay}, ${city}, ${province}, ${zipCode}`}</p>
                                                     </div>
                                                 </div>
+                                                {
+                                                    booking.item?.housemate?.id === '' ?
+                                                        <></>
+                                                        :
+                                                        <>
+                                                            <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
+                                                            <div className="flex flex-col w-full gap-2 p-1">
+                                                                <h3 className="font-black text-lg">Assigned housemate:</h3>
+                                                                <h3 className="font-black text-base">{booking.item.housemate.name}</h3>
+                                                            </div>
+                                                        </>
+                                                }
                                                 <div className={`border ${ userType === 'Homeowner' ? 'border-primary' : 'border-secondary' } w-[calc(100%+1.5rem)]`} />
                                                 <div className="w-full flex flex-col items-start gap-2">
                                                     <h3 className="font-black mt-2">Service Details</h3>
+                                                    <div className="flex gap-2 w-full justify-start items-center">
+                                                        <img className="w-8" src={home}/>
+                                                        <p className="text-sm">{categorizedByServiceType['Home Type'][0]['subservice'].title}</p>
+                                                    </div>
+                                                    <div className="flex gap-2 w-full justify-start items-center">
+                                                        <img className="w-8" src={bed}/>
+                                                        <p className="text-sm">{categorizedByServiceType['Room Type'][0]['subservice'].title}</p>
+                                                    </div>
+                                                    <div className="flex gap-2 w-full justify-start items-center">
+                                                        <img className="w-8" src={bathtub}/>
+                                                        <p className="text-sm">{categorizedByServiceType['Bathroom Count'][0]['subservice'].title}</p>
+                                                    </div>
                                                     <div className="flex gap-2 w-full justify-start items-center">
                                                         <img className="w-8" src={clock}/>
                                                         <p className="text-sm">2 hours, 15 minutes</p>
                                                     </div>
                                                     <div className="flex gap-2 w-full justify-start items-center">
-                                                        <img className="w-8" src={userType === 'Homeowner' ? calendar : calendar2}/>
+                                                        <img className="w-8" src={calendar}/>
                                                         <p className="text-sm">{formattedDate}</p>
                                                     </div>
                                                     <h3 className="font-black mt-3">Extra Service/s</h3>
-                                                    <ul key={booking.id} className={`flex flex-col gap-1 w-full list-disc ${booking.item.service_details.length === 0 ? '': 'pl-8'}`}>
+                                                    <ul className={`flex flex-col gap-1 w-full list-disc ${booking.item.service_details.length === 0 ? '': 'pl-8'}`}>
                                                         {
-                                                            booking.item.service_details.length === 0 ? 
+                                                            categorizedByServiceType['Extra Service'].length === 0 ? 
                                                                 <p className="w-full text-center">No extra service availed.</p>
                                                                 :
-                                                                booking.item.service_details.map((subservice:any)=>{
+                                                                categorizedByServiceType['Extra Service'].map((item:any)=>{
+
                                                                         return(
-                                                                            <li key={subservice.id}>{`${subservice.quantity} order of ${subservice.title}`}</li>
+                                                                            <li key={item.subservice.subservice_id}>{`${item.subservice.quantity} order of ${item.subservice.title}`}</li>
                                                                         ) 
                                                                 }) 
                                                         }

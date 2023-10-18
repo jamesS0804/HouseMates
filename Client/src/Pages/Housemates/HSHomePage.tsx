@@ -5,6 +5,10 @@ import authenticated_api from "@/utils/authenticated_api"
 import LoadingPage from "../LoadingPage"
 import addressPin from "../../assets/icons/addressPin.png"
 import calendar from "../../assets/icons/calendar.png"
+import home from "../../assets/icons/home.png"
+import bed from "../../assets/icons/bed.png"
+import clock from "../../assets/icons/clock.png"
+import bathtub from "../../assets/icons/bathtub.png"
 import cash from "../../assets/icons/cash.png"
 
 interface HSHomePageProps {
@@ -79,7 +83,6 @@ export default function HSHomePage(props:HSHomePageProps){
                     housemate_id: currentUser.id
                 }    
             })
-            console.log(res)
             if(res.status === 200){
                 checkForPendingJob()
             }
@@ -144,10 +147,17 @@ export default function HSHomePage(props:HSHomePageProps){
                                             minute: "numeric",
                                             hour12: true
                                         };
+                                        const categorizedByServiceType:any = {}
+                                        pendingJob.service_details.forEach((subservice:any)=>{
+                                            if (!categorizedByServiceType[subservice.category]) {
+                                                categorizedByServiceType[subservice.category] = [];
+                                            }
+                                            categorizedByServiceType[subservice.category].push({subservice});
+                                        })
                                         const formattedDate = dateObject.toLocaleDateString("en-US", options);
                                         return(
                                             <div key={pendingJob.id} className="h-full w-full rounded-xl flex flex-col items-center justify-center gap-3" >
-                                                <div className="flex flex-col w-full gap-2 p-3 border">
+                                                <div className="flex flex-col w-full gap-2 p-3 pt-0">
                                                     <h3 className="font-black text-lg">{pendingJob.homeowner.name}</h3>
                                                     <div className="flex gap-2 justify-center items-center">
                                                         <img className="w-10" src={addressPin} />
@@ -157,19 +167,35 @@ export default function HSHomePage(props:HSHomePageProps){
                                                     <div className="w-full flex flex-col items-start gap-2">
                                                         <h3 className="font-black mt-2">Service Details</h3>
                                                         <div className="flex gap-2 w-full justify-start items-center">
+                                                            <img className="w-8" src={home}/>
+                                                            <p className="text-sm">{categorizedByServiceType['Home Type'][0]['subservice'].title}</p>
+                                                        </div>
+                                                        <div className="flex gap-2 w-full justify-start items-center">
+                                                            <img className="w-8" src={bed}/>
+                                                            <p className="text-sm">{categorizedByServiceType['Room Type'][0]['subservice'].title}</p>
+                                                        </div>
+                                                        <div className="flex gap-2 w-full justify-start items-center">
+                                                            <img className="w-8" src={bathtub}/>
+                                                            <p className="text-sm">{categorizedByServiceType['Bathroom Count'][0]['subservice'].title}</p>
+                                                        </div>
+                                                        <div className="flex gap-2 w-full justify-start items-center">
+                                                            <img className="w-8" src={clock}/>
+                                                            <p className="text-sm">2 hours, 15 minutes</p>
+                                                        </div>
+                                                        <div className="flex gap-2 w-full justify-start items-center">
                                                             <img className="w-8" src={calendar}/>
                                                             <p className="text-sm">{formattedDate}</p>
                                                         </div>
                                                         <h3 className="font-black mt-3">Extra Service/s</h3>
                                                         <ul className={`flex flex-col gap-1 w-full list-disc ${pendingJob.service_details.length === 0 ? '': 'pl-8'}`}>
                                                             {
-                                                                pendingJob.service_details.length === 0 ? 
+                                                                categorizedByServiceType['Extra Service'].length === 0 ? 
                                                                     <p className="w-full text-center">No extra service availed.</p>
                                                                     :
-                                                                    pendingJob.service_details.map((subservice:any)=>{
+                                                                    categorizedByServiceType['Extra Service'].map((item:any)=>{
                                                                             return(
-                                                                                <li key={subservice.subservice_id}>
-                                                                                    {`${subservice.quantity} order of ${subservice.title}`}
+                                                                                <li key={item.subservice.subservice_id}>
+                                                                                    {`${item.subservice.quantity} order of ${item.subservice.title}`}
                                                                                 </li>
                                                                             ) 
                                                                     }) 
@@ -177,14 +203,6 @@ export default function HSHomePage(props:HSHomePageProps){
                                                         </ul>
                                                         <div className="border border-secondary w-full" />
                                                         <div className="p-2 flex flex-col gap-2">
-                                                            <div>
-                                                                <p>Basic Pay</p>
-                                                                <p className="ml-auto">pendingJob.service</p>
-                                                            </div>
-                                                            <div>
-                                                                <p>Extra Service Charge</p>
-                                                                <p className="ml-auto"></p>
-                                                            </div>
                                                             <div className="flex flex-col gap-2">
                                                                 <p>Payment Method</p>
                                                                 <div className="flex gap-2 items-center">

@@ -43,8 +43,8 @@ export default function ServiceVariationsPage(props: ServiceVariationsPageProps)
     useEffect(()=>{
         if(Object.keys(serviceDetails.data).length !== 0) {
             const totalPrice = getTotalCost(serviceDetails)
-            console.log('######################################################')
-            console.log(`total price: ${totalPrice}; type: ${typeof totalPrice}`)
+            // console.log('######################################################')
+            // console.log(`total price: ${totalPrice}; type: ${typeof totalPrice}`)
             setServiceDetails({ ...serviceDetails, totalCost: totalPrice }) 
         }
     },[serviceDetails.data])

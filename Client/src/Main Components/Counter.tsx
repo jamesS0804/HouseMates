@@ -14,9 +14,9 @@ export default function Counter(props: CounterProps){
     const { unit, valueType, value, inputData, setInputData, rootData } = props
     const [ inputValue, setInputValue ] = useState(Number(value.quantity ? value.quantity : 0));
 
-    useEffect(()=>{
-        console.log(`inputValue: ${inputValue}; type: ${typeof inputValue}`)
-    },[inputValue])
+    // useEffect(()=>{
+    //     console.log(`inputValue: ${inputValue}; type: ${typeof inputValue}`)
+    // },[inputValue])
 
     useEffect(()=>{
         if(inputValue <= 0 ) {
