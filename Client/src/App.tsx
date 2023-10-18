@@ -83,6 +83,7 @@ export default function App() {
   const [ authKey, setAuthKey ] = useState(sessionStorage.getItem('authToken') ? sessionStorage.getItem('authToken') : "")
   const [ serviceDetails, setServiceDetails ] = useState({service: {}, data: {}, totalCost: 0, date: "", time: { $H: "", $m: "" }})
   const [ trackedBooking, setTrackedBooking ] = useState({})
+  const [ pageIsLoading, setPageIsLoading ] = useState(false)
   const [ alert, setAlert ] = useState({ status: "", message: "" })
   const [ actionIsLoading, setActionIsLoading ] = useState(false)
   const [ show, setShow ] = useState(false)
@@ -131,7 +132,7 @@ export default function App() {
   }
 
   const getCurrentUserProfile = async () => {
-    setActionIsLoading(true)
+    setPageIsLoading(true)
     try {
       const res = await authenticated_api.get(`api/v1/profiles/${currentUser.id}`)
       const jsonResponse = res.data.data
@@ -154,7 +155,7 @@ export default function App() {
     } catch (error:any) {
         setAlert({ status: "ERROR", message: error?.response?.data?.status?.message || "Something went wrong." })
     }
-    setActionIsLoading(false)
+    setPageIsLoading(false)
   }
 
   return (
@@ -162,7 +163,7 @@ export default function App() {
       <AlertNotification alert={alert} setAlert={setAlert}/>
       <AlertDialog show={show} />
       {
-        actionIsLoading ? 
+        pageIsLoading ? 
           <LoadingPage />
           :
           <Routes>
