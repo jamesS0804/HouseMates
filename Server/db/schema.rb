@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_10_233328) do
+ActiveRecord::Schema[7.1].define(version: 2023_10_18_084347) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_10_233328) do
     t.bigint "subservice_id", null: false
     t.bigint "booking_id"
     t.string "title", null: false
+    t.string "category"
     t.index ["booking_id"], name: "index_booking_services_on_booking_id"
     t.index ["service_id"], name: "index_booking_services_on_service_id"
     t.index ["subservice_id"], name: "index_booking_services_on_subservice_id"

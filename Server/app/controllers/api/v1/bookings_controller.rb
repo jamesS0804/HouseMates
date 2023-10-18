@@ -68,7 +68,8 @@ module Api
               subservice_id: subservice.id,
               service_id: booking.service_id,
               booking_id: booking.id,
-              total: subservice.price.to_f * subservice_quantity
+              total: subservice.price.to_f * subservice_quantity,
+              category: subservice.category
             )
           end
         end
@@ -117,6 +118,7 @@ module Api
   
           nearby_housemates = find_nearby_housemates(city, service_id)
           if nearby_housemates.empty?
+            booking_data.update(housemate_id: "")
             render_error_response("No nearby available housemate found.", :ok)
           else
             index = housemate_id.present? ? nearby_housemates.find_index { |housemate| housemate[:id] == housemate_id } + 1 : 0

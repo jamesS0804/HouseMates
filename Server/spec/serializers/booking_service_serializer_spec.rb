@@ -11,7 +11,8 @@ RSpec.describe BookingServiceSerializer do
       price_per_quantity: 25.0,
       total: 50.0,
       created_at: Time.now,
-      updated_at: Time.now
+      updated_at: Time.now,
+      category: 'Cleaning'
     )
   end
 
@@ -27,5 +28,6 @@ RSpec.describe BookingServiceSerializer do
     expect(subject[:data][:attributes][:total]).to eq(booking_service.total)
     expect(subject[:data][:attributes][:created_at]).to eq(booking_service.created_at)
     expect(subject[:data][:attributes][:updated_at]).to eq(booking_service.updated_at)
+    expect(subject[:data][:attributes][:category]).to eq(booking_service.category)
   end
 end

@@ -21,7 +21,7 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
       payment_method: 'Credit Card',
       homeowner_id: homeowner.id,
       service: { id: service.id, title: service.title },
-      service_details: [{ id: subservice.id, title: subservice.title, quantity: 2 }],
+      service_details: [{ id: subservice.id, title: subservice.title, quantity: 2, category: subservice.category }],
       address_attributes: {
         address_line_1: '123 Main Street',
         barangay: 'Sample Barangay',
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
       homeowner_id: homeowner.id,
       housemate_id: housemate.id,
       service: { id: service.id, title: service.title },
-      service_details: [{ id: subservice.id, title: subservice.title, quantity: 2 }],
+      service_details: [{ id: subservice.id, title: subservice.title, quantity: 2, category: subservice.category }],
       address_attributes: {
         address_line_1: '123 Main Street',
         barangay: 'Sample Barangay',
@@ -58,7 +58,7 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
       payment_method: 'Credit Card',
       homeowner_id: homeowner.id,
       service: { id: service.id, title: service.title },
-      service_details: [{ id: subservice.id, title: subservice.title, quantity: 2 }],
+      service_details: [{ id: subservice.id, title: subservice.title, quantity: 2, category: subservice.category }],
       address_attributes: {
         address_line_1: '123 Main Street',
         barangay: 'Sample Barangay',
@@ -197,6 +197,7 @@ RSpec.describe Api::V1::BookingsController, type: :controller do
           expect(response).to have_http_status(:ok)
 
           jsonResponse = JSON.parse(response.body)
+
           expect(jsonResponse['error']).to eq('No nearby available housemate found.')
         end
       end
