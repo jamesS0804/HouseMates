@@ -1,18 +1,26 @@
-import Header from "@/Main Components/Header";
-import CustomFormField from "@/Main Components/CustomFormField";
 import * as z from "zod"
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormField, FormMessage, FormLabel, FormItem } from "@/components/ui/form"
+import { Link } from "react-router-dom";
+import { AxiosInstance } from "axios";
+import { Loader2 } from "lucide-react";
 import homeowner from "../assets/images/homeowner.png"
 import housemates from "../assets/images/housemates.png"
-import { Link } from "react-router-dom";
+import Header from "@/Main Components/Header";
+import CustomFormField from "@/Main Components/CustomFormField";
+
+interface SignupPageProps {
+    userType: string
+    api: AxiosInstance
+    navigate: Function
+    setAlert: Function
+    actionIsLoading: boolean
+    setActionIsLoading: Function
+}
 
 const formSchema = z.object({
-    name: z.string().min(3, {
-        message: "Name must be at least 3 characters."
-    }),
     email: z.string().email({
         message: "Not a valid email."
     }),
@@ -35,17 +43,12 @@ const formSchema = z.object({
     path: ["privacyCheckbox"]
 });
 
-interface SignupPageProps {
-    userType: string;
-}
-
 export default function SignupPage(props: SignupPageProps) {
-    const { userType } = props
+    const { userType, navigate, api, setAlert, actionIsLoading, setActionIsLoading } = props
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -53,9 +56,26 @@ export default function SignupPage(props: SignupPageProps) {
         }
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("submitting..")
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setActionIsLoading(true)
+        try {
+            const res = await api.post("signup", {
+                user: {
+                    email: values.email,
+                    password: values.password,
+                    type: userType
+                }
+            })
+            if ( res.status === 200 ) {
+                setAlert({ status: "SUCCESS", message: res?.data?.data?.message || "Signup Successful!" })
+                navigate("/login")
+            } else {
+                setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
+            }
+        } catch (error:any) {
+            setAlert({ status: "ERROR", message: error?.response?.data?.errors?.message || "Something went wrong." })
+        }
+        setActionIsLoading(false)
     }
 
     return (
@@ -66,7 +86,6 @@ export default function SignupPage(props: SignupPageProps) {
                 <img className="h-[10rem]" src={userType === 'Homeowner' ? homeowner : housemates} />
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
-                        <CustomFormField userType={userType} form={form} name={"name"} label={"Name"} type={"text"} placeholder={"John Smith"} />
                         <CustomFormField userType={userType} form={form} name={"email"} label={"Email"} type={"email"} placeholder={"johnsmith@gmail.com"} />
                         <CustomFormField userType={userType} form={form} name={"password"} label={"Password"} type={"password"} placeholder={"Password"} />
                         <CustomFormField userType={userType} form={form} name={"confirmPassword"} label={"Re-confirm Password"} type={"password"} placeholder={"Password"} />
@@ -91,12 +110,13 @@ export default function SignupPage(props: SignupPageProps) {
                 <Link to="/login">
                     <div className={`${userType === "Homeowner" ? 'text-primary' : 'text-secondary'} font-black underline`}>Login</div>
                 </Link>
-                
             </div>
             <Button
                 className={`page-action-button text-white border-none rounded-none ${userType === 'Homeowner' ? 'bg-primary' : 'bg-secondary'}`}
                 onClick={form.handleSubmit(onSubmit)}
-            >Sign Up</Button>
+            >
+                { actionIsLoading ? <>Signing Up<Loader2 className={'animate-spin'} /></> : "Signup" }
+            </Button>
         </div>
     )
 }

@@ -6,7 +6,10 @@
     html {
         font-family: 'Montserrat', sans-serif;
         background-color: #F7F7F7;
+<<<<<<< HEAD
         font-weight: 600;
+=======
+>>>>>>> feature/frontend
     }
 
     * {
@@ -15,6 +18,31 @@
 
     html { height: 100%; overflow:auto; }
     body { height: 100%; }
+<<<<<<< HEAD
+=======
+
+    input:focus {
+        scroll-behavior: smooth;
+    }
+
+    .header-1 {
+        color: rgb(235,206,159);
+        text-shadow:
+         -1px -1px 0 rgb(235,206,159, 0.7),  
+          1px -1px 0 rgb(235,206,159, 0.7),
+          -1px 1px 0 rgb(235,206,159, 0.7),
+           1px 1px 0 rgb(235,206,159, 0.7);
+    }
+    .header-2 {
+        color: #CE9354;
+        text-shadow:
+         -1px -1px 0 #CE9354,  
+          1px -1px 0 #CE9354,
+          -1px 1px 0 #CE9354,
+           1px 1px 0 #CE9354;
+    }
+      
+>>>>>>> feature/frontend
 }
 
 @layer components {

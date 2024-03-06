@@ -9,23 +9,34 @@ import news from "../assets/images/news.png"
 import discounts from "../assets/images/discount.png"
 import HSHomePage from "./Housemates/HSHomePage"
 
-
 interface HomePageProps {
     userType: string,
     navigate: Function,
-    selectedService: string,
-    setSelectedService: Function
+    selectedService: Service,
+    setSelectedService: Function,
+    currentUser: any
+    setAlert: Function
+    actionIsLoading: boolean
+    setActionIsLoading: Function
+}
+
+type Service = {
+    id: number,
+    title: string,
+    serviceName: string,
+    price: number,
+    icon: string
 }
 
 export default function HomePage(props: HomePageProps) {
-    const { userType, navigate, selectedService, setSelectedService } = props
+    const { userType, navigate, selectedService, setSelectedService, currentUser, setAlert, actionIsLoading, setActionIsLoading } = props
 
     useEffect(()=>{
         setSelectedService(selectedService)
     },[])
 
     useEffect(()=>{
-        if(selectedService) navigate("/services")
+        if(selectedService.title) navigate("/services")
     },[selectedService])
 
     return(
@@ -52,13 +63,13 @@ export default function HomePage(props: HomePageProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="p-4 flex flex-col gap-2 pb-20">
+                        <div className="p-4 flex flex-col gap-2 pb-24">
                             <h3 className="font-bold text-xl">Categories</h3>
                             <ServiceSelection userType={userType} selectionType="single" outputData={selectedService} setOutputData={setSelectedService} />
                         </div>
                     </div>
                     :
-                    <HSHomePage />
+                    <HSHomePage currentUser={currentUser} setAlert={setAlert} actionIsLoading={actionIsLoading} setActionIsLoading={setActionIsLoading} />
             }
             <NavigationBar userType={userType} selectedOption="home" />
         </div>

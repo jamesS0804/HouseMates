@@ -1,2 +1,0 @@
-class Housemate < User
-end
