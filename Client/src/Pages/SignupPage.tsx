@@ -73,6 +73,7 @@ export default function SignupPage(props: SignupPageProps) {
                 setAlert({ status: "WARNING", message: res?.data?.data?.message || "Something's not quite right." })
             }
         } catch (error:any) {
+            console.log(error)
             setAlert({ status: "ERROR", message: error?.response?.data?.errors?.message || "Something went wrong." })
         }
         setActionIsLoading(false)
